@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aquamarine</title>
+    <link rel="stylesheet" href="../../css/aquamarine.css">
+</head>
+
+<body onload="wiiuBrowser.endStartUp(); wiiuSound.playSoundByName('BGM_OLV_INIT', 3);">
+    <div id="page-1" style="display: block;">
+        <div class="welcome_text_box">
+            <span class="welcome_text_aquamarine">Welcome to Aquamarine!</span>
+
+            <span class="welcome_text_box_text">Aquamarine is a service designed for the Wii U and 3DS, that allows communication between consoles. It seem's like this console is not fully set up to use Aquamarine? Let's get you set up!</span>
+
+            <img src="../../img/welcome/welcome1.png" width="500px" class="welcome_image">
+        </div>
+
+        <a class="welcome_exit" href="./create_account"><span class="symbols">x</span><span class="welcome_exit_text">Close</span></a>
+        <a class="welcome_next" href="javascript:void(0)" onclick="load_welcome_page(1, 2)"><span class="symbols">R</span><span class="welcome_next_text">Next</span></a>        
+    </div>
+
+    <div id="page-2" style="display: none;">
+        <div class="welcome_text_box">
+            <span class="welcome_text_aquamarine">Do you already have a Aquamarine account?</span>
+
+            <img src="../../img/welcome/welcome4.png" width="300px" class="welcome_image" style="margin-left: 300px; margin-top: 25px;">
+        </div>
+
+        <a class="welcome_back" href="javascript:void(0)" onclick='alert("Let\x27s create an account!"); load_welcome_page(2, 3)'><span class="welcome_back_text">No!</span></a>
+        <a class="welcome_next" href="javascript:void(0)" onclick='alert("Let\x27s log into your account!"); load_welcome_page(2, 99)'><span class="welcome_back_text" style="margin: 0;">Yes!</span></a>
+    </div>
+
+    <div id="page-3" style="display: none;">
+        <div class="welcome_text_box">
+            <span class="welcome_text_aquamarine">What is Aquamarine?</span>
+            <span class="welcome_text_box_text">Aquamarine is a revival project aiming to replicate Miiverse's same feeling, while changing or adding new UI features to fit a more modern era.</span>
+            
+            <img src="../../img/welcome/welcome2.png" width="400px" class="welcome_image" style="margin-left: 226px;">
+        </div>
+        <a class="welcome_next" href="javascript:void(0)" onclick="load_welcome_page(3, 98)"><span class="symbols">R</span><span class="welcome_next_text">Next</span></a>
+    </div>
+
+    <div id="page-98" style="display: none;">
+        <div class="welcome_text_box">
+            <span class="welcome_text_aquamarine">Please enter the credentials you want to create your Aquamarine account with.</span>
+
+            <form class="welcome_account_form" action="https://api.olv.nonamegiven.xyz/v1/people" method="post" enctype="multipart/form-data">
+                <input type="text" placeholder="NNID..." name="nnid" id="nnid" autocomplete="off" keyboard="nnid" maxlength="16" minlength="6">
+                <input type="password" placeholder="Password..." name="password" id="password" autocomplete="off">
+                <input type="password" placeholder="Confirm Password..." id="confirmPassword" autocomplete="off">
+
+                <input type="submit" id="submit2" disabled="disabled" onclick="wiiuBrowser.lockUserOperation(true);">
+            </form>
+        </div>
+
+        <a class="welcome_back" href="javascript:void(0)" onclick="load_welcome_page(98, 3)"><span class="symbols">b</span><span class="welcome_back_text">Back</span></a>
+    </div>
+
+    <div id="page-99" style="display: none;">
+        <div class="welcome_text_box">
+            <span class="welcome_text_aquamarine">Please enter your Aquamarine account credentials.</span>
+
+            <form class="welcome_account_form" action="https://api.olv.nonamegiven.xyz/v1/people/login" method="post" enctype="multipart/form-data">
+                <input type="text" placeholder="NNID..." name="nnid" keyboard="nnid" maxlength="16" minlength="6">
+                <input type="password" placeholder="Password..." name="password">
+
+                <input type="submit" onclick="wiiuBrowser.lockUserOperation(true);">
+            </form>
+        </div>
+
+        <a class="welcome_back" href="javascript:void(0)" onclick="load_welcome_page(99, 2)"><span class="symbols">b</span><span class="welcome_back_text">Back</span></a>
+    </div>
+    
+</body>
+
+<script src="../../../js/jquery-3.7.1-min.js"></script>
+<script src="../../../js/aquamarine_user_creation.js"></script>
