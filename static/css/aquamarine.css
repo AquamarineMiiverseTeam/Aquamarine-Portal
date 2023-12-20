@@ -26,6 +26,42 @@ body {
     height: 720px;
 }
 
+.sidebar {
+    height: 720px;
+    width: 160px;
+    background-color: #c7c7c7;
+
+    border-top-right-radius: 60px;
+    border-bottom-right-radius: 60px;
+
+    display: inline-block;
+
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0), 0 6px 20px 0 rgba(0, 0, 0, 0.4);
+
+    font-size: 28px;
+}
+
+.sidebar .sidebar_option_wrapper {
+    display: block;
+
+    width: 160px;
+    height: 144px;
+
+    text-align: center;
+
+    background-color: rgb(209, 209, 209);
+
+    cursor: pointer;
+}
+
+.sidebar :first-child {
+    border-top-right-radius: 60px;
+}
+
+.sidebar :last-child {
+    border-bottom-right-radius: 60px;
+}
+
 .welcome_text_box {
     width: 850px;
     height: 450px;

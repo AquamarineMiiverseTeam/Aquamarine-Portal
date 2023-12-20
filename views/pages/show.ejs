@@ -1,5 +1,8 @@
 <%- include('../partials/header') %>
 
 <body onload="wiiuBrowser.endStartUp(); wiiuSound.playSoundByName('BGM_OLV_MAIN', 3);">
-    Hello World!
+    <%- include('../partials/sidebar') %>
+    <content>
+        <a href="./show">Reload</a>
+    </content>
 </body>
