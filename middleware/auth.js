@@ -46,7 +46,6 @@ async function auth(req, res, next) {
 
     //If there is no account AND the request isn't creating an account, then send a 401 (Unauthorized)
     if (account.length == 0 && !req.path.includes("account")) { res.redirect("/account/create_account"); return; }
-    if (account[0].admin == 0 && con.config.database == 'dev') { res.sendStatus(401); return; }
 
     //Finally, set the requests account to be the newly found account from the database
     req.account = account;

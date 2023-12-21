@@ -17,7 +17,7 @@ const config_database = require('./config/database.json');
 const logger = require('./middleware/log');
 app.use(auth);
 app.use(logger);
-app.use(express.static(__dirname + "/static"));
+app.use(express.static(path.join(__dirname, ".././CDN_Files/")));
 
 //Grab index of all routes and set them in our express app
 const routes = require('./routes/index');
