@@ -4,7 +4,7 @@ const util = require('util')
 const colors = require('colors');
 
 const con = require('./database_con');
-const query = util.promisify(con.query).bind(con)
+const query = util.promisify(con.query).bind(con);
 const auth = require('./middleware/auth');
 
 const app = express();
