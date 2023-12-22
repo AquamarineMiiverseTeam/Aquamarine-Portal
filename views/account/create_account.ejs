@@ -1,6 +1,6 @@
 <%- include('../partials/header') %>
 
-<body onload="wiiuBrowser.endStartUp(); wiiuSound.playSoundByName('BGM_OLV_INIT', 3);">
+<body onload="wiiuBrowser.endStartUp(); wiiuSound.playSoundByName('BGM_OLV_INIT', 3); init_account_creation();">
     <div id="page-1" style="display: block;">
         <div class="welcome_text_box">
             <span class="welcome_text_aquamarine">Welcome to Aquamarine!</span>
@@ -43,6 +43,9 @@
                 <input type="text" placeholder="NNID..." name="nnid" id="nnid" autocomplete="off" keyboard="nnid" maxlength="16" minlength="6">
                 <input type="password" placeholder="Password..." name="password" id="password" autocomplete="off">
                 <input type="password" placeholder="Confirm Password..." id="confirmPassword" autocomplete="off">
+
+                <input type="text" style="display: none;" name="country" id="country" maxlength="5" minlength="1">
+                <input type="text" style="display: none;" name="language" id="language" maxlength="5" minlength="1">
 
                 <input type="submit" id="submit2" disabled="disabled" onclick="wiiuBrowser.lockUserOperation(true);">
             </form>
