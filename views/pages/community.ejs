@@ -1,0 +1,10 @@
+<%- include('../partials/header'), {
+    account : account
+} %>
+
+<body onload="wiiuBrowser.endStartUp(); wiiuSound.playSoundByName('BGM_OLV_MAIN', 3);">
+    <%- include('../partials/sidebar') %>
+    <content>
+        <img class="community_banner" src="../../../img/banners/<%= community.id %>.jpg" width="1280px" height="180px">
+    </content>
+</body>
