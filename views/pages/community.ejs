@@ -5,6 +5,17 @@
 <body onload="wiiuBrowser.endStartUp(); wiiuSound.playSoundByName('BGM_OLV_MAIN', 3);">
     <%- include('../partials/sidebar') %>
     <content>
-        <img class="community_banner" src="../../../img/banners/<%= community.id %>.jpg" width="1280px" height="180px">
+        <div class="page_name"><span><%= community.name%></span></div>
+
+        <img class="community_banner" src="../../../img/banners/<%= community.id %>.jpg" width="1280px" height="180px" onerror="this.src='../../../img/banners/placeholder-wup.jpg'">
+
+        <div class="community_data_wrapper">
+            <img width="100px" height="100px" src="../../../img/icons/<%= community.id %>.jpg">
+
+            <div class="community_name_wrapper">
+                <span class="community_name"><%= community.name %> Community</span>
+                <span class="community_description"><%= community.description %></span>
+            </div>
+        </div>
     </content>
 </body>
