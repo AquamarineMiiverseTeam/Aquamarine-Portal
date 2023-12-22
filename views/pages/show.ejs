@@ -5,7 +5,42 @@
 <body onload="wiiuBrowser.endStartUp(); wiiuSound.playSoundByName('BGM_OLV_MAIN', 3);">
     <%- include('../partials/sidebar') %>
     <content>
-        <a href="./show">Reload</a>
-        <img src="../../../img/icons/1.jpg">
+        <div class="page_name"><span>Communities</span></div>
+
+        <div class="new_communities">New Communities</div>
+
+        <table class="communities_wrapper">
+            <% for (let i = 0; i < newest_communities.length; i++) {
+                const community = newest_communities[i];%>
+
+                <td class="community">
+                    <a href="./show" onclick='alert(wiiuDevice.getAllTitleList().IDs)'>
+                        <img width="90px" src="../../../img/icons/<%= community.id %>.jpg">
+                        <div class="community_meta_wrapper">
+                            <span class="community_name"><%= community.name %></span>
+
+                            <% switch (community.platform) {
+                                case 'wiiu':%>
+                                <span class="platform_indicator_wrapper"><span style="background-color: #0099C9;">WiiU</span> Wii U Games</span>
+                                    <%break;
+                                case '3ds':%>
+                                <span class="platform_indicator_wrapper"><span style="background-color: #D3000F;">3DS</span> 3DS Games</span>
+                                    <%break;
+                                    case 'wii':%>
+                                <span class="platform_indicator_wrapper"><span style="background-color: #cacaca;">Wii</span> Wii Games</span>
+                                    <%break;
+                                    case 'vc':%>
+                                <span class="platform_indicator_wrapper"><span style="background-color: #525252;">VC</span> Virtual Console Games</span>
+                                    <%break;
+                                default:%>
+                                <span class="platform_indicator_wrapper"><span style="background-color: #777777;">Topic</span> General Topic</span>
+                                <%break;
+                            }%>
+                        </div>
+                    </a>
+                </td>
+
+            <% } %>
+        </table>
     </content>
 </body>
