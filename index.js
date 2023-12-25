@@ -3,21 +3,21 @@ const path = require('path');
 const util = require('util')
 const colors = require('colors');
 
-const con = require('./database_con');
+const con = require('../database_con');
 const query = util.promisify(con.query).bind(con);
-const auth = require('./middleware/auth');
+const auth = require('../auth_middleware');
 
 const app = express();
 app.set('view engine', 'ejs');
 
 const config_http = require('./config/http.json');
-const config_database = require('./config/database.json');
+const config_database = require('../database_config.json');
 
 //Grab logger middleware and use it. (Logs all incoming HTTP/HTTPS requests)
 const logger = require('./middleware/log');
 app.use(auth);
 app.use(logger);
-app.use(express.static(path.join(__dirname, ".././CDN_Files/")));
+app.use(express.static(path.join(__dirname, "../CDN_Files/")));
 
 //Grab index of all routes and set them in our express app
 const routes = require('./routes/index');

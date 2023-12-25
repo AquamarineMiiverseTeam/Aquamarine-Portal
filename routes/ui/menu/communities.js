@@ -5,7 +5,7 @@ const moment = require('moment');
 
 const util = require('util')
 
-const con = require('../../../database_con');
+const con = require('../../../../database_con');
 const query = util.promisify(con.query).bind(con)
 
 route.get('/:community_id', async (req, res) => {
