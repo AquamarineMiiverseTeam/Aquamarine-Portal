@@ -24,7 +24,7 @@ route.get('/:community_id', async (req, res) => {
         return;
     }
 
-    const posts = (await query("SELECT * FROM posts WHERE community_id=?", community_id));
+    const posts = (await query("SELECT * FROM posts WHERE community_id=? ORDER BY create_time DESC", community_id));
 
     for (let i = 0; i < posts.length; i++) {
         const account = (await query("SELECT * FROM accounts WHERE id=?", posts[i].account_id))[0];
