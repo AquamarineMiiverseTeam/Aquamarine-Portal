@@ -3,8 +3,6 @@
         account : account
     } %>
 <%} %>
-
-    <content>
         <div class="page_name"><span><%= community.name%></span></div>
 
         <img class="community_banner" src="../../../img/banners-wup/<%= community.id %>.jpg" width="1280px" height="180px" onerror="this.src='../../../img/banners-wup/placeholder-wup.jpg'">
@@ -23,4 +21,3 @@
                 <%- include("../partials/post.ejs", {post : posts[i]}) %>
             <%} %>
         </div>
-    </content>
