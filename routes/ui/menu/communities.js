@@ -8,21 +8,13 @@ const util = require('util')
 const con = require('../../../../database_con');
 const query = util.promisify(con.query).bind(con)
 
-route.get('/:community_id', async (req, res) => {
+route.get('/:community_id', async (req, res, next) => {
 
     const community_id = req.params.community_id;
     const community = (await query("SELECT * FROM communities WHERE id=?", community_id))[0]
 
-    //If no community is found, then send an error screen instead
-    if (!community) {
-        res.status(404).render('pages/error', {
-            account : req.account[0],
-            error_name : "Community Not Found",
-            error_description : "Sorry, this community doesn't exist yet!"
-        });
-
-        return;
-    }
+    //If no community is found, then let error.js handle the error
+    if (!community) { next(); return;}
 
     const posts = (await query("SELECT * FROM posts WHERE community_id=? ORDER BY create_time DESC", community_id));
 
@@ -65,7 +57,7 @@ route.get('/:community_id', async (req, res) => {
         account : req.account[0],
         community : community,
         posts : posts
-    })
+    });
 })
 
 module.exports = route;
