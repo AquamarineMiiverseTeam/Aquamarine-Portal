@@ -1,9 +1,10 @@
-<%- include('../partials/header') %>
-
-<body onload="wiiuBrowser.endStartUp(); wiiuSound.playSoundByName('BGM_OLV_MAIN', 3);">
-    <%- include('../partials/sidebar', {
+<% if (!req.get("X-PJAX")) {%>
+    <%- include('../partials/header'), {
         account : account
-    }) %>
+    } %>
+<%} %>
+
+
     <content>
         <div class="page_name"><span><%= error_name %></span></div>
 
@@ -11,4 +12,3 @@
             <span style="text-align: center; display: block; left: 0; top: 195px;"><%= error_description %></span>
         </div>
     </content>
-</body>

@@ -56,7 +56,8 @@ route.get('/:community_id', async (req, res, next) => {
     res.render('pages/community', {
         account : req.account[0],
         community : community,
-        posts : posts
+        posts : posts,
+        req : req
     });
 })
 

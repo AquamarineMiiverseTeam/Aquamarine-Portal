@@ -22,7 +22,8 @@ function error(req, res, next) {
         res.status(404).render('pages/error', {
             account : req.account[0],
             error_name : "Community Not Found",
-            error_description : "Sorry, this community doesn't exist yet!"
+            error_description : "Sorry, this community doesn't exist yet!",
+            req : req
         });
 
         return;
@@ -32,7 +33,8 @@ function error(req, res, next) {
     res.status(404).render('pages/error', {
         account : req.account[0],
         error_name : "Page not found",
-        error_description : "Sorry! This page doesn't exist yet."
+        error_description : "Sorry! This page doesn't exist yet.",
+        req : req
     });
 }
 

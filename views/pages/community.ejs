@@ -1,9 +1,9 @@
-<%- include('../partials/header'), {
-    account : account
-} %>
+<% if (!req.get("X-PJAX")) {%>
+    <%- include('../partials/header'), {
+        account : account
+    } %>
+<%} %>
 
-<body onload="wiiuBrowser.endStartUp(); wiiuSound.playSoundByName('BGM_OLV_MAIN', 3);">
-    <%- include('../partials/sidebar') %>
     <content>
         <div class="page_name"><span><%= community.name%></span></div>
 
@@ -24,4 +24,3 @@
             <%} %>
         </div>
     </content>
-</body>

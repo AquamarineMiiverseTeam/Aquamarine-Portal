@@ -15,7 +15,8 @@ route.get('/show', async (req, res) => {
 
     res.render('pages/show', {
         account : req.account[0],
-        newest_communities : newest_communities
+        newest_communities : newest_communities,
+        req : req
     })
 })
 
