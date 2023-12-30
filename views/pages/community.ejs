@@ -17,5 +17,11 @@
                 <span class="community_description"><%= community.description %></span>
             </div>
         </div>
+
+        <div class="posts_wrapper">
+            <% for (let i = 0; i < posts.length; i++) {%>
+                <%- include("../partials/post.ejs", {post : posts[i]}) %>
+            <%} %>
+        </div>
     </content>
 </body>
