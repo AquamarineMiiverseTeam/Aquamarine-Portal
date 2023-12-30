@@ -1,9 +1,9 @@
-<%- include('../partials/header'), {
-    account : account
-} %>
+<%- include('../partials/header') %>
 
 <body onload="wiiuBrowser.endStartUp(); wiiuSound.playSoundByName('BGM_OLV_MAIN', 3);">
-    <%- include('../partials/sidebar') %>
+    <%- include('../partials/sidebar', {
+        account : account
+    }) %>
     <content>
         <div class="page_name"><span><%= error_name %></span></div>
 

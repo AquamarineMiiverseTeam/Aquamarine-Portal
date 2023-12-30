@@ -24,7 +24,9 @@ const routes = require('./routes/index');
 
 app.use('/account', routes.UI_ACCOUNT_CREATION);
 app.use('/titles', routes.UI_TITLES);
-app.use('/communities', routes.UI_COMMUNITIES)
+app.use('/communities', routes.UI_COMMUNITIES);
+
+app.use(routes.UI_ERROR);
 
 //Set our app to listen on the config port
 app.listen(config_http.port, () => {
