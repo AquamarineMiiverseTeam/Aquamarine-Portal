@@ -3,7 +3,7 @@
     <img src="<%= post.mii_image %>" class="mii_image" width="95px" height="95px">
 
     <div class="post_speech_bubble"></div>
-    <a class="post" sound="SE_WAVE_OK">
+    <div post_id="<%= post.id %>" class="post" sound="SE_WAVE_OK" href="javascript:void(0)">
         <% if (post.topic_tag) {%>
             <span class="topic_tag"><%= post.topic_tag %></span>
         <%} %>
@@ -34,5 +34,5 @@
                 <span class="symbols">e</span><span id="empathy_count"><%= post.empathy_count %></span>
             </div>
         </div>
-    </a>
+    </div>
 </div>
