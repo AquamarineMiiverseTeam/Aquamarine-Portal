@@ -1,7 +1,38 @@
-<div>
-    <img src="<%= post.mii_image %>" class="mii_image" width="95px">
+<div post_id="<%= post.id %>">
+    <div class="post_info_wrapper"><span class="post_mii_name"><%= post.mii_name %></span></div>
+    <img src="<%= post.mii_image %>" class="mii_image" width="95px" height="95px">
 
-    <a class="post">
+    <div class="post_speech_bubble"></div>
+    <a class="post" sound="SE_WAVE_OK">
+        <% if (post.topic_tag) {%>
+            <span class="topic_tag"><%= post.topic_tag %></span>
+        <%} %>
+        
+        <% if (post.body) {%>
+            <span><%= post.body %></span>
+        <%} else if (post.posted_from == "wiiu") { %>
+            <img src="../../../img/paintings/<%= post.id %>.png" width="450px">
+        <% } else if (post.posted_from == "3ds") { %>
+            <img src="../../../img/paintings/<%= post.id %>.bmp" width="450px">
+        <% } %>
 
+        <% if (post.screenshot) {%>
+            <img src="../../../img/screenshots/<%= post.id %>.jpg" width="300px">
+        <% } %>
+
+        <div class="post_options">
+            <div>
+                <button class="post_yeah_button" post_id="<%= post.id %>" onclick="aquamarine.create_empathy($(this).attr('post_id'))">
+                    <span class="symbols">E</span>
+                    <span style="vertical-align: middle;" id="yeah">
+                    <% if (post.is_empathied_by_user) {%> Unyeah <%} else {%> Yeah! <%} %>
+                    </span>
+                </button>
+            </div>
+            
+            <div class="post_stats  <% if (post.is_empathied_by_user) {%> yeahed_post <% } %>">
+                <span class="symbols">e</span><span id="empathy_count"><%= post.empathy_count %></span>
+            </div>
+        </div>
     </a>
 </div>
