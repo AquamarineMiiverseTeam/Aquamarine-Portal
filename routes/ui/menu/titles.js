@@ -5,14 +5,13 @@ const moment = require('moment');
 
 const util = require('util')
 
-const con = require('../../../../database_con');
-const query = util.promisify(con.query).bind(con)
+const database_query = require('../../../database_query');
 
 route.get('/show', async (req, res) => {
 
     //TODO : hopefully adding in popular communities??
-    const newest_communities = await query(`SELECT * FROM communities ORDER BY create_time DESC`)
-
+    const newest_communities = await database_query.getCommunities("desc", 1000, 'all');
+    
     res.render('pages/show', {
         account : req.account[0],
         newest_communities : newest_communities,
