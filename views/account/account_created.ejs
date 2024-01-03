@@ -1,6 +1,17 @@
-<%- include('../partials/header') %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aquamarine-WUP</title>
 
-<body onload="wiiuSound.playSoundByName('JGL_OLV_INIT_END', 3); wiiuBrowser.lockUserOperation(false);">
+    <link rel="stylesheet" href="../../css/WUP/aquamarine.css">
+</head>
+
+<script defer src="../../../../../js/WUP/olv.js"></script>
+<script defer src="../../../../../js/WUP/wiiu-emulation.js"></script>
+
+<body onload="wiiuSound.playSoundByName('JGL_OLV_INIT_END', 3); wiiuBrowser.lockUserOperation(false); aquamarine.init();">
 
     <span class="welcome_text_aquamarine_centered">Welcome to Aquamarine!</span>
 

@@ -1,6 +1,17 @@
-<%- include('../partials/header') %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aquamarine-WUP</title>
 
-<body onload="wiiuBrowser.endStartUp(); wiiuSound.playSoundByName('BGM_OLV_INIT', 3); init_account_creation();">
+    <link rel="stylesheet" href="../../css/WUP/aquamarine.css">
+</head>
+
+<script defer src="../../../../../js/WUP/olv.js"></script>
+<script defer src="../../../../../js/WUP/wiiu-emulation.js"></script>
+
+<body onload="wiiuBrowser.endStartUp(); wiiuSound.playSoundByName('BGM_OLV_INIT', 3); init_account_creation(); aquamarine.init();">
     <div id="page-1" style="display: block;">
         <div class="welcome_text_box">
             <span class="welcome_text_aquamarine">Welcome to Aquamarine!</span>
@@ -10,7 +21,7 @@
             <img src="../../img/welcome/welcome1.png" width="500px" class="welcome_image">
         </div>
 
-        <a class="welcome_exit" href="./create_account"><span class="symbols">x</span><span class="welcome_exit_text">Close</span></a>
+        <a class="welcome_exit" href="javascript:void(0)" id="close"><span class="symbols">x</span><span class="welcome_exit_text">Close</span></a>
         <a class="welcome_next" href="javascript:void(0)" onclick="load_welcome_page(1, 2)"><span class="symbols">R</span><span class="welcome_next_text">Next</span></a>        
     </div>
 
