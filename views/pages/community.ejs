@@ -1,21 +1,21 @@
-<% if (!req.get("X-PJAX")) {%>
     <%- include('../partials/header'), {
         account : account
     } %>
-<%} %>
         <div class="page_name"><span><%= community.name%></span></div>
 
         <img class="community_banner" src="../../../img/banners-wup/<%= community.id %>.jpg" width="1280px" height="180px" onerror="this.src='../../../img/banners-wup/placeholder-wup.jpg'">
 
         <div class="community_data_wrapper">
             <div style="width: 100%; position: relative; bottom: 25px; left: 0;">
-                <img width="90px" height="90px" src="../../../img/icons/<%= community.id %>.jpg" onerror="this.src='../../../img/icons/placeholder.jpg'">
+                <img width="90px" height="90px" src="../../../img/icons/<%= community.id %>.jpg">
 
-                <div class="community_name_wrapper" <% if (community.type == "main" || community.type == "sub") {%> style="top: 5px;" <%} %>>
+                <div class="community_name_wrapper" <% if (community.type == "main" || community.type == "sub" || community.type == "announcement") {%> style="top: 0px;" <%} %>>
                     <% if (community.type == "main") { %>
                         <div class="community_main">Main Community</div>
                     <% } else if (community.type == "sub") { %>
                         <div class="community_main">Sub Community</div>
+                    <% } else if (community.type == "announcement") { %>
+                        <div class="community_main">Announcements</div>
                     <% } %>
                     <span class="community_name"><%= community.name %> Community</span>
                     <span class="community_description"><%= community.description %></span>

@@ -1,8 +1,6 @@
-<% if (!req.get("X-PJAX")) {%>
     <%- include('../partials/header'), {
         account : account
     } %>
-<%} %>
         <div class="page_name"><span>Communities</span></div>
 
         <div class="new_communities">New Communities</div>
@@ -12,8 +10,8 @@
                 const community = newest_communities[i];%>
 
                 <td class="community">
-                    <a sound="SE_WAVE_OK" community_id="<%= community.id %>" href="javascript:void(0)" onclick="pjax.loadNewPage('content', '/communities/'+$(this).attr('community_id').toString())">
-                        <img width="90px" height="90px" src="../../../img/icons/<%= community.id %>.jpg" onerror="this.src='../../../img/icons/placeholder.jpg'">
+                    <a sound community_id="<%= community.id %>" href="javascript:void(0)" onclick="pjax.loadUrl('/communities/<%= community.id %>')">
+                        <img width="90px" height="90px" src="../../../img/icons/<%= community.id %>.jpg">
                         <div class="community_meta_wrapper">
                             <span class="community_name"><%= community.name %> Community</span>
 

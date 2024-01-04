@@ -30,7 +30,7 @@ function error(req, res, next) {
     } 
 
     //If that page just doesn't exist.
-    res.status(404).render('pages/error', {
+    res.status(200).render('pages/error', {
         account : req.account[0],
         error_name : "Page not found",
         error_description : "Sorry! This page doesn't exist yet.",

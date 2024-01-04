@@ -1,21 +1,21 @@
 <div class="sidebar">
-    <a id="6_option" class="sidebar_option_wrapper" href="javascript:void(0)" onclick="pjax.loadNewPage('content', '/people/@me', 0, 'blank', 6);" style="border-top-right-radius: 55px !important;">
+    <a id="6_option" class="sidebar_option_wrapper" href="javascript:void(0)" onclick="pjax.loadNewPage(pjax.loadUrl('/people/@me'));" style="border-top-right-radius: 55px !important;">
         <img width="80px" height="80px" src="http://mii-images.account.nintendo.net/<%= account.mii_hash %>_normal_face.png" onerror="this.src='../../../img/mii_null.png'">
         <span>My Menu</span>
     </a>
-    <a id="1_option" class="sidebar_option_wrapper" href="javascript:void(0)" onclick="pjax.loadNewPage('content', '/activity_feed', 0, 'blank', 1);">
+    <a id="1_option" class="sidebar_option_wrapper" href="javascript:void(0)" onclick="pjax.loadUrl('/activity_feed');">
         <span class="symbols">a</span>
         <span>Activity Feed</span>
     </a>
-    <a id="2_option" class="sidebar_option_wrapper" href="javascript:void(0)" onclick="pjax.loadNewPage('content', '/titles/show', 0, 'blank', 2);">
+    <a id="2_option" class="sidebar_option_wrapper" href="javascript:void(0)" onclick="pjax.loadUrl('/titles/show');">
         <span class="symbols">c</span>
         <span>Communities</span>
     </a>
-    <a id="3_option" class="sidebar_option_wrapper" href="javascript:void(0)" onclick="pjax.loadNewPage('content', '/messages', 0, 'blank', 3);">
+    <a id="3_option" class="sidebar_option_wrapper" href="javascript:void(0)" onclick="pjax.loadUrl('/messages');">
         <span class="symbols">m</span>
         <span>Messages</span>
     </a>
-    <a id="4_option" class="sidebar_option_wrapper" href="javascript:void(0)" onclick="pjax.loadNewPage('content', '/notifications', 0, 'blank', 4);">
+    <a id="4_option" class="sidebar_option_wrapper" href="javascript:void(0)" onclick="pjax.loadUrl('/notifications');">
         <span class="symbols">n</span>
         <span>Notifications</span>
     </a>

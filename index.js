@@ -15,8 +15,8 @@ const config_database = require('../database_config.json');
 
 //Grab logger middleware and use it. (Logs all incoming HTTP/HTTPS requests)
 const logger = require('./middleware/log');
-app.use(auth);
 app.use(logger);
+app.use(auth);
 app.use(express.static(path.join(__dirname, "../CDN_Files/")));
 
 //Grab index of all routes and set them in our express app
