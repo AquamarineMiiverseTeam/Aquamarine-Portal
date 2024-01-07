@@ -5,7 +5,7 @@ const moment = require('moment');
 
 const util = require('util')
 
-const database_query = require('../../../database_query');
+const database_query = require('../../../utils/database_query');
 
 route.get('/show', async (req, res) => {
 

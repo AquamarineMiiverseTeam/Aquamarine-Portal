@@ -8,7 +8,7 @@ const util = require('util')
 const con = require('../../../../database_con');
 const query = util.promisify(con.query).bind(con);
 
-const database_query = require('../../../database_query');
+const database_query = require('../../../utils/database_query');
 
 route.get('/:community_id', async (req, res, next) => {
 
