@@ -1,30 +1,42 @@
-    <%- include('../partials/header'), {
-        account : account
-    } %>
-        <div class="page_name"><span><%= community.name%></span></div>
+<%- include('../partials/header'), { account : account } %>
+    <div class="wrapper">
 
-        <img class="community_banner" src="../../../img/banners-wup/<%= community.id %>.jpg" width="1280px" height="180px" onerror="this.src='../../../img/banners-wup/placeholder-wup.jpg'">
+        <div class="wrapper-content">
 
-        <div class="community_data_wrapper">
-            <div style="width: 100%; position: relative; bottom: 25px; left: 0;">
-                <img width="90px" height="90px" src="../../../img/icons/<%= community.id %>.jpg">
+            <header class="header">
+                <h1 class="content-title title-label"><%= community.name %></h1>
+                <a href="#" class="add-post-button">Post</a>
+            </header>
 
-                <div class="community_name_wrapper" <% if (community.type == "main" || community.type == "sub" || community.type == "announcement") {%> style="top: 0px;" <%} %>>
-                    <% if (community.type == "main") { %>
-                        <div class="community_main">Main Community</div>
-                    <% } else if (community.type == "sub") { %>
-                        <div class="community_main">Sub Community</div>
-                    <% } else if (community.type == "announcement") { %>
-                        <div class="community_main">Announcements</div>
-                    <% } %>
-                    <span class="community_name"><%= community.name %> Community</span>
-                    <span class="community_description"><%= community.description %></span>
+            <div class="header-banner-container">
+                <img src="../../../img/banners-wup/<%= community.id %>.jpg" class="banner-image" onerror="this.src='../../../img/banners-wup/placeholder-wup.jpg'">
+            </div>
+
+            <div class="community-info info-content with-header-banner">
+                <span class="icon-container">
+                    <img src="../../../img/icons/<%= community.id %>.jpg" class="icon">
+                </span>
+                <a class="settings-button button" onclick="aquamarine.openModal('wrapper', '')" href="#">
+                    <a class="favorite-button button" onclick="aquamarine.toggleFavorite()"
+                        href="javascript:void(0)">Favorite</a>
+                    <span class="news-community-badge">Main Community</span>
+                    <span class="title"><%= community.name %> Community</span>
+                    <span class="text"><%= community.description %></span>
+            </div>
+
+            <div class="community-post-list">
+
+                <div class="post-list">
+                    <% for (let i = 0; i < posts.length; i++) {%>
+                        <%- include("../partials/post.ejs", {post : posts[i]}) %>
+                    <%} %>
                 </div>
-            </div>   
+
+                <a class="loading"></a>
+
+            </div>
+
+
         </div>
 
-        <div class="posts_wrapper">
-            <% for (let i = 0; i < posts.length; i++) {%>
-                <%- include("../partials/post.ejs", {post : posts[i]}) %>
-            <%} %>
-        </div>
+    </div>

@@ -24,7 +24,8 @@ route.get('/:community_id', async (req, res, next) => {
         account : req.account[0],
         community : community,
         posts : posts,
-        req : req
+        req : req,
+        moment : moment
     });
 })
 

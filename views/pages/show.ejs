@@ -1,40 +1,49 @@
-    <%- include('../partials/header'), {
-        account : account
-    } %>
-        <div class="page_name"><span>Communities</span></div>
+<%- include('../partials/header'), { account : account } %>
 
-        <div class="new_communities">New Communities</div>
+    <div class="wrapper">
+        <div class="wrapper-content">
+            <header class="header">
+                <h1 class="content-title">Communities</h1>
+            </header>
 
-        <table class="communities_wrapper">
-            <% for (let i = 0; i < newest_communities.length; i++) {
-                const community = newest_communities[i];%>
+            <div class="communities-listing main-page">
 
-                <td class="community">
-                    <a sound community_id="<%= community.id %>" href="javascript:void(0)" onclick="pjax.loadUrl('/communities/<%= community.id %>')">
-                        <img width="90px" height="90px" src="../../../img/icons/<%= community.id %>.jpg">
-                        <div class="community_meta_wrapper">
-                            <span class="community_name"><%= community.name %> Community</span>
+                <div class="communities-headline">
+                    <span class="headline-text">New Communities</span>
+                </div>
 
-                            <% switch (community.platform) {
-                                case 'wiiu':%>
-                                <span class="platform_indicator_wrapper"><span style="background-color: #0099C9;">WiiU</span> Wii U Games</span>
-                                    <%break;
-                                case '3ds':%>
-                                <span class="platform_indicator_wrapper"><span style="background-color: #D3000F;">3DS</span> 3DS Games</span>
-                                    <%break;
-                                    case 'wii':%>
-                                <span class="platform_indicator_wrapper"><span style="background-color: #cacaca;">Wii</span> Wii Games</span>
-                                    <%break;
-                                    case 'vc':%>
-                                <span class="platform_indicator_wrapper"><span style="background-color: #525252;">VC</span> Virtual Console Games</span>
-                                    <%break;
-                                default:%>
-                                <span class="platform_indicator_wrapper"><span style="background-color: #777777;">Topic</span> General Topic</span>
-                                <%break;
-                            }%>
+                <div class="commnities-new-added">
+
+                    <% for (let i = 0; i < newest_communities.length; i++) {
+                        const community = newest_communities[i];%>
+                        
+                        <li id="community-<%= community.id %>" class="">
+                        <span class="icon-content">
+                            <img class="icon" src="../../img/icons/<%= community.id %>.jpg">
+                        </span>
+                        <a data-sound="SE_WAVE_OK" href="javascript:void(0)" onclick="pjax.loadUrl('/communities/<%= community.id %>')" class="scroll to-community-button">
+                            <span class="community-button"></span>
+                        </a>
+                        <div class="body">
+                            <div class="body-content">
+                                <span class="community-name title"><%= community.name %> Community</span>
+                                <span class="community-name name"><%= community.name %></span>
+                                <span class="empathy-count">0</span>
+                                <span class="text">
+                                    <% if (community.platform == "3ds") { %>
+                                        Nintendo 3DS Games
+                                    <% } else { %>
+                                        Wii U Games
+                                    <% } %>
+                                </span>
+                            </div>
                         </div>
-                    </a>
-                </td>
+                    </li>
 
-            <% } %>
-        </table>
+                    <% } %> 
+                </div>
+
+                <a href="javascript:void(0)" class="more-button scroll" data-sound="SE_WAVE_OK">See all communities</a>
+            </div>
+        </div>
+    </div>

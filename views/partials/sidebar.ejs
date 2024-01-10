@@ -1,28 +1,31 @@
-<div class="sidebar">
-    <a id="6_option" class="sidebar_option_wrapper" href="javascript:void(0)" onclick="pjax.loadNewPage(pjax.loadUrl('/people/@me'));" style="border-top-right-radius: 55px !important;">
-        <img width="80px" height="80px" src="http://mii-images.account.nintendo.net/<%= account.mii_hash %>_normal_face.png" onerror="this.src='../../../img/mii_null.png'">
-        <span>My Menu</span>
-    </a>
-    <a id="1_option" class="sidebar_option_wrapper" href="javascript:void(0)" onclick="pjax.loadUrl('/activity_feed');">
-        <span class="symbols">a</span>
-        <span>Activity Feed</span>
-    </a>
-    <a id="2_option" class="sidebar_option_wrapper" href="javascript:void(0)" onclick="pjax.loadUrl('/titles/show');">
-        <span class="symbols">c</span>
-        <span>Communities</span>
-    </a>
-    <a id="3_option" class="sidebar_option_wrapper" href="javascript:void(0)" onclick="pjax.loadUrl('/messages');">
-        <span class="symbols">m</span>
-        <span>Messages</span>
-    </a>
-    <a id="4_option" class="sidebar_option_wrapper" href="javascript:void(0)" onclick="pjax.loadUrl('/notifications');">
-        <span class="symbols">n</span>
-        <span>Notifications</span>
-    </a>
-    <a id="close" href="javascript:void(0)" class="sidebar_option_wrapper" style="color: white; background-image: -webkit-radial-gradient(rgb(53, 53, 53), rgb(61, 61, 61));" >
-        <span class="symbols" style="position: relative; top: 6px;">x</span>
-        <span>Close</span>
-
-        <div class="b_button"></div>
-    </a>
-</div>
+<menu id="menu-bar">
+    <li id="menu-bar-mymenu">
+        <a href="javascript:void(0);" data-sound="SE_WAVE_MENU">
+            <span class="mii-icon">
+                <img src="http://mii-images.account.nintendo.net/<%= account.mii_hash %>_normal_face.png" onerror="this.src='../../../img/mii_null.png'">
+            </span>
+            <span>My Menu</span>
+        </a>
+    </li>
+    <li id="menu-bar-feed">
+        <a href="javascript:void(0);" data-sound="SE_WAVE_MENU">Activity Feed</a>
+    </li>
+    <li id="menu-bar-community">
+        <a href="javascript:void(0);" data-sound="SE_WAVE_MENU" href="javascript:void(0)" onclick="pjax.loadUrl('../titles/show')">Communities</a>
+    </li>
+    <li id="menu-bar-message">
+        <a href="javascript:void(0)" data-sound="SE_WAVE_MENU">Messages<span class="badge" style="display: none;">0</span>
+        </a>
+    </li>
+    <li id="menu-bar-news">
+        <a href="javascript:void(0)" data-sound="SE_WAVE_MENU">Notifications<span class="badge" style="display: none;">0</span>
+        </a>
+    </li>
+    <li id="menu-bar-exit">
+        <a href="javascript:void(0)" data-sound="SE_WAVE_EXIT">Close</a>
+    </li>
+    <li id="menu-bar-back" class="none">
+        <a href="javascript:void(0)" role="button" data-sound="SE_WAVE_BACK">Back</a>
+    </li>
+    
+    </menu>
