@@ -16,7 +16,7 @@
                 </span>
 
                 <% if (post.topic_tag) { %>
-                    <span class="post-tag"><%= post.topic_tag %></span>
+                    <a href="javascript:void(0)" onclick="aquamarine.getPostsByTopicTag(this)" class="post-tag"><%= post.topic_tag %></a>
                 <% } %>
 
                 <% if (post.screenshot) { %>

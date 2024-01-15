@@ -694,7 +694,7 @@ body {
 }
 
 .community-post-list, .feed-post-list, .message-post-list {
-  padding: 0px 40px 30px 200px;
+  padding: 0px 40px 0px 200px;
 }
 
 .community-post-list .post-list , .feed-post-list .post-list{

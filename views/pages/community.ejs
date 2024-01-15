@@ -34,7 +34,7 @@
 
             <div class="community-post-list">
 
-                <div class="post-list">
+                <div class="post-list" id="post_list">
                     <% for (let i=0; i < posts.length; i++) {%>
                         <%- include("../partials/post.ejs", {post : posts[i]}) %>
                     <%} %>
@@ -173,4 +173,43 @@
                 </div>
             </div>
         </div>
+
+        <div id="scrollEvent"></div>
+        <script>
+            var nmc = false;
+            var mkr = false;
+
+            document.addEventListener("scroll_bottom", function() {
+                console.log("SFJFGKSBNFKB")
+
+                if (nmc == true) {return;}
+                if (mkr == true) {return;}
+
+                var loading = document.getElementById("loading")
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", window.location.pathname+window.location.search+"&offset="+document.getElementById("post_list").childElementCount);
+                xhr.setRequestHeader("x-em", "true")
+                xhr.send();
+                mkr = true;
+
+                //loading.style.display = "block"
+
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4) {
+                        document.getElementById("post_list").innerHTML += xhr.responseText;
+                        //loading.style.display = "none";
+
+                        if (xhr.responseText == " ") {
+                            nmc = true;
+                        }
+
+                        mkr = false;
+
+                        aquamarine.initSounds();
+                        aquamarine.initEmpathy();
+                        aquamarine.initSpoilers();
+                    }
+                }
+            })    
+        </script>
     </div>

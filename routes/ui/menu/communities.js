@@ -9,6 +9,7 @@ const con = require('../../../../database_con');
 const query = util.promisify(con.query).bind(con);
 
 const database_query = require('../../../utils/database_query');
+const ejs = require("ejs");
 
 route.get('/:community_id', async (req, res, next) => {
 
@@ -20,8 +21,20 @@ route.get('/:community_id', async (req, res, next) => {
 
     //Grabbing all querys for specific types of posts
     var topic_tag = (req.query['topic_tag']) ? req.query.topic_tag : "";
-    
-    const posts = await database_query.getPosts(community.id, "desc", 999999, topic_tag, req);
+    var offset = (req.query['offset']) ? req.query['offset'] : 0;
+    const posts = await database_query.getPosts(community.id, "desc", 5, topic_tag, offset, req);
+
+    if (req.get("x-em")) {
+        var html = "";
+        for (let i = 0; i < posts.length; i++) {
+            html += await ejs.renderFile(__dirname + "/../../../views/partials/post.ejs", {
+                moment : moment,
+                post : posts[i]
+            })
+        }
+
+        res.send(html);
+    }
 
     res.render('pages/community', {
         account : req.account[0],

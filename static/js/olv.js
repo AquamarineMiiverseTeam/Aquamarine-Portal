@@ -23,7 +23,6 @@ document.addEventListener("DOMContentLoaded", function () {
             if (!document.getElementById("scrollEvent")) {return;}
             document.getElementById("scrollEvent").dispatchEvent(scrollBottom)
         }
-        
     })
 })
 
@@ -476,6 +475,10 @@ var aquamarine = {
             backBtn.classList.add('none');
             exitBtn.classList.remove('none');
         }
+    },
+
+    getPostsByTopicTag : function (a) {
+        pjax.loadUrl(window.location.pathname+"?topic_tag="+a.innerText)
     }
 }
 
