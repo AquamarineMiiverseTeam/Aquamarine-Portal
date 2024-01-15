@@ -1,42 +1,176 @@
 <%- include('../partials/header'), { account : account } %>
     <div class="wrapper">
 
-        <div class="wrapper-content">
+        <div class="wrapper-content" data-community-id="<%= community.id %>" data-community-title-id="<%= JSON.parse(community.title_ids)[0]; %>" data-community-title-id-hex="<%= JSON.parse(community.title_ids).map(titleId => Number(titleId).toString(16).padStart(16, '0')).join(',') %>"  data-community-title-name="<%= community.name %>">
 
             <header class="header">
                 <h1 class="content-title title-label"><%= community.name %></h1>
-                <a href="#" class="add-post-button">Post</a>
+                <% if (!community.ingame_only) { %><a href="javascript:void(0)" class="add-post-button" onclick="aquamarine.openPostModal()" data-sound="SE_WAVE_OK">Post</a><% } %>
             </header>
 
             <div class="header-banner-container">
-                <img src="../../../img/banners-wup/<%= community.id %>.jpg" class="banner-image" onerror="this.src='../../../img/banners-wup/placeholder-wup.jpg'">
+                <img src="../../../img/banners-wup/<%= community.id %>.jpg" class="banner-image"
+                    onerror="this.src='../../../img/banners-wup/placeholder-wup.jpg'">
             </div>
 
             <div class="community-info info-content with-header-banner">
                 <span class="icon-container">
                     <img src="../../../img/icons/<%= community.id %>.jpg" class="icon">
                 </span>
-                <a class="settings-button button" onclick="aquamarine.openModal('wrapper', '')" href="#">
-                    <a class="favorite-button button" onclick="aquamarine.toggleFavorite()"
-                        href="javascript:void(0)">Favorite</a>
+                <a href="javascript:void(0)" data-sound="SE_WAVE_OK" class="settings-button button"
+                    onclick="aquamarine.openComSettingsModal()"></a>
+                <button class="favorite-button button <%= (community.is_favorited == 1) ? "checked" : ""  %>" onclick="aquamarine.toggleFavorite()" href="javascript:void(0)">Favorite</button>
+                <% if (community.type=="main" ) {%>
                     <span class="news-community-badge">Main Community</span>
-                    <span class="title"><%= community.name %> Community</span>
-                    <span class="text"><%= community.description %></span>
+                    <%} else if (community.type=="sub" ) {%>
+                        <span class="news-community-badge">Sub Community</span>
+                        <%} else if (community.type=="announcement" ) {%>
+                            <span class="news-community-badge">Announcements Community</span>
+                            <%}%>
+
+                                <span class="title"><%= community.name %></span>
+                                <span class="text"><%= community.description %></span>
             </div>
 
             <div class="community-post-list">
 
                 <div class="post-list">
-                    <% for (let i = 0; i < posts.length; i++) {%>
+                    <% for (let i=0; i < posts.length; i++) {%>
                         <%- include("../partials/post.ejs", {post : posts[i]}) %>
                     <%} %>
                 </div>
 
-                <a class="loading"></a>
-
             </div>
-
-
         </div>
 
+        <div id="add-new-post-modal" class="window-page none">
+            <div class="window">
+                <h1 class="window-title"></h1>
+                <div class="window-body">
+
+                    <div class="add-post-inner">
+
+                        <a href="javascript:void(0)"
+                            onclick="wiiuSound.playSoundByName('SE_OLV_BALLOON_OPEN', 3),aquamarine.toggleFeelingModal();"
+                            class="mii-icon-container">
+                            <img src="http://mii-images.account.nintendo.net/<%= account.mii_hash %>_normal_face.png" class="icon">
+                        </a>
+
+                        <h1 class="mii-name"><%= account.mii_name %></h1>
+
+                        <label class="spoiler-button checkbox-button">Spoilers
+                            <input type="checkbox" class="spoiler_input" name="is_spoiler" value="1">
+                        </label>
+
+                        <div class="feeling-selector expression none">
+                            <ul class="buttons">
+                                <li class="checked">
+                                    <input type="radio" name="feeling_id" value="0" class="feeling-button-normal"
+                                        data-mii-face-url="http://mii-images.account.nintendo.net/<%= account.mii_hash %>_normal_face.png"
+                                        checked data-sound="SE_WAVE_MII_FACE_00">
+                                </li>
+                                <li class>
+                                    <input type="radio" name="feeling_id" value="1" class="feeling-button-happy"
+                                        data-mii-face-url="http://mii-images.account.nintendo.net/<%= account.mii_hash %>_happy_face.png"
+                                        data-sound="SE_WAVE_MII_FACE_01">
+                                </li>
+                                <li class>
+                                    <input type="radio" name="feeling_id" value="2" class="feeling-button-like"
+                                        data-mii-face-url="http://mii-images.account.nintendo.net/<%= account.mii_hash %>_like_face.png"
+                                        data-sound="SE_WAVE_MII_FACE_02">
+                                </li>
+                                <li class>
+                                    <input type="radio" name="feeling_id" value="3" class="feeling-button-surprised"
+                                        data-mii-face-url="http://mii-images.account.nintendo.net/<%= account.mii_hash %>_surprised_face.png"
+                                        data-sound="SE_WAVE_MII_FACE_03">
+                                </li>
+                                <li class>
+                                    <input type="radio" name="feeling_id" value="4" class="feeling-button-frustrated"
+                                        data-mii-face-url="http://mii-images.account.nintendo.net/<%= account.mii_hash %>_frustrated_face.png"
+                                        data-sound="SE_WAVE_MII_FACE_04">
+                                </li>
+                                <li class>
+                                    <input type="radio" name="feeling_id" value="5" class="feeling-button-puzzled"
+                                        data-mii-face-url="http://mii-images.account.nintendo.net/<%= account.mii_hash %>_puzzled_face.png"
+                                        data-sound="SE_WAVE_MII_FACE_05">
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="textarea-container textarea-with-menu">
+                            <menu class="textarea-menu">
+                                <li>
+                                    <label id="text" class="textarea-menu-text checked">
+                                        <input type="radio" name="_post_type" value="body" checked data-sound="">
+                                        <textarea type="text" guidestring="Write an post." data-sound name="body"
+                                            class="textarea-menu-text-input" value="" maxlength="255"
+                                            placeholder="Share your thoughts in a post to this community."
+                                            data-preview-class="textarea-text-preview"></textarea>
+                                    </label>
+                                </li>
+
+                                <li class="test-painting-tab">
+                                    <label id="memo" class="textarea-menu-memo">
+                                        <input type="radio" name="_post_type" value="painting" data-sound="">
+                                    </label>
+                                </li>
+
+                            </menu>
+                            <textarea type="text" guidestring="Write an post." data-sound name="body"
+                                class="textarea-text" value="" maxlength="255"
+                                placeholder="Share your thoughts in a post to this community."
+                                data-preview-class="textarea-text-preview"></textarea>
+
+                            <div class="textarea-memo none" data-sound="">
+                                <a href="javascript:void(0)" class="textarea-memo-trigger"></a>
+                                <div class="textarea-memo-preview">
+                                </div>
+                                <input type="hidden" class="textarea-memo-value" name="painting" disabled="">
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="window-bottom-buttons">
+                    <a href="javascript:void(0)" class="button cancel-button" onclick="aquamarine.closePostModal()"
+                        data-sound="SE_WAVE_CANCEL">Cancel</a>
+                    <a href="javascript:void(0)" data-sound="SE_WAVE_OK" class="button ok-confirm-post-button">Post</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="change-settings-modal" class="window-page none">
+            <div class="window">
+                <h1 class="window-title">Community Post Display Setting</h1>
+                <div class="window-body">
+
+                    <div class="window-body-inner">
+                        <div class="title-container">
+                            <img src="../../../img/icons/<%= community.id %>.jpg" class="title-icon">
+                            <p class="title-name"><%= community.name %></p>
+                        </div>
+                        <ul class="settings-list">
+                            <li data-name="viewable_post" class="scroll">
+                                <p class="settings-label">Which posts do you want to see for this community?</p>
+                                <div class="community-settings-dropdown-wrapper">
+                                    <select name="community-settings" class="community-settings-drop"
+                                        id="community-settings-input">
+                                        <option value="1">Show All</option>
+                                        <option value="2">Hide Spoilers</option>
+                                        <option value="3">Hide Screenshots</option>
+                                        <option value="4">Hide Both</option>
+                                    </select>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+                <div class="window-bottom-buttons single-button">
+                    <a href="javascript:void(0)" class="button cancel-button"
+                        onclick="aquamarine.closeComSettingsModal()" data-sound="SE_WAVE_CANCEL">Cancel</a>
+                </div>
+            </div>
+        </div>
     </div>

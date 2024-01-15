@@ -1,26 +1,28 @@
-<div id="post-<%= post.id %>" class="post">
-    <a href="/users/sosadavid22" class="user-icon-container scroll-focus" data-pjax="#body">
+<div id="post-<%= post.id %>" class="post <%= (post.spoiler == 1) ? "hidden" : "" %>">
+    <a href="/users/undefined" class="user-icon-container <%= post.admin ? 'admin' : '' %>" scroll-focus" data-pjax="#body">
         <img src="<%= post.mii_image %>" class="user-icon">
     </a>
     <div class="post-body-content">
         <div class="post-body">
             <header>
-                <span class="user-name">
-                    <%= post.mii_name %>
-                </span>
-                <span class="timestamp">
-                    <%= moment(post.create_time).fromNow() %>
-                </span>
-                <span class="spoiler-status">
-                    <% if (post.spoiler==1) { %>
-                        Spoiler
-                    <% } %>
-                </span>
+                <span class="user-name"><%= post.mii_name %></span>
+                <span class="timestamp"><%= moment(post.create_time).fromNow() %></span>
+                <span class="spoiler-status <%= (post.spoiler == 1) ? "spoiler show" : "" %>"><%= (post.spoiler == 1) ? "Spoilers" : "" %></span>
             </header>
 
             <div class="post-content">
+                <span class="post-title-icon">
+                    <img src="/img/icons/<%= post.community_id %>.jpg" class="icon">
+                </span>
+
                 <% if (post.topic_tag) { %>
                     <span class="post-tag"><%= post.topic_tag %></span>
+                <% } %>
+
+                <% if (post.screenshot) { %>
+                    <a href="javascript:void(0)" class="screenshot-permalink">
+                    <img class="post-content-screenshot" src="/img/screenshots/<%= post.id %>.jpg">
+                </a>
                 <% } %>
                 
                 <% if (post.body) { %>
@@ -28,18 +30,23 @@
                 <% } else { %>
                     <img class="post-content-memo" src="/img/paintings/<%= post.id%>.png" width="640px" height="240px">
                 <% } %>
-
-                <% if (post.screenshot) { %>
-                    <img class="post-content-screenshot" style="border-radius: 10px;" src="/img/screenshots/<%= post.id %>.jpg">
-                <% } %>
-                
             </div>
 
+            <% if (post.spoiler == 1) { %>
+                <div class="hidden-content">
+                    <p>This post contains spoilers.</p>
+                    <div><a href="javascript:void(0)" data-sound="SE_OLV_OK_SUB" class="hidden-content-button">View Post</a></div>
+                </div>
+            <% } %>
+
             <div class="post-meta">
-                <button type="button" data-post-id="<%= post.id %>" class="submit miitoo-button"><% if (post.is_empathied_by_user) {%>Unyeah!<%} else {%> Yeah! <%}%></button>
+                <button type="button" data-post-id="<%= post.id %>" class="submit miitoo-button"><%= (post.is_empathied_by_user) ? "Unyeah!" : "Yeah!" %></button>
                 <a href="/posts/<%= post.id %>" class="to-permalink-button">
-                    <span class="feeling <% if (post.is_empathied_by_user) {%> added <%}%>"><%= post.empathy_count %></span>
+                    <span class="feeling <%= (post.is_empathied_by_user) ? "added" : "" %>"><%= post.empathy_count %></span>
                     <span class="reply">0</span>
+                    <% if (post.title_owned) {%>
+                        <span class="owns-game">1</span>
+                    <% } %>
                 </a>
             </div>
         </div>

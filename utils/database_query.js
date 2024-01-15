@@ -11,11 +11,20 @@ const query = util.promisify(con.query).bind(con);
 /** 
     * Used for grabbing a single community
     * @param {Number} community_id The community ID to grab.
+    * @param {Express.Request} req The current request, needed for empathy data.
     * @returns {Object} Community Data
 */
-async function getCommunity(community_id) {
+async function getCommunity(community_id, req) {
     const sql = `SELECT * FROM communities WHERE id=?`
     const communities = (await query(sql, community_id))[0];
+    communities.favorites = (await query("SELECT * FROM favorites WHERE community_id=?", community_id)).length
+    const favorited = (await query("SELECT * FROM favorites WHERE community_id=? AND account_id=?", [communities.id, req.account[0].id]))
+
+    console.log(favorited.length)
+
+    if (favorited.length == 1) {communities.is_favorited = 1;} else {communities.is_favorited = 0}
+
+    console.log(communities)
 
     return communities;
 }
@@ -28,12 +37,16 @@ async function getCommunity(community_id) {
     * @returns {Array[]} Community Data
 */
 async function getCommunities(order_by, limit, type) {
-    var sql_type = (type == "main" || type == "sub" || type == "normal") ? `WHERE type='${type}'` : ``;
+    var sql_type = (type == "main" || type == "sub" || type == "normal" || type == "announcement") ? `WHERE type='${type}'` : ``;
     var sql_order_by = (order_by == "desc" || order_by == "asc") ? `ORDER BY create_time ${order_by}` : ``;
     var sql_limit = (limit) ? `LIMIT ${limit}` : ``;
 
     const sql = `SELECT * FROM communities ${sql_type} ${sql_order_by} ${sql_limit}`
     const communities = await query(sql);
+
+    for (let i = 0; i < communities.length; i++) {
+        communities[i].favorites = (await query("SELECT * FROM favorites WHERE community_id=?", communities[i].id)).length
+    }
 
     return communities;
 }
@@ -71,7 +84,7 @@ async function getPosts(community_id, order_by, limit, topic_tag, req) {
     var sql_limit = (limit) ? `LIMIT ${limit}` : ``;
     var sql_topic_tag = (topic_tag) ? `WHERE topic_tag='${topic_tag}'` : ``;
 
-    const sql = `SELECT * FROM posts ${sql_com_id} ${sql_topic_tag} ${sql_order_by} ${sql_limit}`
+    const sql = `SELECT * FROM posts ${sql_com_id} ${sql_topic_tag} AND moderated=0 ${sql_order_by} ${sql_limit}`
     const posts = await query(sql);
 
     for (let i = 0; i < posts.length; i++) {
@@ -107,6 +120,7 @@ async function getPosts(community_id, order_by, limit, topic_tag, req) {
 
         posts[i].is_empathied_by_user = (await query("SELECT * FROM empathies WHERE post_id=? AND account_id=?", [posts[i].id, req.account[0].id])).length;
         posts[i].empathy_count = (await query("SELECT * FROM empathies WHERE post_id=?", posts[i].id)).length;
+        posts[i].admin = account.admin;
     }
 
     return posts;

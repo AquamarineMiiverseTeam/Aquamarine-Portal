@@ -17,23 +17,23 @@ if (typeof wiiuBrowser === 'undefined') {
             alert('アプリケーションは終了しました');
         },
         showLoadingIcon: function (show) {
-            console.debug((show ? 'Show' : 'Hide') + ' loading icon');
+            console.log((show ? 'Show' : 'Hide') + ' loading icon');
         },
         endStartUp: function () {
-            console.debug('endStartUp');
+            console.log('endStartUp');
         },
         lockUserOperation: function (lock) {
-            console.debug((lock ? 'Lock' : 'Unlock') + ' user operations');
+            console.log((lock ? 'Lock' : 'Unlock') + ' user operations');
         },
         lockHomeButtonMenu: function (lock) {
-            console.debug((lock ? 'Lock' : 'Unlock') + ' home button menu');
+            console.log((lock ? 'Lock' : 'Unlock') + ' home button menu');
         },
         canHistoryBack: function () {
             // とりあえずトップページなら履歴を戻れないということにしておく。
-            return location.pathname !== '/';
+            return location.pathname !== '/titles/show';
         },
         setSwkbdDictionary: function (jsonString) {
-            console.debug('Set SWKBD dictionary', JSON.parse(jsonString));
+            console.log('Set SWKBD dictionary', JSON.parse(jsonString));
             return (Math.random() < 0.5)
                 ? {} : { error: { code: 111222, message: 'Test Error Message' } };
         },
@@ -41,13 +41,13 @@ if (typeof wiiuBrowser === 'undefined') {
             alert('Tv側の安全フレーム設定画面を開きました');
         },
         jumpToBrowser: function (url) {
-            console.debug(url);
+            console.log(url);
         },
         jumpToEshop: function (query) {
-            console.debug(query);
+            console.log(query);
         },
         jumpToApplication: function(titleId, flags, communityId, appData, postId) {
-            console.debug(titleId);
+            console.log(titleId);
         }
     };
 }
@@ -67,7 +67,7 @@ if (typeof wiiuSound === 'undefined') {
             this.playSoundByName('id ' + soundId, device);
         },
         playSoundByName: function (name, device) {
-            console.debug('Play sound ' + name);
+            console.log('Play sound ' + name);
         }
     };
 }
@@ -206,21 +206,21 @@ if (typeof wiiuMemo === "undefined") {
     window.wiiuMemo = {
         _isFinish: true,
         open: function(reset) {
-            console.debug('wiiuMemo.open(reset = ' + reset + ')');
+            console.log('wiiuMemo.open(reset = ' + reset + ')');
             this._isFinish = false;
             var self = this;
             setTimeout(function () { self._isFinish = true; }, 100);
         },
         isFinish: function() {
-            console.debug('wiiuMemo.isFinish()')
-            console.debug(this._isFinish);
+            console.log('wiiuMemo.isFinish()')
+            console.log(this._isFinish);
             return this._isFinish;
         },
         reset: function () {
-            console.debug('wiiuMemo.reset()');
+            console.log('wiiuMemo.reset()');
         },
         getImage: function (isTga) {
-            console.debug('wiiuMemo.getImage(isTga = ' + isTga + ')');
+            console.log('wiiuMemo.getImage(isTga = ' + isTga + ')');
             if (isTga) {
                 return 'eJzt3FuO0zAUBuDCE8tgKSyL3YNGqFJpk9aX41v8fdK8MHXiy/HvZCR6u32/3f369vv288cfAAAAAAAAAAAAAAAAAAAAAABgK7fbbXQXALr7yr77D8BO5B+wI9kH7Ej2ATuSfcBuHnNP9gE7eM492QekOsqPFXJkxT4D83iXfTPm4ox9AtZVmoEtc2iFLAauLTobZ8tZgFwyD+CVnAMAAAAAAAAAAAAAAAAAAAAAACCH758CduQ7+ICdrZyBq/YbmMOq+ec7pIEIq+aH7AMAAAAAAAAAAAAAAAAAAAAAgFjP32929gPUs6/GS808awVx7KuxSnPPGvFFfdQzb308z21O3Vojno0+J69Uh/ZXW0dzmzrfznaOjHxfKLnu7HVrn7VxNKc12Wdd0qz6bpjSv5SxlIw7Zb5Ks2+VuV+tXmaSegZ/mt+azNxZ7jPR6LksfSdI/WzqWEvm7Yr5dzdTrdT2oVe/c2slp8ZGr8HsSvfvqHmN6lPq+ZpzFreYt1Xrd3StjDh3Sta8tE5KapT/ldRIZF1H3TsiW1plWU0fW9Zur/0wKgdr79m6lt7do2ZP1I5jFy3yq6ZtzjqenW8lfUnpQ23WlrZtVbsj9kTvDIys7dzPl/y8u04N+fcqek4i8yDlTEy5Vu0Yju7TYrwpbaKN3BM75F/q51LruYb8e9ViTqL29dF1ctvUjCt3DKXjftemdc322BMlZ1yr+/doX3Mefvp9rzHsoNdzRUpW5VwrN4+ixpFzz5Sxn7XPuXet6HukZl2v7HvuU6/2OeMrOdNzxyL/Xo04+0vuv3r+lTwHrJINR9eZKfue+9azfUnN5l6zpB1956P2+ab0LO2Vf2efi8jAHiLzYdQYUvv36ffRmX3Wtua6Jf2baT1mMOL54uh+NfkS8dnIa0XvmV5q5mu2rDuTcj61ysDce0Vf82z8O2s9Hzlrm9KXmhyqEXU2zywq/2b2Lg9aZ99RH6LrRAbmia752rV997mSGmlRVyVtVqi16H09o3c1W9q+ti8tfdqjuyudi5bn5Fnb0mtGn9lX1er5Yybq4J+rjKNW1PNf6+f453+PuObZM+antlcW+VwzaxZG1fzKrjKOWqPeDXOvG/3OkZvb6iVfq7Mxsl8j2o82yzqMtsocjMjAd23I0/I9obY/I9qPNHruZ7LSHLRat9TrrjRXM5shA3fOvy+r9z/KivOw6p7hlec/RltxLVfcM8wjMv/Uw9qs42fm6Foi1lM9XIO9ncb8XIea504tsBPvrjxSC+xGvfNIBgK7kn/AzmQgR9QDu/C3YR6pBXYjA7lTC+zI/5HmTh2wKzmItWdno7+rg/GsN7uTgcDu5CCwOxkI7MyzILA7GQjsTAYCO5N9AAAAAAAAAAAAAAAAAAAAAAAAAKzoL3j1Foo=';
             } else {
@@ -232,11 +232,11 @@ if (typeof wiiuMemo === "undefined") {
 if (typeof wiiuPDM === "undefined") {
     window.wiiuPDM = {
         getTotalPlayTime: function(titleID) {
-            console.debug('wiiuPDM.getTotalPlayTime(' + titleID + ')');
+            console.log('wiiuPDM.getTotalPlayTime(' + titleID + ')');
             return { minutes : 0 };
         },
         getTitlesFilteredByPlayTime: function(minutes) {
-            console.debug('wiiuPDM.getTitlesFilteredByPlayTime(' + minutes + ')');
+            console.log('wiiuPDM.getTitlesFilteredByPlayTime(' + minutes + ')');
             return { IDs : [] };
         }
     }
@@ -255,7 +255,7 @@ if (typeof wiiuErrorViewer === 'undefined') {
 if (typeof wiiuFilter === 'undefined') {
     window.wiiuFilter = {
         checkWord: function (message) {
-            console.debug('Check words for message: ' + message);
+            console.log('Check words for message: ' + message);
             if (/[0-9]{6}/.test(message)) return -1;
             if (/ng word/i.test(message)) return -2;
             return 0;

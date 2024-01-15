@@ -13,7 +13,7 @@ const database_query = require('../../../utils/database_query');
 route.get('/:community_id', async (req, res, next) => {
 
     const community_id = req.params.community_id;
-    const community = await database_query.getCommunity(community_id)
+    const community = await database_query.getCommunity(community_id, req)
 
     //If no community is found, then let error.js handle the error
     if (!community) { next(); return;}
