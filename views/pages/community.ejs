@@ -200,7 +200,7 @@
                             return;
                         }
 
-                        document.getElementById("post_list").innerHTML += xhr.responseText;
+                        document.querySelectorAll(".post")[document.querySelectorAll(".post").length - 1].outerHTML += xhr.responseText;
                         //loading.style.display = "none";
 
                         mkr = false;
