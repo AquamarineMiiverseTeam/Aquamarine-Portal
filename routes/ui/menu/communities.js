@@ -18,7 +18,10 @@ route.get('/:community_id', async (req, res, next) => {
     //If no community is found, then let error.js handle the error
     if (!community) { next(); return;}
 
-    const posts = await database_query.getPosts(community.id, "desc", 999999, "", req);
+    //Grabbing all querys for specific types of posts
+    var topic_tag = (req.query['topic_tag']) ? req.query.topic_tag : "";
+    
+    const posts = await database_query.getPosts(community.id, "desc", 999999, topic_tag, req);
 
     res.render('pages/community', {
         account : req.account[0],

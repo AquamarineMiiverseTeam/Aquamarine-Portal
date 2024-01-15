@@ -83,7 +83,7 @@ async function getPosts(community_id, order_by, limit, topic_tag, req) {
     var sql_com_id = (community_id) ? `WHERE community_id=${community_id}` : ``;
     var sql_order_by = (order_by == "desc" || order_by == "asc") ? `ORDER BY create_time ${order_by}` : ``;
     var sql_limit = (limit) ? `LIMIT ${limit}` : ``;
-    var sql_topic_tag = (topic_tag) ? `WHERE topic_tag='${topic_tag}'` : ``;
+    var sql_topic_tag = (topic_tag) ? `AND topic_tag='${topic_tag}'` : ``;
 
     const sql = `SELECT * FROM posts ${sql_com_id} ${sql_topic_tag} AND moderated=0 ${sql_order_by} ${sql_limit}`
     const posts = await query(sql);
