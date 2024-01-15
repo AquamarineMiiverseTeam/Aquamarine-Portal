@@ -699,7 +699,6 @@ body {
 
 .community-post-list .post-list , .feed-post-list .post-list{
   padding-top: 40px;
-  padding-bottom: 120px;
 }
 
 .message-list-content{
@@ -821,7 +820,9 @@ body {
 }
 
 .post-list .post {
-  padding: 30px 0;
+  padding: 0px 0;
+  margin-bottom: 80px;
+  margin-top: 10px;
 }
 
 .post-list .post:after {
