@@ -36,12 +36,13 @@ async function getCommunity(community_id, req) {
     * @param {Number} limit Can be any integer.
     * @returns {Array[]} Community Data
 */
-async function getCommunities(order_by, limit, type) {
+async function getCommunities(order_by, limit, type, offset) {
     var sql_type = (type == "main" || type == "sub" || type == "normal" || type == "announcement") ? `WHERE type='${type}'` : ``;
     var sql_order_by = (order_by == "desc" || order_by == "asc") ? `ORDER BY create_time ${order_by}` : ``;
     var sql_limit = (limit) ? `LIMIT ${limit}` : ``;
+    var sql_offset = (offset) ? `OFFSET ${offset}` : ``
 
-    const sql = `SELECT * FROM communities ${sql_type} ${sql_order_by} ${sql_limit}`
+    const sql = `SELECT * FROM communities ${sql_type} ${sql_order_by} ${sql_limit} ${sql_offset}`
     const communities = await query(sql);
 
     for (let i = 0; i < communities.length; i++) {

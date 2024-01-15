@@ -1,1 +1,72 @@
 <%- include('../partials/header'), { account : account } %>
+
+<div class="wrapper">
+    <div class="wrapper-content">
+        <header class="header">
+            <h1 class="content-title">All Communities</h1>
+        </header>
+
+        <div class="communities-listing main-page" style="padding-top: 10px;">
+            <div class="commnities-new-added" id="community_wrapper">
+
+                <% for (let i = 0; i < communities.length; i++) {
+                    const community = communities[i];%>
+                    
+                    <li id="community-<%= community.id %>" class="">
+                    <span class="icon-content">
+                        <img class="icon" src="../../img/icons/<%= community.id %>.jpg"></img>
+                    </span>
+                    <a data-sound="SE_WAVE_OK" href="javascript:void(0)" onclick="pjax.loadUrl('/communities/<%= community.id %>')" class="scroll to-community-button">
+                        <span class="community-button"></span>
+                    </a>
+                    <div class="body">
+                        <div class="body-content">
+                            <span class="community-name title"><%= community.name %> Community</span>
+                            <span class="community-name name"><%= community.name %></span>
+                            <span class="empathy-count"><%= community.favorites %></span>
+                            <span class="text">
+                                <% if (community.platform == "3ds") { %>Nintendo 3DS Games<% } else { %>Wii U Games<% } %>
+                            </span>
+                        </div>
+                    </div>
+                    </li>
+                <% } %> 
+            </div>
+
+            <img class="loading" id="loading" style="margin-left: 517px; display: none;" src="/img/loading.gif">
+        </div>
+
+        <div id="scrollEvent"></div>
+        <script>
+            var nmc = false;
+            var mkr = false;
+
+            document.addEventListener("scroll_bottom", function() {
+                if (nmc == true) {return;}
+                if (mkr == true) {return;}
+
+                var loading = document.getElementById("loading")
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "/titles/communities?offset="+document.getElementById("community_wrapper").childElementCount);
+                xhr.setRequestHeader("x-em", "true")
+                xhr.send();
+                mkr = true;
+
+                loading.style.display = "block"
+
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4) {
+                        document.getElementById("community_wrapper").innerHTML += xhr.responseText;
+                        loading.style.display = "none";
+
+                        if (xhr.responseText == " ") {
+                            nmc = true;
+                        }
+
+                        mkr = false
+                    }
+                }
+            })    
+        </script>
+    </div>
+</div>

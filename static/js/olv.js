@@ -5,7 +5,8 @@ var pjax = new Pjax({
 var isHistoryBackDisabled = false;
 var scrollPosition = 0;
 
-console.log("init aqua");
+var scrollBottom = document.createEvent("Event");
+scrollBottom.initEvent("scroll_bottom", true, true);
 
 document.addEventListener("DOMContentLoaded", function () {
     wiiuBrowser.endStartUp();
@@ -16,10 +17,20 @@ document.addEventListener("DOMContentLoaded", function () {
     aquamarine.initNavBar();
     aquamarine.updateNavBar();
     aquamarine.backButtonUpdate();
-});
+
+    document.addEventListener("scroll", function() {
+        if (window.scrollY + window.innerHeight >= document.body.scrollHeight) {
+            if (!document.getElementById("scrollEvent")) {return;}
+            document.getElementById("scrollEvent").dispatchEvent(scrollBottom)
+        }
+        
+    })
+})
 
 document.addEventListener("pjax:send", function () {
     wiiuBrowser.lockUserOperation(true);
+
+    //Unloading any old scroll bottom events
 });
 
 document.addEventListener("pjax:complete", function () {
