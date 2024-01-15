@@ -194,12 +194,14 @@
 
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === 4) {
-                        document.getElementById("post_list").innerHTML += xhr.responseText;
-                        //loading.style.display = "none";
 
                         if (xhr.responseText == " ") {
                             nmc = true;
+                            return;
                         }
+
+                        document.getElementById("post_list").innerHTML += xhr.responseText;
+                        //loading.style.display = "none";
 
                         mkr = false;
 
