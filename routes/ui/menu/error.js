@@ -5,7 +5,7 @@ const moment = require('moment');
 
 const util = require('util')
 
-const con = require('../../../../database_con');
+const con = require('../../../../Aquamarine-Utils/database_con');
 const query = util.promisify(con.query).bind(con)
 
 function error(req, res, next) {

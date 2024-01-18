@@ -3,15 +3,15 @@ const path = require('path');
 const util = require('util')
 const colors = require('colors');
 
-const con = require('../database_con');
+const con = require('../Aquamarine-Utils/database_con');
 const query = util.promisify(con.query).bind(con);
-const auth = require('../auth_middleware');
+const auth = require('../Aquamarine-Utils/auth_middleware');
 
 const app = express();
 app.set('view engine', 'ejs');
 
 const config_http = require('./config/http.json');
-const config_database = require('../database_config.json');
+const config_database = require('../Aquamarine-Utils/database_config.json');
 
 //Grab logger middleware and use it. (Logs all incoming HTTP/HTTPS requests)
 const logger = require('./middleware/log');
