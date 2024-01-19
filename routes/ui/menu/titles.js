@@ -10,7 +10,7 @@ const database_query = require('../../../../Aquamarine-Utils/database_query');
 route.get('/show', async (req, res) => {
 
     const newest_communities = await database_query.getCommunities("desc", 4, 'all');
-    const special_communities = await database_query.getCommunities("desc", 6, 'announcement');
+    const special_communities = await database_query.getCommunities("desc", 6, 'all', 0, 1);
     
     res.render('pages/show', {
         account : req.account[0],

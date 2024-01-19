@@ -28,6 +28,7 @@
         }
       },
       logAccount: function () {
+        wiiuDialog.showLoading("Logging in...");
         wiiuBrowser.lockUserOperation(true);
         var l_nnidInput = document.getElementById("l_nnid");
         var l_passwordInput = document.getElementById("l_password");
@@ -41,10 +42,12 @@
         xhr.onreadystatechange = function () {
           if (xhr.readyState === 4) {
             if (xhr.status === 200) {
+              wiiuDialog.hideLoading();
               wiiuBrowser.lockUserOperation(false);
-              window.location.href = "https://api.olv.nonamegiven.xyz/v1/people/login";
+              window.location.replace("https://portal.olv.nonamegiven.xyz/titles/show");
             }
             else {
+              wiiuDialog.hideLoading();
               wiiuErrorViewer.openByCodeAndMessage(155219, 'There was an error logging in your account, please try again later.')
               wiiuBrowser.lockUserOperation(false);
             }
@@ -342,7 +345,7 @@
             </div>
           </div>
           <a class="next-setup-modal-button" data-sound="SE_WAVE_OK"
-            href="javascript:window.location.href = 'https://portal.olv.nonamegiven.xyz/titles/show';">Start</a>
+            href="javascript:window.location.replace('https://portal.olv.nonamegiven.xyz/titles/show');">Start</a>
         </div>
       </div>
     </div>

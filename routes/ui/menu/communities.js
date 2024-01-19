@@ -33,7 +33,10 @@ route.get('/:community_id', async (req, res, next) => {
             })
         }
 
+        if (posts.length == 0) { res.sendStatus(404); return;}
         res.send(html);
+
+        return;
     }
 
     res.render('pages/community', {

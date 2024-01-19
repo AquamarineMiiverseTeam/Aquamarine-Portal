@@ -21,14 +21,14 @@
 
                 <% if (post.screenshot) { %>
                     <a href="javascript:void(0)" class="screenshot-permalink">
-                    <img class="post-content-screenshot" src="/img/screenshots/<%= post.id %>.jpg">
+                    <img onerror="this.src='../../../img/banners-wup/placeholder-wup.jpg'" class="post-content-screenshot" src="/img/screenshots/<%= post.id %>.jpg">
                 </a>
                 <% } %>
                 
                 <% if (post.body) { %>
                     <p class="post-content-text"><%= post.body %></p>
                 <% } else { %>
-                    <img class="post-content-memo" src="/img/paintings/<%= post.id%>.png" width="640px" height="240px">
+                    <img onerror="this.src='../../../img/banners-wup/placeholder-wup.jpg'" class="post-content-memo" src="/img/paintings/<%= post.id%>.png">
                 <% } %>
             </div>
 
@@ -41,7 +41,7 @@
 
             <div class="post-meta">
                 <button type="button" data-post-id="<%= post.id %>" class="submit miitoo-button"><%= (post.is_empathied_by_user) ? "Unyeah!" : "Yeah!" %></button>
-                <a href="/posts/<%= post.id %>" class="to-permalink-button">
+                <a href="javascript:void(0)" onclick="pjax.loadUrl('/posts/<%= post.id %>')" class="to-permalink-button">
                     <span class="feeling <%= (post.is_empathied_by_user) ? "added" : "" %>"><%= post.empathy_count %></span>
                     <span class="reply">0</span>
                     <% if (post.title_owned) {%>
