@@ -48,4 +48,17 @@ route.get('/:community_id', async (req, res, next) => {
     });
 })
 
+route.get("/:community_id/other", async (req, res) => {
+    const community_id = req.params.community_id;
+    const community = await database_query.getCommunity(community_id, req)
+
+    //If no community is found, then let error.js handle the error
+    if (!community) { next(); return;}
+
+    res.render('pages/sub_communities', {
+        account : req.account[0],
+        main_community : community,
+    });
+})
+
 module.exports = route;

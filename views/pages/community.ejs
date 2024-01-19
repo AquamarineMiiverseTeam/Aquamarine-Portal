@@ -5,6 +5,9 @@
 
             <header class="header">
                 <h1 class="content-title title-label"><%= community.name %></h1>
+                <% if (community.sub_communities.length != 0) { %>
+                    <a class="header-other-button" data-sound="SE_WAVE_OK_SUB" href="javascript:void(0)" onclick="pjax.loadUrl('other')">Other communities</a>
+                <% } %>
                 <% if (!community.ingame_only) { %><a  data-sound="SE_WAVE_OK" href="javascript:void(0)" class="add-post-button" onclick="aquamarine.openPostModal()">Post</a><% } %>
             </header>
 
