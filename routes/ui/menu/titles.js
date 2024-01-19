@@ -9,7 +9,7 @@ const database_query = require('../../../../Aquamarine-Utils/database_query');
 
 route.get('/show', async (req, res) => {
 
-    const newest_communities = await database_query.getCommunities("desc", 4, 'all');
+    const newest_communities = await database_query.getCommunities("desc", 4, 'main');
     const special_communities = await database_query.getCommunities("desc", 6, 'all', 0, 1);
     
     res.render('pages/show', {
@@ -22,7 +22,7 @@ route.get('/show', async (req, res) => {
 
 route.get('/communities', async (req, res) => {
     const offset = req.query['offset'];
-    const communities = await database_query.getCommunities("desc", 10, 'all', offset);
+    const communities = await database_query.getCommunities("desc", 10, 'main', offset);
 
     if (req.get("x-em")) {
         res.render('partials/communities', {
