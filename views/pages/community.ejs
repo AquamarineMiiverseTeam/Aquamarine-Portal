@@ -4,16 +4,16 @@
         <div class="wrapper-content" data-community-id="<%= community.id %>" data-community-title-id="<%= JSON.parse(community.title_ids)[0]; %>" data-community-title-id-hex="<%= JSON.parse(community.title_ids).map(titleId => Number(titleId).toString(16).padStart(16, '0')).join(',') %>"  data-community-title-name="<%= community.name %>">
 
             <header class="header">
-                <h1 class="content-title title-label"><%= community.name %></h1>
+                <h1 class="content-title title-label <%= (community.sub_communities.length !== 0) ? 'button-ellipsis' : '' %>"><%= community.name %></h1>
                 <% if (community.sub_communities.length != 0) { %>
                     <a class="header-other-button" data-sound="SE_WAVE_OK_SUB" href="javascript:void(0)" onclick="pjax.loadUrl('other')">Other communities</a>
                 <% } %>
-                <% if (!community.ingame_only) { %><a  data-sound="SE_WAVE_OK" href="javascript:void(0)" class="add-post-button" onclick="aquamarine.openPostModal()">Post</a><% } %>
+                <% if (!community.ingame_only) { %><a href="javascript:void(0)" class="add-post-button" onclick="wiiuSound.playSoundByName('SE_WAVE_OK', 3); aquamarine.openPostModal()">Post</a><% } %>
             </header>
 
             <div class="header-banner-container">
                 <img src="../../../img/banners-wup/<%= community.id %>.jpg" class="banner-image"
-                    onerror="this.src='../../../img/banners-wup/placeholder-wup.jpg'" width="1280px">
+                    onerror="this.src='../../../img/banners-wup/placeholder-wup.jpg'">
             </div>
 
             <div class="community-info info-content with-header-banner">
@@ -119,25 +119,23 @@
                             <menu class="textarea-menu">
                                 <li>
                                     <label id="text" class="textarea-menu-text checked">
-                                        <input type="radio" name="_post_type" value="body" checked data-sound="">
-                                        <textarea type="text" guidestring="Write an post." data-sound name="body"
+                                        <input type="radio" name="_post_type" value="body" checked data-sound>
+                                        <textarea type="text" guidestring="Write an post." name="body"
                                             class="textarea-menu-text-input" value="" maxlength="255"
-                                            placeholder="Share your thoughts in a post to this community."
-                                            data-preview-class="textarea-text-preview"></textarea>
+                                            placeholder="Share your thoughts in a post to this community."></textarea>
                                     </label>
                                 </li>
 
                                 <li class="test-painting-tab">
                                     <label id="memo" class="textarea-menu-memo">
-                                        <input type="radio" name="_post_type" value="painting" data-sound="">
+                                        <input type="radio" name="_post_type" value="painting" data-sound>
                                     </label>
                                 </li>
 
                             </menu>
                             <textarea type="text" guidestring="Write an post." data-sound name="body"
                                 class="textarea-text" value="" maxlength="255"
-                                placeholder="Share your thoughts in a post to this community."
-                                data-preview-class="textarea-text-preview"></textarea>
+                                placeholder="Share your thoughts in a post to this community."></textarea>
 
                             <div class="textarea-memo none" data-sound="">
                                 <a href="javascript:void(0)" class="textarea-memo-trigger"></a>
@@ -174,10 +172,10 @@
                                 <div class="community-settings-dropdown-wrapper">
                                     <select name="community-settings" class="community-settings-drop"
                                         id="community-settings-input">
-                                        <option value="1">Show All</option>
-                                        <option value="2">Hide Spoilers</option>
-                                        <option value="3">Hide Screenshots</option>
-                                        <option value="4">Hide Both</option>
+                                        <option value="1" <%= (account.community_settings[community.id] == "1") ? "selected" : "" %>>Show All</option>
+                                        <option value="2" <%= (account.community_settings[community.id] == "2") ? "selected" : "" %>>Hide Spoilers</option>
+                                        <option value="3" <%= (account.community_settings[community.id] == "3") ? "selected" : "" %>>Hide Screenshots</option>
+                                        <option value="4" <%= (account.community_settings[community.id] == "4") ? "selected" : "" %>>Hide Both</option>
                                     </select>
                                 </div>
                             </li>
