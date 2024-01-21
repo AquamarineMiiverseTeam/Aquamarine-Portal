@@ -29,7 +29,8 @@ route.get('/:community_id', async (req, res, next) => {
         for (let i = 0; i < posts.length; i++) {
             html += await ejs.renderFile(__dirname + "/../../../views/partials/post.ejs", {
                 moment : moment,
-                post : posts[i]
+                post : posts[i],
+                account : req.account[0]
             })
         }
 
@@ -40,7 +41,7 @@ route.get('/:community_id', async (req, res, next) => {
     }
 
     res.render('pages/community', {
-        account : req.account[0],
+        account : req.account,
         community : community,
         posts : posts,
         req : req,
@@ -56,7 +57,7 @@ route.get("/:community_id/other", async (req, res) => {
     if (!community) { next(); return;}
 
     res.render('pages/sub_communities', {
-        account : req.account[0],
+        account : req.account,
         main_community : community,
     });
 })

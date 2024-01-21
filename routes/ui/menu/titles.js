@@ -13,7 +13,7 @@ route.get('/show', async (req, res) => {
     const special_communities = await database_query.getCommunities("desc", 6, 'all', 0, 1);
     
     res.render('pages/show', {
-        account : req.account[0],
+        account : req.account,
         newest_communities : newest_communities,
         special_communities : special_communities,
         req : req
@@ -33,7 +33,7 @@ route.get('/communities', async (req, res) => {
     }
     
     res.render('pages/all_communities', {
-        account : req.account[0],
+        account : req.account,
         communities : communities
     })
 })

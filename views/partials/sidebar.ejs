@@ -2,7 +2,7 @@
     <li id="menu-bar-mymenu">
         <a href="javascript:void(0);" data-sound="SE_WAVE_MENU">
             <span class="mii-icon">
-                <img src="http://mii-images.account.nintendo.net/<%= account.mii_hash %>_normal_face.png" onerror="this.src='../../../img/mii_null.png'"></img>
+                <img src="http://mii-images.account.nintendo.net/<%= account[0].mii_hash %>_normal_face.png" onerror="this.src='../../../img/mii_null.png'"></img>
             </span>
             <span>My Menu</span>
         </a>
@@ -15,10 +15,16 @@
     </li>
     <li id="menu-bar-message">
         <a href="javascript:void(0)" data-sound="SE_WAVE_MENU">Messages<span class="badge" style="display: none;">0</span>
+            <% //if (account.notifications_messages.length >= 1) { %>
+                <span class="badge" style="display: block;"><%=// (account.notifications_messages.length > 99) ? "99+" : account.notifications_messages.length %></span>
+            <% //} %>
         </a>
     </li>
     <li id="menu-bar-news">
         <a href="javascript:void(0)" data-sound="SE_WAVE_MENU">Notifications<span class="badge" style="display: none;">0</span>
+            <% if (account.unread_notifications >= 1) { %>
+                <span class="badge" style="display: block;"><%= (account[0].notifications_normal.length > 99) ? "99+" : account[0].notifications_normal.length %></span>
+            <% } %>
         </a>
     </li>
     <li id="menu-bar-exit">

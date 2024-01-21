@@ -15,8 +15,12 @@ const config_database = require('../Aquamarine-Utils/database_config.json');
 
 //Grab logger middleware and use it. (Logs all incoming HTTP/HTTPS requests)
 const logger = require('./middleware/log');
+const account_data = require("../Aquamarine-Utils/middleware/account_data_middleware")
+
 app.use(logger);
+
 app.use(auth);
+app.use(account_data);
 app.use(express.static(path.join(__dirname, "../CDN_Files/")));
 app.use(express.static(path.join(__dirname, "./static")));
 

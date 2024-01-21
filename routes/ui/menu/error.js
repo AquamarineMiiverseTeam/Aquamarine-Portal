@@ -20,7 +20,7 @@ function error(req, res, next) {
     //If no community exists for the given community ID.
     if (req.path.includes("communities")) {
         res.status(404).render('pages/error', {
-            account : req.account[0],
+            account : req.account,
             error_name : "Community Not Found",
             error_description : "Sorry, this community doesn't exist yet!",
             req : req
@@ -31,7 +31,7 @@ function error(req, res, next) {
 
     //If that page just doesn't exist.
     res.status(200).render('pages/error', {
-        account : req.account[0],
+        account : req.account,
         error_name : "Page not found",
         error_description : "Sorry! This page doesn't exist yet.",
         req : req

@@ -56,10 +56,10 @@
                         <a href="javascript:void(0)"
                             onclick="wiiuSound.playSoundByName('SE_OLV_BALLOON_OPEN', 3),aquamarine.toggleFeelingModal();"
                             class="mii-icon-container">
-                            <img src="http://mii-images.account.nintendo.net/<%= account.mii_hash %>_normal_face.png" class="icon">
+                            <img src="http://mii-images.account.nintendo.net/<%= account[0].mii_hash %>_normal_face.png" class="icon">
                         </a>
 
-                        <h1 class="mii-name"><%= account.mii_name %></h1>
+                        <h1 class="mii-name"><%= account[0].mii_name %></h1>
 
                         <label class="spoiler-button checkbox-button">Spoilers
                             <input type="checkbox" class="spoiler_input" name="is_spoiler" value="1">
@@ -84,32 +84,32 @@
                             <ul class="buttons">
                                 <li class="checked">
                                     <input type="radio" name="feeling_id" value="0" class="feeling-button-normal"
-                                        data-mii-face-url="http://mii-images.account.nintendo.net/<%= account.mii_hash %>_normal_face.png"
+                                        data-mii-face-url="http://mii-images.account.nintendo.net/<%= account[0].mii_hash %>_normal_face.png"
                                         checked data-sound="SE_WAVE_MII_FACE_00">
                                 </li>
                                 <li class>
                                     <input type="radio" name="feeling_id" value="1" class="feeling-button-happy"
-                                        data-mii-face-url="http://mii-images.account.nintendo.net/<%= account.mii_hash %>_happy_face.png"
+                                        data-mii-face-url="http://mii-images.account.nintendo.net/<%= account[0].mii_hash %>_happy_face.png"
                                         data-sound="SE_WAVE_MII_FACE_01">
                                 </li>
                                 <li class>
                                     <input type="radio" name="feeling_id" value="2" class="feeling-button-like"
-                                        data-mii-face-url="http://mii-images.account.nintendo.net/<%= account.mii_hash %>_like_face.png"
+                                        data-mii-face-url="http://mii-images.account.nintendo.net/<%= account[0].mii_hash %>_like_face.png"
                                         data-sound="SE_WAVE_MII_FACE_02">
                                 </li>
                                 <li class>
                                     <input type="radio" name="feeling_id" value="3" class="feeling-button-surprised"
-                                        data-mii-face-url="http://mii-images.account.nintendo.net/<%= account.mii_hash %>_surprised_face.png"
+                                        data-mii-face-url="http://mii-images.account.nintendo.net/<%= account[0].mii_hash %>_surprised_face.png"
                                         data-sound="SE_WAVE_MII_FACE_03">
                                 </li>
                                 <li class>
                                     <input type="radio" name="feeling_id" value="4" class="feeling-button-frustrated"
-                                        data-mii-face-url="http://mii-images.account.nintendo.net/<%= account.mii_hash %>_frustrated_face.png"
+                                        data-mii-face-url="http://mii-images.account.nintendo.net/<%= account[0].mii_hash %>_frustrated_face.png"
                                         data-sound="SE_WAVE_MII_FACE_04">
                                 </li>
                                 <li class>
                                     <input type="radio" name="feeling_id" value="5" class="feeling-button-puzzled"
-                                        data-mii-face-url="http://mii-images.account.nintendo.net/<%= account.mii_hash %>_puzzled_face.png"
+                                        data-mii-face-url="http://mii-images.account.nintendo.net/<%= account[0].mii_hash %>_puzzled_face.png"
                                         data-sound="SE_WAVE_MII_FACE_05">
                                 </li>
                             </ul>
@@ -172,10 +172,10 @@
                                 <div class="community-settings-dropdown-wrapper">
                                     <select name="community-settings" class="community-settings-drop"
                                         id="community-settings-input">
-                                        <option value="1" <%= (account.community_settings[community.id] == "1") ? "selected" : "" %>>Show All</option>
-                                        <option value="2" <%= (account.community_settings[community.id] == "2") ? "selected" : "" %>>Hide Spoilers</option>
-                                        <option value="3" <%= (account.community_settings[community.id] == "3") ? "selected" : "" %>>Hide Screenshots</option>
-                                        <option value="4" <%= (account.community_settings[community.id] == "4") ? "selected" : "" %>>Hide Both</option>
+                                        <option value="1" <%= (JSON.parse(account[0].community_settings)[community.id] == "1") ? "selected" : "" %>>Show All</option>
+                                        <option value="2" <%= (JSON.parse(account[0].community_settings)[community.id] == "2") ? "selected" : "" %>>Hide Spoilers</option>
+                                        <option value="3" <%= (JSON.parse(account[0].community_settings)[community.id] == "3") ? "selected" : "" %>>Hide Screenshots</option>
+                                        <option value="4" <%= (JSON.parse(account[0].community_settings)[community.id] == "4") ? "selected" : "" %>>Hide Both</option>
                                     </select>
                                 </div>
                             </li>

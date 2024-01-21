@@ -40,7 +40,7 @@
             <% } %>
 
             <div class="post-meta">
-                <button type="button" data-post-id="<%= post.id %>" class="submit miitoo-button"><%= (post.is_empathied_by_user) ? "Unyeah!" : "Yeah!" %></button>
+                <button type="button" data-post-id="<%= post.id %>" class="submit miitoo-button" <%= (post.account_id == account[0].id) ? "disabled" : "" %>><%= (post.is_empathied_by_user) ? "Unyeah!" : "Yeah!" %></button>
                 <a href="javascript:void(0)" onclick="pjax.loadUrl('/posts/<%= post.id %>')" class="to-permalink-button">
                     <span class="feeling <%= (post.is_empathied_by_user) ? "added" : "" %>"><%= post.empathy_count %></span>
                     <span class="reply">0</span>
