@@ -5,7 +5,7 @@ const colors = require('colors');
 
 const con = require('../Aquamarine-Utils/database_con');
 const query = util.promisify(con.query).bind(con);
-const auth = require('../Aquamarine-Utils/auth_middleware');
+const auth = require('../Aquamarine-Utils/middleware/auth_middleware');
 
 const app = express();
 app.set('view engine', 'ejs');
