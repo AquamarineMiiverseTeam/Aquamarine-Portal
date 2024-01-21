@@ -14,10 +14,8 @@
         <a href="javascript:void(0);" data-sound="SE_WAVE_MENU" href="javascript:void(0)" onclick="pjax.loadUrl('/titles/show')">Communities</a>
     </li>
     <li id="menu-bar-message">
-        <a href="javascript:void(0)" data-sound="SE_WAVE_MENU">Messages<span class="badge" style="display: none;">0</span>
-            <% //if (account.notifications_messages.length >= 1) { %>
-                <span class="badge" style="display: block;"><%=// (account.notifications_messages.length > 99) ? "99+" : account.notifications_messages.length %></span>
-            <% //} %>
+        <a href="javascript:void(0)" onclick="pjax.loadUrl('/messages')" data-sound="SE_WAVE_MENU">Messages<span class="badge" style="display: none;">0</span>
+            
         </a>
     </li>
     <li id="menu-bar-news">

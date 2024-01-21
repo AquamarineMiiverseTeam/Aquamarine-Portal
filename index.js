@@ -30,6 +30,7 @@ const routes = require('./routes/index');
 app.use('/account', routes.UI_ACCOUNT_CREATION);
 app.use('/titles', routes.UI_TITLES);
 app.use('/communities', routes.UI_COMMUNITIES);
+app.use('/messages', routes.UI_MESSAGES);
 
 app.use(routes.UI_ERROR);
 
