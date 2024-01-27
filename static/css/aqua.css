@@ -686,6 +686,18 @@ body {
   width: 1000px;
 }
 
+.communities-listing.main-page .communities-headline.popular {
+  border-radius: 10px;
+  color: #ffffff;
+  background-image: -webkit-linear-gradient(30deg, rgba(155, 133, 255, 0.865), rgba(137, 51, 207, 0.178)), url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAAAAAAfl4auAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfnCRoSLzWuLN9AAAAA4ElEQVRIx+2Vyw7DIAwEvcD//25PeHvoIdiAUYQqpRUcsx4ck8fgJc0ia6XMFnIG2gtJNtaBfxZGVIwFvNOZjIp9mly6gG1caEJlNDUViglMKgkA0veHkKTU1H5XpdoYSBj3JlUo2m59wZ8dkCesgKjuyMzMAiRMHx40qYVdKRCcVxd2sEhEh/C95d+wuDp8w/Y6H/jAB/4fGHH1N/9hG5aMNdmFxY7hPWhZ79CSr8MYeNCxzqEXPPSg2K2dQ9vbHnjQ7eAcambuPehY59Dk4oXobPwYS8aa5ALe6nzgx8JvdaBrc8TMYTAAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjMtMDktMjZUMTg6NDc6MzUrMDA6MDAltN3oAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIzLTA5LTI2VDE4OjQ3OjM1KzAwOjAwVOllVAAAAABJRU5ErkJggg==);
+  padding: 20px;
+  margin-top: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  height: 40px;
+  width: 1000px;
+}
+
 .communities-listing.main-page .communities-headline.special {
   border-radius: 10px;
   color: #ffffff;

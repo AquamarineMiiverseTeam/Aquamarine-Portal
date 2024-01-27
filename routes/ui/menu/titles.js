@@ -12,11 +12,13 @@ route.get('/show', async (req, res) => {
 
     const newest_communities = await database_query.getCommunities("desc", 4, 'main');
     const special_communities = await database_query.getCommunities("desc", 6, 'all', 0, 1);
+    const popular_communities = await common.ui.getPopularCommunities(3);
     
     res.render('pages/show', {
         account : req.account,
         newest_communities : newest_communities,
         special_communities : special_communities,
+        popular_communities : popular_communities,
         req : req
     })
 })
