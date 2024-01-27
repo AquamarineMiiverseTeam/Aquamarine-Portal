@@ -13,8 +13,11 @@
                     const community = communities[i];%>
                     
                     <li community="yes" id="community-<%= community.id %>" class="">
-                    <span class="icon-content">
-                        <img class="icon" src="../../img/icons/<%= community.id %>.jpg"></img>
+                    <span class="icon-content <%= (community.user_community == 1) ? "user-subcommunity" : "" %>">
+                        <img class="icon" onerror="this.src='../../../img/app.png'" src="../../img/icons/<%= community.id %>.jpg">
+                        <% if (community.user_community == 1) { %>
+                            <img class="mii" src="http://mii-images.account.nintendo.net/<%= community.mii_hash %>_normal_face.png">
+                        <% } %>
                     </span>
                     <a data-sound="SE_WAVE_OK" href="javascript:void(0)" onclick="pjax.loadUrl('/communities/<%= community.id %>/')" class="scroll to-community-button">
                         <span class="community-button"></span>

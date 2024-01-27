@@ -28,7 +28,7 @@
                 <% if (post.body) { %>
                     <p class="post-content-text"><%= post.body %></p>
                 <% } else { %>
-                    <img onerror="this.src='../../../img/banners-wup/placeholder-wup.jpg'" class="post-content-memo" src="/img/paintings/<%= post.id%>.png">
+                    <img onerror="this.src='../../../img/banners-wup/placeholder-wup.jpg'" class="post-content-memo <% if (post.topic_tag) { %>with-tag<% } %>" src="/img/paintings/<%= post.id%>.png">
                 <% } %>
             </div>
 

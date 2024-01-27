@@ -22,7 +22,7 @@ route.get('/:community_id', async (req, res, next) => {
     //Grabbing all querys for specific types of posts
     var topic_tag = (req.query['topic_tag']) ? req.query.topic_tag : "";
     var offset = (req.query['offset']) ? req.query['offset'] : 0;
-    const posts = await database_query.getPosts(community.id, "desc", 8, topic_tag, offset, req);
+    const posts = await database_query.getPosts(Number(community.id), "desc", 8, topic_tag, offset, req);
 
     if (req.get("x-em")) {
         var html = "";
@@ -30,7 +30,7 @@ route.get('/:community_id', async (req, res, next) => {
             html += await ejs.renderFile(__dirname + "/../../../views/partials/post.ejs", {
                 moment : moment,
                 post : posts[i],
-                account : req.account[0]
+                account : req.account
             })
         }
 

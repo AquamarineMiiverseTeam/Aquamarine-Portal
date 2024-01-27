@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aquamarine</title>
   <link rel="stylesheet" href="/css/aqua.css">
-  <script src="/js/wiiu-emulation.js"></script>
+  <script src="/js/complete-emu.js"></script>
   <script>
     var aquamarine = {
       changeSetupModal: function (modal1, modal2) {
@@ -70,7 +70,7 @@
           if (c_gameExperienceInput) {
             newUser.append("game_experience", c_gameExperienceInput.value);
           } else {
-            newUser.append("game_experience", 0);
+            newUser.append("game_experience", 1); // 1 for intermediate
           }
           newUser.append("nnid", c_nnidInput.value);
           newUser.append("password", c_passwordInput.value);
@@ -194,9 +194,9 @@
             <div class="window-body-inner">
               <p>If you already have a account, input your login details and then select Accept.</p>
               <form class="welcome_account_form" action="javascript:void(0)">
-                <input type="text" id="l_nnid" data-sound="" pattern="^[\w+\d+-\-._]{4,16}$" autocorrect="off"
+                <input type="text" onchange="this.blur()" id="l_nnid" data-sound="" pattern="^[\w+\d+-\-._]{4,16}$" autocorrect="off"
                   autocomplete="off" placeholder="NNID..." name="nnid" keyboard="nnid" maxlength="16" minlength="6">
-                <input type="password" id="l_password" data-sound="" placeholder="Password..." name="password"
+                <input type="password" onchange="this.blur()" id="l_password" data-sound="" placeholder="Password..." name="password"
                   autocomplete="off">
                 <button id="submit1" data-sound="SE_WAVE_OK" onclick="aquamarine.logAccount();">Log in</button>
               </form>
@@ -273,12 +273,12 @@
                 profile, and it will help in telling people more about you, it might also be used for recomendations in
                 the service</p>
               <form class="game_experience_form" action="javascript:void(0)">
-                <label for="ge_1" data-sound="SE_WAVE_OK_SUB" class="one">Beginner</label>
-                <input type="radio" id="ge_1" name="game_experience" value="1">
-                <label for="ge_2" data-sound="SE_WAVE_OK_SUB" class="two">Intermediate</label>
-                <input type="radio" id="ge_2" name="game_experience" value="2">
-                <label for="ge_3" data-sound="SE_WAVE_OK_SUB" class="three">Expert</label>
-                <input type="radio" id="ge_3" name="game_experience" value="3">
+                <label for="ge_1" data-sound="SE_WAVE_SELECT_TAB" class="zero">Beginner</label>
+                <input type="radio" id="ge_1" name="game_experience" value="0">
+                <label for="ge_2" data-sound="SE_WAVE_SELECT_TAB" class="one">Intermediate</label>
+                <input type="radio" id="ge_2" name="game_experience" value="1">
+                <label for="ge_3" data-sound="SE_WAVE_SELECT_TAB" class="two">Expert</label>
+                <input type="radio" id="ge_3" name="game_experience" value="2">
               </form>
             </div>
           </div>
@@ -300,10 +300,10 @@
                 too, please remember your password!</p>
               <form class="welcome_account_form" action="javascript:void(0)">
                 <input type="text" pattern="^[\w+\d+-\-._]{4,16}$" data-sound="" autocorrect="off" autocomplete="off"
-                  placeholder="NNID..." name="nnid" id="c_nnid" keyboard="nnid" maxlength="16" minlength="6">
-                <input type="password" placeholder="Password..." data-sound="" name="password" id="c_password"
+                  placeholder="NNID..." name="nnid" id="c_nnid" onchange="this.blur()" keyboard="nnid" maxlength="16" minlength="6">
+                <input type="password" placeholder="Password..." onchange="this.blur()" data-sound="" name="password" id="c_password"
                   autocomplete="off">
-                <input type="password" placeholder="Confirm Password..." data-sound="" id="c_confirmPassword"
+                <input type="password" placeholder="Confirm Password..." onchange="this.blur()" data-sound="" id="c_confirmPassword"
                   autocomplete="off">
 
                 <button id="submit2" data-sound="SE_WAVE_OK" onclick="aquamarine.createNewAccount();">Create
@@ -324,7 +324,7 @@
           <div class="window-body">
             <div class="window-body-inner">
               <p>First thing you should do, is check the new communities, and also the special ones, also, try editing
-                your profile, and yeah other users posts!, Follow people, and post in-game, there are a lot of things to
+                your profile, and yeah other users posts! Follow people, and post in-game, there are a lot of things to
                 do on
                 Aquamarine, but you are the one that decides what to do first. <br> Thanks for signing up!
               </p>

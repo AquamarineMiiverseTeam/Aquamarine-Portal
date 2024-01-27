@@ -4,10 +4,10 @@
         <div class="wrapper-content" data-community-id="<%= community.id %>" data-community-title-id="<%= JSON.parse(community.title_ids)[0]; %>" data-community-title-id-hex="<%= JSON.parse(community.title_ids).map(titleId => Number(titleId).toString(16).padStart(16, '0')).join(',') %>"  data-community-title-name="<%= community.name %>">
 
             <header class="header">
-                <h1 class="content-title title-label <%= (community.sub_communities.length !== 0) ? 'button-ellipsis' : '' %>"><%= community.name %></h1>
                 <% if (community.sub_communities.length != 0) { %>
                     <a class="header-other-button" data-sound="SE_WAVE_OK_SUB" href="javascript:void(0)" onclick="pjax.loadUrl('other')">Other communities</a>
                 <% } %>
+                <h1 class="content-title title-label <%= (community.sub_communities.length !== 0) ? 'button-ellipsis' : '' %>"><%= community.name %></h1>
                 <% if (!community.ingame_only) { %><a href="javascript:void(0)" class="add-post-button" onclick="wiiuSound.playSoundByName('SE_WAVE_OK', 3); aquamarine.openPostModal()">Post</a><% } %>
             </header>
 
@@ -42,7 +42,7 @@
                         <%- include("../partials/post.ejs", {post : posts[i]}) %>
                     <%} %>
                 </div>
-                <a style="display: none;" class="loading" id="loading"></a>
+                <a class="loading" id="loading"></a>
             </div>
         </div>
 
@@ -206,8 +206,6 @@
                 xhr.send();
                 mkr = true;
 
-                loading.style.display = "block"
-
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === 4) {
                         if (xhr.status == 404) {
@@ -218,7 +216,6 @@
                         }
 
                         document.querySelectorAll(".post")[document.querySelectorAll(".post").length - 1].outerHTML += xhr.responseText;
-                        loading.style.display = "none";
 
                         mkr = false;
 

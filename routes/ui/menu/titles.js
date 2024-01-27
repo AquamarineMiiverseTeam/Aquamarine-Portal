@@ -6,6 +6,7 @@ const moment = require('moment');
 const util = require('util')
 
 const database_query = require('../../../../Aquamarine-Utils/database_query');
+const common = require('../../../../Aquamarine-Utils/common')
 
 route.get('/show', async (req, res) => {
 
@@ -22,7 +23,7 @@ route.get('/show', async (req, res) => {
 
 route.get('/communities', async (req, res) => {
     const offset = req.query['offset'];
-    const communities = await database_query.getCommunities("desc", 10, 'main', offset);
+    const communities = await database_query.getCommunities("desc", 10, 'all', offset);
 
     if (req.get("x-em")) {
         res.render('partials/communities', {

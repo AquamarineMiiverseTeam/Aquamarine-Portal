@@ -1,3 +1,27 @@
+const aqua_locale = {
+    "aqua.portal.button.remove": { value: "Sí" },
+    "aqua.portal.cancel": { value: "Cancelar" },
+    "aqua.portal.close": { value: "Cerrar" },
+    "aqua.portal.dialog.apply_settings_done": { value: "Ajustes guardados." },
+    "aqua.portal.followlist.confirm_unfollow_with_name": { args: [1], value: "Quitar a %s de tu lista de seguidores?" },
+    "aqua.portal.miitoo.frustrated": { value: "Buena..." },
+    "aqua.portal.miitoo.happy": { value: "Buena!" },
+    "aqua.portal.miitoo.like": { value: "Buena♥" },
+    "aqua.portal.miitoo.normal": { value: "Buena!" },
+    "aqua.portal.miitoo.puzzled": { value: "Buena..." },
+    "aqua.portal.miitoo.surprised": { value: "Buena!?" },
+    "aqua.portal.ok": { value: "OK" },
+    "aqua.portal.reply.delete_confirm": { value: "Eliminar este comentario?" },
+    "aqua.portal.report.report_comment_id": { args: [1], value: "ID de Comentario: %s" },
+    "aqua.portal.report.report_post_id": { args: [1], value: "ID de Publicación: %s" },
+    "aqua.portal.setup": { value: "Configurar" },
+    "aqua.portal.show_more_content": { value: "Ver publicación entera" },
+    "aqua.portal.stop": { value: "Cancelar" },
+    "aqua.portal.unfollow": { value: "Dejar de seguir" },
+    "aqua.portal.user.search.go": { value: "Ver perfil" },
+    "aqua.portal.yes": { value: "Sí" }
+};
+
 var pjax = new Pjax({
     selectors: [".wrapper", "body"]
 });
@@ -15,7 +39,6 @@ document.addEventListener("DOMContentLoaded", function () {
     aquamarine.initEmpathy();
     aquamarine.initSpoilers();
     aquamarine.initNavBar();
-    aquamarine.updateNavBar();
     aquamarine.backButtonUpdate();
 
     document.addEventListener("scroll", function () {
@@ -37,10 +60,8 @@ document.addEventListener("pjax:complete", function () {
     aquamarine.initEmpathy();
     aquamarine.initSpoilers();
     aquamarine.initNavBar();
-    aquamarine.updateNavBar();
     aquamarine.backButtonUpdate();
-    wiiuBrowser.lockUserOperation(false); 
-
+    wiiuBrowser.lockUserOperation(false);
     checkNotifications();
 });
 
@@ -80,13 +101,25 @@ var aquamarine = {
             });
         }
     },
-    updateNavBar: function () {
-        var els = document.querySelector("#menu-bar");
-        if (!els) return;
-        var path = window.location.pathname;
-        console.log(path)
-        if (path.indexOf("/communities") !== -1 || path.indexOf("/titles/show") !== -1) {
-            document.querySelector("#menu-bar #menu-bar-community").classList.add("selected");
+    localize: function (key, args) {
+        const localizedObject = aqua_locale[key];
+
+        if (localizedObject) {
+            var localizedText = localizedObject.value;
+
+            // Replace %s with the argument at the specified index
+            if (args && args.length > 0 && localizedObject.args && localizedObject.args.length > 0) {
+                const argIndex = localizedObject.args[0];
+                if (args[argIndex - 1] !== undefined) {
+                    const placeholder = '%s';
+                    localizedText = localizedText.replace(new RegExp(placeholder, 'g'), args[argIndex - 1]);
+                }
+            }
+
+            return localizedText;
+        } else {
+            // Return a default message if the key is not found
+            return 'Localization not available for key: ' + key;
         }
     },
     initEmpathy: function () {
@@ -202,6 +235,24 @@ var aquamarine = {
     },
     toggleScreenshotModal: function () {
         document.querySelector('.screenshot-toggle-container').classList.toggle('none');
+    },
+    toggleUserReportModal: function () {
+        document.getElementById('dropdown-user-report').classList.toggle('open');
+    },
+    toggleUserRemoveFriendModal: function () {
+        document.getElementById('dropdown-user-remove-friend').classList.toggle('show');
+    },
+    toggleFilterMainModal: function () {
+        var dropdownMenu = document.querySelector('.filter-dropdown .dropdown-menu');
+
+        if (dropdownMenu.classList.contains('none')) {
+            dropdownMenu.classList.remove('none');
+        } else {
+            dropdownMenu.classList.add('none');
+        }
+    },
+    closeNewAnnouncment: function () {
+        document.querySelector('.info-content-new-announcment').classList.add('none');
     },
     openPostModal: function () {
         isHistoryBackDisabled = true;
@@ -630,9 +681,10 @@ var aquamarine = {
 
         postButton.onclick = makeNewPost;
 
-
         function makeNewPost() {
-            wiiuBrowser.lockHomeButtonMenu(true);
+            postButton.onclick = null;
+            postButton.classList.add('disabled');
+            wiiuBrowser.lockUserOperation(true);
             var type_radios = document.getElementsByName("_post_type");
             var type_of_post;
 
@@ -646,9 +698,6 @@ var aquamarine = {
                 wiiuDialog.alert('Please input text in your message.', 'OK');
                 return;
             }
-
-            postButton.classList.add('disabled');
-            postButton.onclick = null;
             var aquaForm = new FormData();
             var feeling_radios = document.getElementsByName("feeling_id");
             var checked_feeling;
@@ -692,15 +741,14 @@ var aquamarine = {
                     if (xhr.status === 200) {
                         postButton.classList.remove('disabled');
                         postButton.onclick = makeNewPost;
-                        wiiuBrowser.lockHomeButtonMenu(false);
-
+                        wiiuBrowser.lockUserOperation(false);
                         pjax.loadUrl(window.location.pathname);
                     }
                     else {
                         wiiuErrorViewer.openByCodeAndMessage(155289, 'There was an error making a new post, Please try again later.')
                         postButton.classList.remove('disabled');
                         postButton.onclick = makeNewPost;
-                        wiiuBrowser.lockHomeButtonMenu(false);
+                        wiiuBrowser.lockUserOperation(false);
                     }
                 }
             }
@@ -825,19 +873,28 @@ var aquamarine = {
         window.scrollTo(0, scrollPosition);
     },
     backButtonUpdate: function () {
+        var els = document.querySelector("#menu-bar");
+        if (!els) return;
         var backBtn = document.getElementById("menu-bar-back");
         var exitBtn = document.getElementById("menu-bar-exit");
+        var path = window.location.pathname;
 
-        if (wiiuBrowser.canHistoryBack()) {
+        if (path.indexOf("/communities") !== -1 || path.indexOf("/titles/show") !== -1) {
+            document.querySelector("#menu-bar #menu-bar-community").classList.add("selected");
+        } else if (path.indexOf("/messages") !== -1) {
+            document.querySelector("#menu-bar #menu-bar-message").classList.add("selected");
+        }
+
+        if ((wiiuBrowser.canHistoryBack() && path.indexOf("/titles/show") === -1 && path.indexOf("/messages") === -1)) {
             backBtn.classList.remove('selected');
             backBtn.classList.remove('none');
             exitBtn.classList.add('none');
-        }
-        else {
+        } else {
             backBtn.classList.remove('selected');
             backBtn.classList.add('none');
             exitBtn.classList.remove('none');
         }
+
     },
     getPostsByTopicTag: function (a) {
         pjax.loadUrl(window.location.pathname + "?topic_tag=" + a.innerText)
@@ -847,7 +904,7 @@ var aquamarine = {
 setInterval(function () {
     wiiu.gamepad.update();
     if (wiiu.gamepad.hold === 16384) {
-        if (wiiuBrowser.canHistoryBack() && !isHistoryBackDisabled) {
+        if (wiiuBrowser.canHistoryBack() && !isHistoryBackDisabled && document.getElementById("menu-bar-exit").classList.contains("none")) {
             document.querySelector("#menu-bar li#menu-bar-back").classList.add("selected");
             wiiuSound.playSoundByName("SE_OLV_MII_CANCEL", 3);
             aquamarine.back();
@@ -855,31 +912,31 @@ setInterval(function () {
     }
 
     if (wiiu.gamepad.hold === 8) {
-       window.location.href = "https://portal.olv.nonamegiven.xyz/group_chat.html";
+        window.location.href = "https://portal.olv.nonamegiven.xyz/dumps/user_page_visitor.html";
     }
 }, 100);
 
 function checkNotifications() {
-    console.log("notifications check")
+    const pid = document.querySelector("body").getAttribute("data-account-pid");
 
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'https://api.olv.nonamegiven.xyz/v1/notifications');
-    xhr.setRequestHeader("Content-Type", 'text/json');
+    xhr.open('GET', "https://api.olv.nonamegiven.xyz/v1/users/"+pid+"/notifications");
     xhr.send();
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
-                var notificationObj = xhr.responseText;
+                var notification_obj = xhr.responseXML.children[0].children[3];
+                var unread_notifications = Number(notification_obj.children[0].innerHTML)
+                var unread_messages = Number(notification_obj.children[1].innerHTML)
+
                 var messages = document.querySelector("#menu-bar-message .badge");
                 var news = document.querySelector("#menu-bar-news .badge");
 
-                console.log(notificationObj)
-
-                if (notificationObj.message_count > 0 && notificationObj.message_count < 99) {
-                    messages.innerHTML = notificationObj.message_count;
+                if (unread_messages > 0 && unread_messages < 99) {
+                    messages.innerHTML = unread_messages;
                     messages.style.display = "block";
                 }
-                else if (notificationObj.message_count >= 99) {
+                else if (unread_messages >= 99) {
                     messages.innerHTML = "99+";
                     messages.style.display = "block";
                 }
@@ -887,11 +944,11 @@ function checkNotifications() {
                     messages.innerHTML = "";
                     messages.style.display = "none";
                 }
-                if (notificationObj.notification_count > 0 && notificationObj.notification_count < 99) {
-                    news.innerHTML = notificationObj.notification_count;
+                if (unread_notifications > 0 && unread_notifications < 99) {
+                    news.innerHTML = unread_notifications;
                     news.style.display = "block";
                 }
-                else if (notificationObj.notification_count >= 99) {
+                else if (unread_notifications >= 99) {
                     news.innerHTML = "99+";
                     news.style.display = "block";
                 }
@@ -904,4 +961,7 @@ function checkNotifications() {
     }
 }
 
-setInterval(checkNotifications, 5000);
+setInterval(checkNotifications, 30000);
+
+// alert(aquamarine.localize("aqua.portal.followlist.confirm_unfollow_with_name", ["david"]))
+// alert(aquamarine.localize("aqua.portal.miitoo.like", []))
