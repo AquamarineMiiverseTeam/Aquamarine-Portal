@@ -38,7 +38,9 @@ logger.log("Creating 503 error handler.");
 
 app.use((err, req, res, next) => {
     //If an error occured with rendering the page, then load a 503
-    res.render("pages/error/error_503");
+    res.render("pages/error/error_503", {
+        err : err
+    });
 });
 
 logger.log("Creating 404 error handler.");
