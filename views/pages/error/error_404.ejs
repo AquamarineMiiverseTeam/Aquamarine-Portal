@@ -13,19 +13,23 @@
 </head>
 
 <body>
-    <header class="header" style="width: 100%; padding: 0;">
-        <h1 class="content-title">Aquamarine</h1>
-    </header>
+    <div class="wrapper">
+        <div class="wrapper_content">
+            <a class="exit-setup-modal-button" href="javascript:void(0)" onclick="wiiuSound.playSoundByName('SE_WAVE_EXIT', 3), wiiuBrowser.closeApplication();">Close</a>
 
-    <div class="error_body">
-        <h2 class="error_header">Where are we? | 404</h2>
-        <div class="error_content">
-            <div>
-                <div>The requested menu could not be retrieved. <br><br> Please restart Aquamarine, and have an amazing day.</div>
-                <img src="/img/error/error_503.png">
+            <header class="header" style="width: 100%; padding: 0;">
+                <h1 class="content-title">Aquamarine</h1>
+            </header>
+        
+            <div class="error_body">
+                <h2 class="error_header">Where are we? | 404</h2>
+                <div class="error_content">
+                    <div>
+                        <div>The requested menu could not be retrieved. <br><br> Please restart Aquamarine.</div>
+                        <img src="/img/error/error_404.png">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </body>
-
-<a class="exit-setup-modal-button" href="javascript:void(0)" onclick="wiiuSound.playSoundByName('SE_WAVE_EXIT', 3), wiiuBrowser.closeApplication();">Close</a>

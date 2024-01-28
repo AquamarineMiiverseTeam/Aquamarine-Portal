@@ -38,13 +38,7 @@ logger.log("Creating 503 error handler.");
 
 app.use((err, req, res, next) => {
     //If an error occured with rendering the page, then load a 503
-    if (err) { res.render("pages/error/error_503"); return; }
-    
-    //If the requested file isn't avaliable, then return a JSON containing the error.
-    if (req.path.includes("js") || req.path.includes("css") || req.path.includes("img") || req.path.includes("lang")) { res.send({error : "The requested file could not be found", file : req.path}); return;}
-
-    //If the page just couldn't be found altogether, return a 404 error page.
-    res.render("pages/error/error_404");
+    res.render("pages/error/error_503");
 });
 
 logger.log("Creating 404 error handler.");
