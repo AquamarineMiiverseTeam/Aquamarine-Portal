@@ -1,0 +1,29 @@
+<%- include('../partials/header'), { account : account } %>
+
+    <div class="wrapper">
+        <div class="wrapper-content">
+            <header class="header">
+                <h1 class="content-title left">Notifications</h1>
+            </header>
+
+            <div class="notifications-content">
+                <ul class="notification-list">
+                    <% for (const notification of notifications) { %>
+                        <li>
+                            <a href="<%= notification.linkto %>">
+                                <img width="96px" class="notification-image" src="<%= notification.image_url %>">
+                                <div>
+                                    <div class="notification-wrapper">
+                                        <span><%= notification.content %></span>
+                                        <br>
+                                        <span class="notification-created-time"><%= moment(notification.create_time).fromNow() %></span>
+                                    </div>
+                                    <span class="notification-button"></span>
+                                </div>
+                            </a>
+                        </li>
+                    <% } %>
+                </ul>
+            </div>
+        </div>
+    </div>

@@ -12,6 +12,10 @@ module.exports = [
         route: require("./ui/menu/communities.js")
     },
     {
+        path: "/notifications",
+        route: require("./ui/menu/notifications.js")
+    },
+    {
         path: "/account",
         route: require("./ui/account.js")
     }

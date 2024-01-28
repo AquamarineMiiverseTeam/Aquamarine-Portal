@@ -19,7 +19,7 @@
         </a>
     </li>
     <li id="menu-bar-news">
-        <a href="javascript:void(0)" data-sound="SE_WAVE_MENU">Notifications
+        <a href="javascript:void(0)" onclick="pjax.loadUrl('/notifications')" data-sound="SE_WAVE_MENU">Notifications
             <span class="badge" <% if (account.unread_notifications.length >= 1) {%> style="display:block" <%}else{%> style="display:none" <%} %>><%= (account.unread_notifications.length > 99) ? "99+" : account.unread_notifications.length %></span>
         </a>
     </li>
