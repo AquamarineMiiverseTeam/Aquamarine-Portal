@@ -12,54 +12,63 @@ const database_query = require('../../../../Aquamarine-Utils/database_query');
 const ejs = require("ejs");
 
 route.get('/:community_id', async (req, res, next) => {
+    try {
+        const community_id = req.params.community_id;
+        const community = await database_query.getCommunity(community_id, req)
 
-    const community_id = req.params.community_id;
-    const community = await database_query.getCommunity(community_id, req)
+        //If no community is found, then let error.js handle the error
+        if (!community) { next(); return; }
 
-    //If no community is found, then let error.js handle the error
-    if (!community) { next(); return;}
+        //Grabbing all querys for specific types of posts
+        var topic_tag = (req.query['topic_tag']) ? req.query.topic_tag : "";
+        var offset = (req.query['offset']) ? req.query['offset'] : 0;
+        const posts = await database_query.getPosts(Number(community.id), "desc", 8, topic_tag, offset, req);
 
-    //Grabbing all querys for specific types of posts
-    var topic_tag = (req.query['topic_tag']) ? req.query.topic_tag : "";
-    var offset = (req.query['offset']) ? req.query['offset'] : 0;
-    const posts = await database_query.getPosts(Number(community.id), "desc", 8, topic_tag, offset, req);
+        if (req.get("x-em")) {
+            var html = "";
+            for (let i = 0; i < posts.length; i++) {
+                html += await ejs.renderFile(__dirname + "/../../../views/partials/post.ejs", {
+                    moment: moment,
+                    post: posts[i],
+                    account: req.account
+                })
+            }
 
-    if (req.get("x-em")) {
-        var html = "";
-        for (let i = 0; i < posts.length; i++) {
-            html += await ejs.renderFile(__dirname + "/../../../views/partials/post.ejs", {
-                moment : moment,
-                post : posts[i],
-                account : req.account
-            })
+            if (posts.length == 0) { res.sendStatus(404); return; }
+            res.send(html);
+
+            return;
         }
 
-        if (posts.length == 0) { res.sendStatus(404); return;}
-        res.send(html);
-
-        return;
+        res.render('pages/community', {
+            account: req.account,
+            community: community,
+            posts: posts,
+            req: req,
+            moment: moment
+        });
+    } catch (err) {
+        next(err)
     }
 
-    res.render('pages/community', {
-        account : req.account,
-        community : community,
-        posts : posts,
-        req : req,
-        moment : moment
-    });
 })
 
-route.get("/:community_id/other", async (req, res) => {
-    const community_id = req.params.community_id;
-    const community = await database_query.getCommunity(community_id, req)
+route.get("/:community_id/other", async (req, res, next) => {
+    try {
+        const community_id = req.params.community_id;
+        const community = await database_query.getCommunity(community_id, req)
 
-    //If no community is found, then let error.js handle the error
-    if (!community) { next(); return;}
+        //If no community is found, then let error.js handle the error
+        if (!community) { next(); return; }
 
-    res.render('pages/sub_communities', {
-        account : req.account,
-        main_community : community,
-    });
+        res.render('pages/sub_communities', {
+            account: req.account,
+            main_community: community,
+        });
+    } catch (err) {
+        next(err);
+    }
+
 })
 
 module.exports = route;

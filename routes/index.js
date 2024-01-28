@@ -1,9 +1,18 @@
-module.exports = {
-    UI_ACCOUNT_CREATION : require('./ui/account'),
-    UI_TITLES : require('./ui/menu/titles'),
-    UI_COMMUNITIES : require('./ui/menu/communities'),
-    UI_MESSAGES : require("./ui/menu/messages"),
-
-    UI_ERROR : require('./ui/menu/error'),
-    
-}
+module.exports = [
+    {
+        path: "/titles",
+        route: require("./ui/menu/titles.js")
+    },
+    {
+        path: "/messages",
+        route: require("./ui/menu/messages.js")
+    },
+    {
+        path: "/communities",
+        route: require("./ui/menu/communities.js")
+    },
+    {
+        path: "/account",
+        route: require("./ui/account.js")
+    }
+]

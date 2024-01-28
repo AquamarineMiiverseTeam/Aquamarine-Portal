@@ -1,38 +1,40 @@
-//DO NOT REMOVE COLORS
+const colors = require("colors");
+const moment = require("moment")
 
-const moment = require('moment');
-const colors = require('colors');
+const logger = {
+    log: function log(msg) {
+        console.log(`[INFO] (${moment().format("HH:mm:ss")}) ${msg}`.green);
+    },
 
-function log(req, res, next) {
-    switch (req.method) {
-        case "GET":
-            console.log(`[${req.method}] (${moment().format("HH:mm:ss")}) ${req.url}`.green);
-            break;
-        
-        case "DELETE":
-            console.log(`[${req.method}] (${moment().format("HH:mm:ss")}) ${req.url}`.red);
-            break;
-        
-        case "POST":
-            console.log(`[${req.method}] (${moment().format("HH:mm:ss")}) ${req.url}`.yellow);
-            break;
+    warn: function warn(msg) {
+        console.log(`[WARN] (${moment().format("HH:mm:ss")}) ${msg}`.yellow);
+    },
 
-        case "PUT":
-            console.log(`[${req.method}] (${moment().format("HH:mm:ss")}) ${req.url}`.magenta);
-            break;
+    error: function error(msg) {
+        console.log(`[ERROR] (${moment().format("HH:mm:ss")}) ${msg}`.red);
+    },
 
-        case "PATCH":
-            console.log(`[${req.method}] (${moment().format("HH:mm:ss")}) ${req.url}`.cyan);
-            break;
+    http_log: function http_log(req, res, next) {
+        switch (req.method) {
+            case "GET":
+                console.log(`[GET] (${moment().format("HH:mm:ss")}) ${req.url}`.green);
+                break;
+            case "POST":
+                console.log(`[POST] (${moment().format("HH:mm:ss")}) ${req.url}`.yellow);
+                break;
+            case "PUT":
+                console.log(`[PUT] (${moment().format("HH:mm:ss")}) ${req.url}`.blue);
+                break;
+            case "DELETE":
+                console.log(`[DELETE] (${moment().format("HH:mm:ss")}) ${req.url}`.red);
+                break;
+            default:
+                console.log(`[${req.method}] (${moment().format("HH:mm:ss")}) ${req.url}`.cyan);
+                break;
+        }
 
-        case "OPTIONS":
-            console.log(`[${req.method}] (${moment().format("HH:mm:ss")}) ${req.url}`.blue);
-            break;
-        default:
-            break;
+        next();
     }
-
-    next();
 }
 
-module.exports = log;
+module.exports = logger

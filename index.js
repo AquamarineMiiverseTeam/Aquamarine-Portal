@@ -13,26 +13,51 @@ app.set('view engine', 'ejs');
 const config_http = require('./config/http.json');
 const config_database = require('../Aquamarine-Utils/database_config.json');
 
+//Grab index of all routes and set them in our express app
+const routes = require('./routes/index');
+
 //Grab logger middleware and use it. (Logs all incoming HTTP/HTTPS requests)
 const logger = require('./middleware/log');
 const account_data = require("../Aquamarine-Utils/middleware/account_data_middleware")
 
-app.use(logger);
+logger.log("Using middleware.")
 
+app.use(logger.http_log);
 app.use(auth);
 app.use(account_data);
 app.use(express.static(path.join(__dirname, "../CDN_Files/")));
 app.use(express.static(path.join(__dirname, "./static")));
 
-//Grab index of all routes and set them in our express app
-const routes = require('./routes/index');
+logger.log("Creating all portal routes.");
 
-app.use('/account', routes.UI_ACCOUNT_CREATION);
-app.use('/titles', routes.UI_TITLES);
-app.use('/communities', routes.UI_COMMUNITIES);
-app.use('/messages', routes.UI_MESSAGES);
+for (const route of routes) {
+    app.use(route.path, route.route)
+}
 
-app.use(routes.UI_ERROR);
+logger.log("Creating 503 error handler.");
+
+app.use((err, req, res, next) => {
+    //If an error occured with rendering the page, then load a 503
+    if (err) { res.render("pages/error/error_503"); return; }
+    
+    //If the requested file isn't avaliable, then return a JSON containing the error.
+    if (req.path.includes("js") || req.path.includes("css") || req.path.includes("img") || req.path.includes("lang")) { res.send({error : "The requested file could not be found", file : req.path}); return;}
+
+    //If the page just couldn't be found altogether, return a 404 error page.
+    res.render("pages/error/error_404");
+});
+
+logger.log("Creating 404 error handler.");
+
+app.use((req, res, next) => {
+    //If the requested file isn't avaliable, then return a JSON containing the error.
+    if (req.path.includes("js") || req.path.includes("css") || req.path.includes("img") || req.path.includes("lang")) { res.send({error : "The requested file could not be found", file : req.path}); return;}
+
+    //If the page just couldn't be found altogether, return a 404 error page.
+    res.render("pages/error/error_404");
+
+    return;
+});
 
 //Set our app to listen on the config port
 app.listen(config_http.port, () => {
