@@ -11,6 +11,8 @@ const query = util.promisify(con.query).bind(con);
 const database_query = require('../../../../Aquamarine-Utils/database_query');
 const ejs = require("ejs");
 
+const common = require('../../../../Aquamarine-Utils/common')
+
 route.get('/:community_id', async (req, res, next) => {
     try {
         const community_id = req.params.community_id;
@@ -20,22 +22,17 @@ route.get('/:community_id', async (req, res, next) => {
         if (!community) { next(); return; }
 
         //Grabbing all querys for specific types of posts
-        var topic_tag = (req.query['topic_tag']) ? req.query.topic_tag : "";
         var offset = (req.query['offset']) ? req.query['offset'] : 0;
-        const posts = await database_query.getPosts(Number(community.id), "desc", 8, topic_tag, offset, req);
 
-        if (req.get("x-em")) {
-            var html = "";
-            for (let i = 0; i < posts.length; i++) {
-                html += await ejs.renderFile(__dirname + "/../../../views/partials/post.ejs", {
-                    moment: moment,
-                    post: posts[i],
-                    account: req.account
-                })
-            }
+        const posts = await common.ui.getTypedPosts(req.query['type'], community_id, offset, 12, req)
 
+        if (req.get("x-inline-pjax")) {
             if (posts.length == 0) { res.sendStatus(404); return; }
-            res.send(html);
+            res.render("partials/posts.ejs", {
+                posts : posts,
+                moment : moment,
+                account : req.account
+            });
 
             return;
         }

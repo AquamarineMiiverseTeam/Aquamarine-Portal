@@ -38,9 +38,9 @@
             <div class="community-post-list">
 
                 <div class="post-list" id="post_list">
-                    <% for (let i=0; i < posts.length; i++) {%>
-                        <%- include("../partials/post.ejs", {post : posts[i]}) %>
-                    <%} %>
+                    <%- include("../partials/posts.ejs", {
+                        posts : posts
+                    }) %>
                 </div>
                 <a class="loading" id="loading"></a>
             </div>
@@ -202,7 +202,7 @@
                 var loading = document.getElementById("loading")
                 var xhr = new XMLHttpRequest();
                 xhr.open("GET", window.location.pathname+window.location.search+"&offset="+document.getElementById("post_list").childElementCount);
-                xhr.setRequestHeader("x-em", "true")
+                xhr.setRequestHeader("x-inline-pjax", "true")
                 xhr.send();
                 mkr = true;
 
