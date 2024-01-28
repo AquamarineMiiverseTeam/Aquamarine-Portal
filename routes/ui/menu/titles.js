@@ -10,8 +10,8 @@ const common = require('../../../../Aquamarine-Utils/common')
 
 route.get('/show', async (req, res, next) => {
     try {
-        const newest_communities = await database_query.getCommunities("desc", 4, 'main');
-        const special_communities = await database_query.getCommunities("desc", 6, 'all', 0, 1);
+        const newest_communities = await database_query.getCommunities("desc", 3, 'main');
+        const special_communities = await database_query.getCommunities("desc", 3, 'all', 0, 1);
         const popular_communities = await common.ui.getPopularCommunities(3);
 
         res.render('pages/show', {
