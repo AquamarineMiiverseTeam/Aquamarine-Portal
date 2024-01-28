@@ -23,7 +23,8 @@ const aqua_locale = {
 };
 
 var pjax = new Pjax({
-    selectors: [".wrapper", "body"]
+    selectors: [".wrapper", "body"],
+    cacheBust: false
 });
 
 var isHistoryBackDisabled = false;
@@ -497,7 +498,7 @@ var aquamarine = {
                         postButton.onclick = makeNewPost;
                         wiiuBrowser.lockHomeButtonMenu(false);
 
-                        pjax.loadUrl(window.location.pathname);
+                        pjax.loadUrl(window.location.pathname, {history : false});
                     }
                     else {
                         wiiuErrorViewer.openByCodeAndMessage(155289, 'There was an error making a new post, Please try again later.')

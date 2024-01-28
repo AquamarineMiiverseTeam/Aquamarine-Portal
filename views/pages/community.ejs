@@ -25,14 +25,17 @@
                 <button class="favorite-button button <%= (community.is_favorited == 1) ? "checked" : ""  %>" onclick="aquamarine.toggleFavorite()" href="javascript:void(0)">Favorite</button>
                 <% if (community.type=="main" ) {%>
                     <span class="news-community-badge">Main Community</span>
-                    <%} else if (community.type=="sub" ) {%>
-                        <span class="news-community-badge">Sub Community</span>
-                        <%} else if (community.type=="announcement" ) {%>
-                            <span class="news-community-badge">Announcements Community</span>
-                            <%}%>
+                <%} else if (community.type=="sub" ) {%>
+                    <span class="news-community-badge">Sub Community</span>
+                <%} else if (community.type=="announcement" ) {%>
+                    <span class="news-community-badge">Announcements Community</span>
+                <%}%>
+                    <span class="title"><%= ((community.name).toString().includes("Community")) ? community.name : community.name + " Community"  %></span>
+                    <span class="text"><%= community.description %></span>
+            </div>
 
-                                <span class="title"><%= ((community.name).toString().includes("Community")) ? community.name : community.name + " Community"  %></span>
-                                <span class="text"><%= community.description %></span>
+            <div class="community-type">
+                <button data-sound="SE_WAVE_SELECT_TAB" onclick="pjax.loadUrl('?type=newest', {history : false})"><span>New Posts</span></button><button data-sound="SE_WAVE_SELECT_TAB" onclick="pjax.loadUrl('?type=played', {history : false})"><span>Player Posts</span></button><button data-sound="SE_WAVE_SELECT_TAB" onclick="pjax.loadUrl('?type=popular', {history : false})"><span>Popular Posts</span></button>
             </div>
 
             <div class="community-post-list">
@@ -42,7 +45,9 @@
                         posts : posts
                     }) %>
                 </div>
-                <a class="loading" id="loading"></a>
+                <% if (posts.length > 11) { %>
+                    <a class="loading" id="loading"></a>
+                <% } %>
             </div>
         </div>
 
@@ -201,7 +206,7 @@
 
                 var loading = document.getElementById("loading")
                 var xhr = new XMLHttpRequest();
-                xhr.open("GET", window.location.pathname+window.location.search+"&offset="+document.getElementById("post_list").childElementCount);
+                xhr.open("GET", window.location.pathname+window.location.search+"?offset="+document.getElementById("post_list").childElementCount);
                 xhr.setRequestHeader("x-inline-pjax", "true")
                 xhr.send();
                 mkr = true;
