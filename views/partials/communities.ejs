@@ -14,7 +14,37 @@
             <span class="community-name name"><%= community.name %></span>
             <span class="empathy-count"><%= community.favorites %></span>
             <span class="text">
-                <% if (community.platform == "3ds") { %>Nintendo 3DS Games<% } else { %>Wii U Games<% } %>
+                <% if (community.user_community == 1) { %>
+                    User-Generated-Communities
+                <% } else {
+                    if (community.type == "sub") { %>
+                        Sub-Communities
+                    <% } else {
+                        switch(community.platform) {
+                            case "wiiu":%>
+                                Wii U Games
+                            <%break;
+                            case "3ds":%>
+                                Nintendo 3DS Games
+                            <%break;
+                            case "wii":%>
+                                Wii Games
+                            <%break;
+                            case "topic":%>
+                                General Topic
+                            <%break;
+                            case "both":%>
+                                Wii U/Nintendo 3DS Games
+                            <%break;
+                            case "vc":%>
+                                Virtual Console Games
+                            <%break;
+                            default:%>
+                                Games
+                            <%break;
+                        }
+                    }
+                }  %>
             </span>
         </div>
     </div>

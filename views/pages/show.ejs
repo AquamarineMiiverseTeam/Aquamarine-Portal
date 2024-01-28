@@ -49,30 +49,9 @@
                 </div>
 
                 <div class="commnities-new-added">
-
-                    <% for (let i = 0; i < newest_communities.length; i++) {
-                        const community = newest_communities[i];%>
-                        
-                        <li id="community-<%= community.id %>" class="">
-                        <span class="icon-content">
-                            <img class="icon" onerror="this.src='../../../img/app.png'"  src="../../img/icons/<%= community.id %>.jpg">
-                        </span>
-                        <a data-sound="SE_WAVE_OK" href="javascript:void(0)" onclick="pjax.loadUrl('/communities/<%= community.id %>/')" class="scroll to-community-button">
-                            <span class="community-button"></span>
-                        </a>
-                        <div class="body">
-                            <div class="body-content">
-                                <span class="community-name title"><%= ((community.name).toString().includes("Community")) ? community.name : community.name + " Community" %></span>
-                                <span class="community-name name"><%= community.name %></span>
-                                <span class="empathy-count"><%= community.favorites %></span>
-                                <span class="text">
-                                    <% if (community.platform == "3ds") { %>Nintendo 3DS Games<% } else { %>Wii U Games<% } %>
-                                </span>
-                            </div>
-                        </div>
-                    </li>
-
-                    <% } %> 
+                    <%- include("../partials/communities", {
+                        communities : newest_communities
+                    }) %>
                 </div>
 
                 <div class="communities-headline popular">
@@ -80,30 +59,9 @@
                 </div>
 
                 <div class="commnities-new-added">
-
-                    <% for (let i = 0; i < popular_communities.length; i++) {
-                        const community = popular_communities[i];%>
-                        
-                        <li id="community-<%= community.id %>" class="">
-                        <span class="icon-content">
-                            <img class="icon" onerror="this.src='../../../img/app.png'"  src="../../img/icons/<%= community.id %>.jpg">
-                        </span>
-                        <a data-sound="SE_WAVE_OK" href="javascript:void(0)" onclick="pjax.loadUrl('/communities/<%= community.id %>/')" class="scroll to-community-button">
-                            <span class="community-button"></span>
-                        </a>
-                        <div class="body">
-                            <div class="body-content">
-                                <span class="community-name title"><%= ((community.name).toString().includes("Community")) ? community.name : community.name + " Community" %></span>
-                                <span class="community-name name"><%= community.name %></span>
-                                <span class="empathy-count"><%= community.favorites %></span>
-                                <span class="text">
-                                    <% if (community.platform == "3ds") { %>Nintendo 3DS Games<% } else { %>Wii U Games<% } %>
-                                </span>
-                            </div>
-                        </div>
-                    </li>
-
-                    <% } %> 
+                    <%- include("../partials/communities", {
+                        communities : popular_communities
+                    }) %>
                 </div>
 
                 <div class="communities-headline special">
@@ -111,30 +69,9 @@
                 </div>
 
                 <div class="commnities-new-added">
-
-                    <% for (let i = 0; i < special_communities.length; i++) {
-                        const community = special_communities[i];%>
-                        
-                        <li id="community-<%= community.id %>" class="">
-                        <span class="icon-content">
-                            <img class="icon" onerror="this.src='../../../img/app.png'" src="../../img/icons/<%= community.id %>.jpg">
-                        </span>
-                        <a data-sound="SE_WAVE_OK" href="javascript:void(0)" onclick="pjax.loadUrl('/communities/<%= community.id %>')" class="scroll to-community-button">
-                            <span class="community-button"></span>
-                        </a>
-                        <div class="body">
-                            <div class="body-content">
-                                <span class="community-name title"><%= ((community.name).toString().includes("Community")) ? community.name : community.name + " Community"  %></span>
-                                <span class="community-name name"><%= community.name %></span>
-                                <span class="empathy-count"><%= community.favorites %></span>
-                                <span class="text">
-                                    <% if (community.platform == "3ds") { %>Nintendo 3DS Games<% } else { %>Wii U Games<% } %>
-                                </span>
-                            </div>
-                        </div>
-                    </li>
-
-                    <% } %> 
+                    <%- include("../partials/communities", {
+                        communities : special_communities
+                    }) %>
                 </div>
 
                 <a href="javascript:void(0)" class="more-button scroll" data-sound="SE_WAVE_OK" onclick="pjax.loadUrl('/titles/communities')">See all communities</a>
