@@ -13,7 +13,10 @@ route.get("/:post_id/screenshot", async (req, res, next) => {
     if (!post.screenshot) { res.render("pages/error/error_no_post.ejs"); return; }
 
     try {
-        res.render("pages/screenshot_viewer")
+        res.render("pages/screenshot_viewer", {
+            screenshot : post.screenshot,
+            account : req.account
+        })
     } catch(err) {
         next(err)
     }

@@ -11,12 +11,13 @@ const common = require('../../../../Aquamarine-Utils/common')
 route.get('/', async (req, res, next) => {
     try {
         const notifications = await common.notification.getAccountAllNotifications(req.account);
+        await common.notification.readAccountNotifications(req.account)
 
         res.render('pages/notifications', {
             account: req.account,
             notifications : notifications,
             moment : moment
-        })
+        });
     } catch (err) {
         next(err)
     }

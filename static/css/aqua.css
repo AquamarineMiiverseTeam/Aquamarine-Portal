@@ -4846,12 +4846,42 @@ td span.content {
   width: 900px;
 }
 
-.notification-list li div a {
+.notification-mii-name {
+  font-weight: bold;
+}
 
+.notification-secondary {
+  color: #22C7FF
+}
+
+.notification-image-wrapper.unread::after {
+  content: url("/img/unread.png");
+  display: block;
+  bottom: 117px;
+  position: relative;
+  right: 19px;
 }
 
 .notification-created-time {
   color: #969696;
+  display: block;
+}
+
+.notification-image-wrapper {
+  width: 96px;
+  height: 96px;
+  display: inline-block;
+
+  float: left;
+}
+
+.notification-content-wrapper {
+  width: auto;
+  height: 100px;
+  vertical-align: middle;
+  display: inline-block;
+
+  margin-left: 15px;
 }
 
 .notification-button {
@@ -4877,4 +4907,56 @@ td span.content {
   vertical-align: middle !important;
 
   width: 800px !important;
+}
+
+.screenshot-viewer-screenshot {
+  padding-top: 65px;
+  margin: 0 auto;
+  width: 950px;
+}
+
+.screenshot-viewer-screenshot button {
+  width: 400px;
+  height: 65px;
+
+  background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), color-stop(0.5, #ffffff), color-stop(0.8, #f6f6f6), color-stop(0.96, #f5f5f5), to(#eeeeee)) 0 0;
+  border: none;
+  border-bottom: 2px solid gray;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.6);
+
+  border-radius: 10px;
+
+  font-size: 23px;
+
+  margin: 0 auto;
+}
+
+.screenshot-viewer-screenshot button span {
+  vertical-align: middle;
+}
+
+.screenshot-viewer-screenshot button .symbols {
+  font-family: MiiverseSymbols !important;
+
+  margin-right: 8px;
+  font-size: 30px;
+
+  vertical-align: middle;
+
+  background: -webkit-linear-gradient(#4EDFFF, #08B9FF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.screenshot-viewer-screenshot img {
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.6);
+  border-bottom: 2px solid gray;
+
+  border-radius: 5px;
+}
+
+.screenshot-button-wrapper {
+  margin: 0 auto;
+  width: 400px;
+  margin-top: 25px;
 }

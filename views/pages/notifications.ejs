@@ -10,12 +10,15 @@
                 <ul class="notification-list">
                     <% for (const notification of notifications) { %>
                         <li>
-                            <a href="<%= notification.linkto %>">
-                                <img width="96px" class="notification-image" src="<%= notification.image_url %>">
+                            <a onclick="pjax.loadUrl('/users/<%= notification.from_account.nnid %>')" class="notification-image-wrapper <%= (notification.read_notif == 0) ? "unread" : "" %>" href="javascript:void(0)">
+                                <img width="96px" class="notification-image" src="<%= notification.image_url %>" height="96px">
+                            </a>
+                            <a onclick="pjax.loadUrl('<%= notification.linkto %>')" class="notification-content-wrapper" href="javascript:void(0)">
                                 <div>
                                     <div class="notification-wrapper">
+                                        <span class="notification-mii-name"><%= notification.from_account.mii_name %></span>
                                         <span><%= notification.content %></span>
-                                        <br>
+                                        <span class="notification-secondary"><%= notification.secondary %></5></span>
                                         <span class="notification-created-time"><%= moment(notification.create_time).fromNow() %></span>
                                     </div>
                                     <span class="notification-button"></span>

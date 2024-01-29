@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+    <title>Aquamarine-WUP</title>
+
+    <link rel="stylesheet" href="/css/aqua.css"></link>
+
+    <script type="text/javascript" src="/js/complete-emu.js"></script>
+    <script type="text/javascript" src="/js/pjax.js"></script>
+    <script type="text/javascript" src="/js/aqua.js"></script>
+</head>
+
+<body data-account-pid="<%= account[0].pid %>" data-account-nnid="<%= account[0].nnid %>" data-account-id="<%= account[0].id %>">
+
+    <div class="wrapper" style="height: 720px;">
+        <div class="wrapper-content" style="height: 720px;">
+            <div class="screenshot-viewer-screenshot">
+                <img src="data:image/jpeg;base64,<%= screenshot %>" width="950px">
+                <div class="screenshot-button-wrapper">
+                    <button onclick="history.back()" data-sound="SE_WAVE_CANCEL"><span class="symbols">b</span><span>Back</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>

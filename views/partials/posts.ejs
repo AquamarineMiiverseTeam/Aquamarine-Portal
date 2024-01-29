@@ -21,7 +21,7 @@
                     <% } %>
     
                     <% if (post.screenshot) { %>
-                        <a href="javascript:void(0)" class="screenshot-permalink">
+                        <a href="javascript:void(0)" class="screenshot-permalink" onclick='pjax.loadUrl("/posts/<%= post.id %>/screenshot")' data-sound="SE_WAVE_OK">
                         <img onerror="this.src='../../../img/banners-wup/placeholder-wup.jpg'" class="post-content-screenshot" src="/img/screenshots/<%= post.id %>.jpg">
                     </a>
                     <% } %>
