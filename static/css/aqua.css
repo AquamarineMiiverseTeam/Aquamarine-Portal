@@ -635,6 +635,26 @@ body {
   -webkit-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.6);
 }
 
+.community-type {
+  width: 1120px;
+  padding-left: 160px;
+}
+
+.community-type button {
+  width: 373px;
+  height: 70px;
+
+  font-size: 20px;
+  font-weight: bold;
+
+  background: -webkit-linear-gradient(#FFFFFF, #F0F0F0);
+  border: none;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.6);
+
+  border-bottom: 2px solid gray;
+  margin: 0;
+}
+
 .info-content .icon {
   float: none;
   background: #ffffff;
