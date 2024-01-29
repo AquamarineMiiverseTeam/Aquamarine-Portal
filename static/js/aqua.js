@@ -1,27 +1,3 @@
-const aqua_locale = {
-    "aqua.portal.button.remove": { value: "Sí" },
-    "aqua.portal.cancel": { value: "Cancelar" },
-    "aqua.portal.close": { value: "Cerrar" },
-    "aqua.portal.dialog.apply_settings_done": { value: "Ajustes guardados." },
-    "aqua.portal.followlist.confirm_unfollow_with_name": { args: [1], value: "Quitar a %s de tu lista de seguidores?" },
-    "aqua.portal.miitoo.frustrated": { value: "Buena..." },
-    "aqua.portal.miitoo.happy": { value: "Buena!" },
-    "aqua.portal.miitoo.like": { value: "Buena♥" },
-    "aqua.portal.miitoo.normal": { value: "Buena!" },
-    "aqua.portal.miitoo.puzzled": { value: "Buena..." },
-    "aqua.portal.miitoo.surprised": { value: "Buena!?" },
-    "aqua.portal.ok": { value: "OK" },
-    "aqua.portal.reply.delete_confirm": { value: "Eliminar este comentario?" },
-    "aqua.portal.report.report_comment_id": { args: [1], value: "ID de Comentario: %s" },
-    "aqua.portal.report.report_post_id": { args: [1], value: "ID de Publicación: %s" },
-    "aqua.portal.setup": { value: "Configurar" },
-    "aqua.portal.show_more_content": { value: "Ver publicación entera" },
-    "aqua.portal.stop": { value: "Cancelar" },
-    "aqua.portal.unfollow": { value: "Dejar de seguir" },
-    "aqua.portal.user.search.go": { value: "Ver perfil" },
-    "aqua.portal.yes": { value: "Sí" }
-};
-
 var pjax = new Pjax({
     selectors: [".wrapper", "body"],
     cacheBust: false
@@ -37,6 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
     wiiuBrowser.endStartUp();
     aquamarine.init();
     aquamarine.initSounds();
+    aquamarine.initTabs();
     aquamarine.initEmpathy();
     aquamarine.initSpoilers();
     aquamarine.initNavBar();
@@ -58,6 +35,7 @@ document.addEventListener("pjax:send", function () {
 document.addEventListener("pjax:complete", function () {
     isHistoryBackDisabled = false;
     aquamarine.initSounds();
+    aquamarine.initTabs();
     aquamarine.initEmpathy();
     aquamarine.initSpoilers();
     aquamarine.initNavBar();
@@ -176,6 +154,57 @@ var aquamarine = {
                 };
                 xhr.send();
             }
+        }
+    },
+    initTabs: function () {
+        var els = document.querySelectorAll(".community-type button");
+        if (!els) return;
+
+        for (var i = 0; i < els.length; i++) {
+            els[i].removeEventListener('click', changeTab);
+            els[i].addEventListener("click", changeTab);
+        }
+
+        function changeTab(e) {
+            wiiuBrowser.lockUserOperation(true);
+            var el = e.currentTarget;
+            var query = el.getAttribute("data-tab-query");
+            var request = new XMLHttpRequest();
+            request.open("GET", "https://portal.olv.nonamegiven.xyz/communities/" +
+            document.querySelector(".wrapper-content").getAttribute("data-community-id") + "/?type=" + query);
+            request.setRequestHeader("x-inline-pjax", "true");
+            request.onreadystatechange = function () {
+                if (request.readyState === 4) {
+                    if (request.status === 200) {
+                        var response = request.responseText;
+                        var post_list = document.getElementById("post_list");
+                        post_list.innerHTML = response;
+                        for (var i = 0; i < els.length; i++) {
+                            els[i].setAttribute("data-tab-selected", "")
+                            els[i].classList.remove("selected");
+                        }
+                        el.setAttribute("data-tab-selected", "true")
+                        el.classList.add("selected");
+                        wiiuBrowser.lockUserOperation(false);
+                    } else if (request.status === 404) {
+                        var post_list = document.getElementById("post_list");
+                        post_list.innerHTML = " ";
+                        for (var i = 0; i < els.length; i++) {
+                            els[i].setAttribute("data-tab-selected", "")
+                            els[i].classList.remove("selected");
+                        }
+                        el.setAttribute("data-tab-selected", "true")
+                        el.classList.add("selected");
+                        wiiuBrowser.lockUserOperation(false);
+                    }
+
+                    wiiuBrowser.lockUserOperation(false);
+                    aquamarine.initSounds();
+                    aquamarine.initSpoilers();
+                    aquamarine.initEmpathy();
+                }
+            };
+            request.send();
         }
     },
     initSpoilers: function () {
