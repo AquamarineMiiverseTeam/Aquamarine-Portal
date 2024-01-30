@@ -82,7 +82,7 @@ if (typeof wiiuDevice === 'undefined') {
                 : { error: { code: 1112222, message: "Test Error Message" } };
         },
         existsTitle: function () {
-            return Math.random() < 1 / 2;
+            return false;
         }
     };
 }

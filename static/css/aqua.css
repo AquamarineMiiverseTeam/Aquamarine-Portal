@@ -659,6 +659,10 @@ body {
   vertical-align: middle;
 }
 
+.community-type button[disabled=""] span {
+  color: gray;
+}
+
 .community-type button span {
   vertical-align: middle;
   display: inline-block;

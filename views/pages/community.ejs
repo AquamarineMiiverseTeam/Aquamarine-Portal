@@ -35,7 +35,7 @@
             </div>
 
             <div class="community-type">
-                <button data-tab-query="newest" data-tab-selected="true" class="selected new_posts" data-sound="SE_WAVE_SELECT_TAB"><span>New Posts</span></button><button data-tab-query="played" data-sound="SE_WAVE_SELECT_TAB" class="player_posts"><span>Player Posts</span></button><button data-tab-query="popular" data-sound="SE_WAVE_SELECT_TAB" class="popular_posts"><span>Popular Posts</span></button>
+                <button data-tab-query="newest" data-tab-selected="true" class="selected new_posts" data-sound="SE_WAVE_SELECT_TAB"><span>New Posts</span></button><button data-tab-query="played" data-sound="SE_WAVE_SELECT_TAB" class="player_posts" <%= (community.platform == "topic" || community.platform == "wii") ? "disabled" : "" %>><span>Player Posts</span></button><button data-tab-query="popular" data-sound="SE_WAVE_SELECT_TAB" class="popular_posts"><span>Popular Posts</span></button>
             </div>
 
             <div class="community-post-list">
