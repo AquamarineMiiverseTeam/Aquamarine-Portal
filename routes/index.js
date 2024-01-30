@@ -20,6 +20,10 @@ module.exports = [
         route: require("./ui/menu/posts.js")
     },
     {
+        path: "/users",
+        route: require("./ui/menu/users.js")
+    },
+    {
         path: "/account",
         route: require("./ui/account.js")
     }
