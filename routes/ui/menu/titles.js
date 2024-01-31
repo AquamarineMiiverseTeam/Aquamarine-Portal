@@ -10,6 +10,12 @@ const common = require('../../../../Aquamarine-Utils/common')
 
 route.get('/show', async (req, res, next) => {
     try {
+        //If the user opens the Miiverse applet on HBM when they're in a game with a community, we can redirect them to the community page
+        if (req.query['src'] == "menu") {
+            const game_community = (await common.ui.getCommunityByDecimalTitleID(req.param_pack.title_id))[0]
+            if (game_community) {res.redirect(`/communities/${game_community.id}`); return;}
+        }
+
         const newest_communities = await database_query.getCommunities("desc", 3, 'main');
         const special_communities = await database_query.getCommunities("desc", 3, 'all', 0, 1);
         const popular_communities = await common.ui.getPopularCommunities(3);
