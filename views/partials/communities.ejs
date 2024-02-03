@@ -12,7 +12,7 @@
         <div class="body-content">
             <span class="community-name title"><%= ((community.name).toString().includes("Community")) ? community.name : community.name + " Community" %></span>
             <span class="community-name name"><%= community.name %></span>
-            <span class="empathy-count"><%= community.favorites %></span>
+            <span class="empathy-count"><span><%= community.favorites.toLocaleString() %></span></span>
             <span class="text">
                 <% if (community.user_community == 1) { %>
                     User-Generated-Communities

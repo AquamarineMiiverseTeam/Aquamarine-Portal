@@ -6,24 +6,30 @@
                 <h1 class="content-title left">Notifications</h1>
             </header>
 
+            <div class="notification-tab-wrapper">
+                <a class="updates selected" href="javascript:void(0)" data-sound="SE_WAVE_SELECT_TAB" onclick="pjax.loadUrl('/notifications')"><span>Updates</span></a>
+                <a class="friend_requests" href="javascript:void(0)" data-sound="SE_WAVE_SELECT_TAB" onclick="pjax.loadUrl('/notifications/friend_requests')"><span>Friend Requests</span></a>
+            </div>
+
             <div class="notifications-content">
                 <ul class="notification-list">
                     <% for (const notification of notifications) { %>
                         <li>
+                            <a onclick="pjax.loadUrl('<%= notification.linkto %>')" class="notification-content-wrapper" href="javascript:void(0)">
+                                
+                            </a>
                             <a onclick="pjax.loadUrl('/users/<%= notification.from_account.nnid %>')" class="notification-image-wrapper <%= (notification.read_notif == 0) ? "unread" : "" %>" href="javascript:void(0)">
                                 <img width="96px" class="notification-image" src="<%= notification.image_url %>" height="96px">
                             </a>
-                            <a onclick="pjax.loadUrl('<%= notification.linkto %>')" class="notification-content-wrapper" href="javascript:void(0)">
-                                <div>
-                                    <div class="notification-wrapper">
-                                        <span class="notification-mii-name"><%= notification.from_account.mii_name %></span>
-                                        <span><%= notification.content %></span>
-                                        <span class="notification-secondary"><%= notification.secondary %></5></span>
-                                        <span class="notification-created-time"><%= moment(notification.create_time).fromNow() %></span>
-                                    </div>
-                                    <span class="notification-button"></span>
+                            <div>
+                                <div class="notification-wrapper">
+                                    <span class="notification-mii-name"><%= notification.from_account.mii_name %></span>
+                                    <span><%= notification.content %></span>
+                                    <span class="notification-secondary"><%= notification.secondary %></span>.
+                                    <span class="notification-created-time"><%= moment(notification.create_time).fromNow() %></span>
                                 </div>
-                            </a>
+                                <span class="notification-button"></span>
+                            </div>
                         </li>
                     <% } %>
                 </ul>

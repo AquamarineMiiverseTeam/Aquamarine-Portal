@@ -8,32 +8,9 @@
 
         <div class="communities-listing main-page" style="padding-top: 10px;">
             <div class="commnities-new-added" id="community_wrapper">
-
-                <% for (let i = 0; i < communities.length; i++) {
-                    const community = communities[i];%>
-                    
-                    <li community="yes" id="community-<%= community.id %>" class="">
-                    <span class="icon-content <%= (community.user_community == 1) ? "user-subcommunity" : "" %>">
-                        <img class="icon" onerror="this.src='../../../img/app.png'" src="../../img/icons/<%= community.id %>.jpg">
-                        <% if (community.user_community == 1) { %>
-                            <img class="mii" src="http://mii-images.account.nintendo.net/<%= community.mii_hash %>_normal_face.png">
-                        <% } %>
-                    </span>
-                    <a data-sound="SE_WAVE_OK" href="javascript:void(0)" onclick="pjax.loadUrl('/communities/<%= community.id %>/')" class="scroll to-community-button">
-                        <span class="community-button"></span>
-                    </a>
-                    <div class="body">
-                        <div class="body-content">
-                            <span class="community-name title"><%= ((community.name).toString().includes("Community")) ? community.name : community.name + " Community"  %></span>
-                            <span class="community-name name"><%= community.name %></span>
-                            <span class="empathy-count"><%= community.favorites %></span>
-                            <span class="text">
-                                <% if (community.platform == "3ds") { %>Nintendo 3DS Games<% } else { %>Wii U Games<% } %>
-                            </span>
-                        </div>
-                    </div>
-                    </li>
-                <% } %> 
+                <%- include("../partials/communities.ejs", {
+                    communities : communities
+                }) %>
             </div>
 
             <a class="loading" id="loading"></a>

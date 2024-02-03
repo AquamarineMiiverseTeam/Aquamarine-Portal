@@ -1,6 +1,5 @@
 <%- include('../partials/header'), { account : account } %>
     <div class="wrapper">
-
         <div class="wrapper-content" data-community-id="<%= community.id %>" data-community-title-id="<%= JSON.parse(community.title_ids)[0]; %>" data-community-title-id-hex="<%= JSON.parse(community.title_ids).map(titleId => Number(titleId).toString(16).padStart(16, '0')).join(',') %>"  data-community-title-name="<%= community.name %>">
 
             <header class="header">
@@ -20,9 +19,8 @@
                 <span class="icon-container">
                     <img src="../../../img/icons/<%= community.id %>.jpg" class="icon">
                 </span>
-                <a href="javascript:void(0)" data-sound="SE_WAVE_OK" class="settings-button button"
-                    onclick="aquamarine.openComSettingsModal()"></a>
-                <button class="favorite-button button <%= (community.is_favorited == 1) ? "checked" : ""  %>" onclick="aquamarine.toggleFavorite()" href="javascript:void(0)">Favorite</button>
+                <button href="javascript:void(0)" data-sound="SE_WAVE_OK" class="settings-button button" onclick="aquamarine.openComSettingsModal()">y</button>
+                <button class="favorite-button button <%= (community.is_favorited == 1) ? "checked" : ""  %>" onclick="aquamarine.toggleFavorite()" href="javascript:void(0)"> <%= (community.is_favorited == 1) ? "s" : "P"  %></button>
                 <% if (community.type=="main" ) {%>
                     <span class="news-community-badge">Main Community</span>
                 <%} else if (community.type=="sub" ) {%>
@@ -50,6 +48,8 @@
                 <% } %>
             </div>
         </div>
+
+        <%- include("../partials/screenshot-viewer.ejs") %>
 
         <div id="add-new-post-modal" class="window-page none">
             <div class="window">

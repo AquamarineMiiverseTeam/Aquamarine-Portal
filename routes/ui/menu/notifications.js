@@ -21,7 +21,21 @@ route.get('/', async (req, res, next) => {
     } catch (err) {
         next(err)
     }
+})
 
+route.get("/friend_requests", async (req, res, next) => {
+    try {
+        //Friend requests arn't implemented yet, so this is stubbed for now.
+        const friend_requests = []
+
+        res.render('pages/friend_requests', {
+            account: req.account,
+            friend_requests : friend_requests,
+            moment : moment
+        });
+    } catch (err) {
+        next(err)
+    }
 })
 
 module.exports = route;

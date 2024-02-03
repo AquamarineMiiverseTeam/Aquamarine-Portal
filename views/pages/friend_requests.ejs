@@ -1,0 +1,24 @@
+<%- include('../partials/header'), { account : account } %>
+
+    <div class="wrapper">
+        <div class="wrapper-content">
+            <header class="header">
+                <h1 class="content-title left">Notifications</h1>
+            </header>
+
+            <div class="notification-tab-wrapper">
+                <a class="updates" href="javascript:void(0)" data-sound="SE_WAVE_SELECT_TAB" onclick="pjax.loadUrl('/notifications')"><span>Updates</span></a>
+                <a class="friend_requests selected" href="javascript:void(0)" data-sound="SE_WAVE_SELECT_TAB" onclick="pjax.loadUrl('/notifications/friend_requests')"><span>Friend Requests</span></a>
+            </div>
+
+            <div class="notifications-content">
+                <ul class="notification-list">
+                    <% for (const request of friend_requests) { %>
+                        <li>
+                            
+                        </li>
+                    <% } %>
+                </ul>
+            </div>
+        </div>
+    </div>

@@ -1,6 +1,6 @@
 var pjax = new Pjax({
     selectors: [".wrapper", "body"],
-    cacheBust: false
+    elements : ["a[data-pjax]"]
 });
 
 var isHistoryBackDisabled = false;
@@ -119,12 +119,6 @@ var aquamarine = {
             var count = parent.querySelector(".feeling");
             el.disabled = true;
 
-            if (count.classList.contains('added')) {
-                wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
-            } else {
-                wiiuSound.playSoundByName('SE_OLV_MII_ADD', 1);
-            }
-
             if (!el.getAttribute('data-in-progress')) {
                 el.setAttribute('data-in-progress', 'true');
 
@@ -144,6 +138,12 @@ var aquamarine = {
                                 count.classList.add('added');
                                 el.innerHTML = 'Unyeah!';
                                 if (count) count.innerText = ++count.innerText;
+                            }
+
+                            if (!count.classList.contains('added')) {
+                                wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
+                            } else {
+                                wiiuSound.playSoundByName('SE_OLV_MII_ADD', 1);
                             }
                         } else {
                             wiiuErrorViewer.openByCode(1155927);
@@ -171,7 +171,7 @@ var aquamarine = {
             var query = el.getAttribute("data-tab-query");
             var request = new XMLHttpRequest();
             request.open("GET", "https://portal.olv.nonamegiven.xyz/communities/" +
-            document.querySelector(".wrapper-content").getAttribute("data-community-id") + "/?type=" + query);
+                document.querySelector(".wrapper-content").getAttribute("data-community-id") + "/?type=" + query);
             request.setRequestHeader("x-inline-pjax", "true");
             request.onreadystatechange = function () {
                 if (request.readyState === 4) {
@@ -228,11 +228,6 @@ var aquamarine = {
     },
     toggleFavorite: function () {
         var favoriteBtn = document.querySelector(".favorite-button.button");
-        if (favoriteBtn.classList.contains("checked")) {
-            wiiuSound.playSoundByName("SE_OLV_MII_CANCEL", 3);
-        } else {
-            wiiuSound.playSoundByName("SE_OLV_MII_ADD", 3);
-        }
         favoriteBtn.disabled = true;
 
         var id = document.querySelector(".wrapper-content").getAttribute("data-community-id");
@@ -245,9 +240,17 @@ var aquamarine = {
                     if (favoriteBtn.classList.contains("checked")) {
                         favoriteBtn.disabled = false;
                         favoriteBtn.classList.remove("checked");
+                        favoriteBtn.innerText = "P";
                     } else {
                         favoriteBtn.disabled = false;
                         favoriteBtn.classList.add("checked");
+                        favoriteBtn.innerText = "s";
+                    }
+
+                    if (!favoriteBtn.classList.contains("checked")) {
+                        wiiuSound.playSoundByName("SE_OLV_MII_CANCEL", 3);
+                    } else {
+                        wiiuSound.playSoundByName("SE_OLV_MII_ADD", 3);
                     }
                 }
                 else {
@@ -527,7 +530,7 @@ var aquamarine = {
                         postButton.onclick = makeNewPost;
                         wiiuBrowser.lockHomeButtonMenu(false);
 
-                        pjax.loadUrl(window.location.pathname, {history : false});
+                        pjax.loadUrl(window.location.pathname, { history: false });
                     }
                     else {
                         wiiuErrorViewer.openByCodeAndMessage(155289, 'There was an error making a new post, Please try again later.')
@@ -913,9 +916,13 @@ var aquamarine = {
             document.querySelector("#menu-bar #menu-bar-community").classList.add("selected");
         } else if (path.indexOf("/messages") !== -1) {
             document.querySelector("#menu-bar #menu-bar-message").classList.add("selected");
+        } else if (path.indexOf("/users/@me") !== -1) {
+            document.querySelector("#menu-bar #menu-bar-mymenu").classList.add("selected");
+        } else if (path.indexOf("/notifications") !== -1) {
+            document.querySelector("#menu-bar #menu-bar-news").classList.add("selected");
         }
 
-        if ((wiiuBrowser.canHistoryBack() && path.indexOf("/titles/show") === -1 && path.indexOf("/messages") === -1)) {
+        if (wiiuBrowser.canHistoryBack() && path.indexOf("/titles/show") === -1 && path.indexOf("/messages") === -1 && path.indexOf("/notifications") === -1 && path.indexOf("/users/@me") === -1) {
             backBtn.classList.remove('selected');
             backBtn.classList.remove('none');
             exitBtn.classList.add('none');
@@ -928,6 +935,22 @@ var aquamarine = {
     },
     getPostsByTopicTag: function (a) {
         pjax.loadUrl(window.location.pathname + "?topic_tag=" + a.innerText)
+    },
+    toggleCaptureModal: function(dom_post) {
+        if (document.querySelector(".screenshot-viewer-screenshot").style.display == "-webkit-box") {
+            document.querySelector(".wrapper-content").style.display = "block";
+            document.querySelector(".screenshot-viewer-screenshot").style.display = "none";
+            document.querySelector("#menu-bar").style.display = "block"
+
+            window.scrollTo(0, scrollPosition)
+        } else {
+            scrollPosition = window.scrollY;
+
+            document.querySelector("#menu-bar").style.display = "none"
+            document.querySelector(".wrapper-content").style.display = "none";
+            document.querySelector(".screenshot-viewer-screenshot").style.display = "-webkit-box";
+            document.querySelector(".screenshot-viewer-screenshot img").src = dom_post.children[0].src;
+        }
     }
 }
 
@@ -942,7 +965,7 @@ setInterval(function () {
     }
 
     if (wiiu.gamepad.hold === 8) {
-        window.location.href = "https://portal.olv.nonamegiven.xyz/dumps/user_page_visitor.html";
+        pjax.reload();
     }
 }, 100);
 
@@ -950,7 +973,7 @@ function checkNotifications() {
     const pid = document.querySelector("body").getAttribute("data-account-pid");
 
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', "https://api.olv.nonamegiven.xyz/v1/users/"+pid+"/notifications");
+    xhr.open('GET', "https://api.olv.nonamegiven.xyz/v1/users/" + pid + "/notifications");
     xhr.send();
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
