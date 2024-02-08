@@ -1,30 +1,38 @@
 <menu id="menu-bar">
     <li id="menu-bar-mymenu">
         <a href="javascript:void(0);" onclick="pjax.loadUrl('/users/@me')" data-sound="SE_WAVE_MENU">
-            <span class="mii-icon">
-                <img src="http://mii-images.account.nintendo.net/<%= account[0].mii_hash %>_normal_face.png" onerror="this.src='../../../img/mii_null.png'"></img>
+            <span style="bottom: 2px;" class="mii-icon">
+                <img src="http://mii-images.account.nintendo.net/<%= account[0].mii_hash %>_normal_face.png" onerror="this.src='../../../img/mii_null.png'" width="64px"></img>
             </span>
-            <span>My Menu</span>
+            <span style="bottom: 0;">User Page</span>
         </a>
     </li>
     <li id="menu-bar-feed">
-        <a href="javascript:void(0);" data-sound="SE_WAVE_MENU">Activity Feed</a>
+        <a href="javascript:void(0);" data-sound="SE_WAVE_MENU">
+            <span>Activity Feed</span>
+        </a>
     </li>
     <li id="menu-bar-community">
-        <a href="javascript:void(0);" data-sound="SE_WAVE_MENU" href="javascript:void(0)" onclick="pjax.loadUrl('/titles/show')">Communities</a>
+        <a href="javascript:void(0);" data-sound="SE_WAVE_MENU" href="javascript:void(0)" onclick="pjax.loadUrl('/titles/show')">
+            <span>Communities</span>
+        </a>
     </li>
     <li id="menu-bar-message">
-        <a href="javascript:void(0)" onclick="pjax.loadUrl('/messages')" data-sound="SE_WAVE_MENU">Messages<span class="badge" style="display: none;">0</span>
-            
+        <a href="javascript:void(0)" onclick="pjax.loadUrl('/messages')" data-sound="SE_WAVE_MENU">
+            <span>Messages</span>
+            <span class="badge" style="display: none;">0</span>
         </a>
     </li>
     <li id="menu-bar-news">
-        <a href="javascript:void(0)" onclick="pjax.loadUrl('/notifications')" data-sound="SE_WAVE_MENU">Notifications
+        <a href="javascript:void(0)" onclick="pjax.loadUrl('/notifications')" data-sound="SE_WAVE_MENU">
+            <span>Notifications</span>
             <span class="badge" <% if (account.unread_notifications.length >= 1) {%> style="display:block" <%}else{%> style="display:none" <%} %>><%= (account.unread_notifications.length > 99) ? "99+" : account.unread_notifications.length %></span>
         </a>
     </li>
     <li id="menu-bar-exit">
-        <a href="javascript:void(0)" onclick="aquamarine.exitApplet()" data-sound="SE_WAVE_EXIT">Close</a>
+        <a href="javascript:void(0)" onclick="aquamarine.exitApplet()" data-sound="SE_WAVE_EXIT">
+            <span>Close</span>
+        </a>
     </li>
     <li id="menu-bar-back" class="none">
         <a href="javascript:void(0)" onclick="aquamarine.back()" role="button" data-sound="SE_WAVE_BACK">Back</a>

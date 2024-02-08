@@ -41,7 +41,7 @@
                 <% } %>
     
                 <div class="post-meta">
-                    <button type="button" data-post-id="<%= post.id %>" class="submit miitoo-button" <%= (post.account_id == account[0].id) ? "disabled" : "" %>><%= (post.empathies.some(empathy => empathy.account_id == account[0].id)) ? "Unyeah!" : "Yeah!" %></button>
+                    <button data-sound type="button" data-post-id="<%= post.id %>" class="submit miitoo-button" <%= (post.account_id == account[0].id) ? "disabled" : "" %>><%= (post.empathies.some(empathy => empathy.account_id == account[0].id)) ? "Unyeah!" : "Yeah!" %></button>
                     <a href="javascript:void(0)" onclick="pjax.loadUrl('/posts/<%= post.id %>')" class="to-permalink-button">
                         <span class="feeling <%= (post.empathies.some(empathy => empathy.account_id == account[0].id)) ? "added" : "" %>"><%= post.empathies.length %></span>
                         <span class="reply">0</span>
