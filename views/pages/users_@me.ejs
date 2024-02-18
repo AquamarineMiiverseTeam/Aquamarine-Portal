@@ -14,9 +14,10 @@
             Your favorite post can be displayed here.
           </div>
 
-          <span class="icon-container">
-            <a href="/users/@me"><img src="http://mii-images.account.nintendo.net/<%= view_account.mii_hash %>_normal_face.png"
-                class="icon"></a>
+          <span class="icon-container <%= (view_account.admin == 1) ? "admin" : "" %>">
+            <a data-pjax href="/users/@me">
+              <img src="http://mii-images.account.nintendo.net/<%= view_account.mii_hash %>_normal_face.png" class="icon">
+            </a>
           </span>
 
           <p class="title">
@@ -101,8 +102,8 @@
                 const iterate = (view_account.favorited_communities.length >= 7) ? 7 : view_account.favorited_communities.length;
                 for (let i = 0; i < iterate ; i++) { %>
                 <li class="favorite-community empty">
-                  <a data-sound="SE_WAVE_MENU" class="icon-container" href="javascript:void(0)" onclick="pjax.loadUrl('/communities/<%= view_account.favorited_communities[i].community_id %>?type=newest')">
-                    <img src="/img/icons/<%= view_account.favorited_communities[i].community_id %>.jpg" width="96px">
+                  <a data-pjax="" data-sound="SE_WAVE_MENU" class="icon-container" href="/communities/<%= view_account.favorited_communities[i].community_id %>">
+                    <img src="/img/icons/<%= view_account.favorited_communities[i].community_id %>.jpg" onerror="this.src = '/img/app.png'"  width="96px">
                   </a>
                 </li>
               <% } %>

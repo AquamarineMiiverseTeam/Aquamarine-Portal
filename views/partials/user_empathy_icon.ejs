@@ -1,0 +1,18 @@
+<% let expression = Math.round((Math.random() * 5));%>
+
+<a href="/users/<%= empathy.nnid %>" class="user-icon-container<% if (empathy.is_visitor) { %> visitor <% } %>" <% if (empathy.display == "none") { %> style="display: none;" <% } %> >
+    <img class="user-icon" <% switch (expression) {
+        case 1:%>
+            src="http://mii-images.account.nintendo.net/<%= empathy.mii_hash %>_happy_face.png"
+            <% break;
+        case 2:%>
+           src="http://mii-images.account.nintendo.net/<%= empathy.mii_hash %>_like_face.png"
+            <% break;
+        case 3:%>
+           src="http://mii-images.account.nintendo.net/<%= empathy.mii_hash %>_surprised_face.png"
+            <% break;
+        default:%>
+            src="http://mii-images.account.nintendo.net/<%= empathy.mii_hash %>_normal_face.png"
+            <% break;
+    } %> onerror="this.src='../../../img/mii_null.png'">
+</a>

@@ -1,6 +1,6 @@
 var pjax = new Pjax({
     selectors: [".wrapper", "body"],
-    elements : ["a[data-pjax]"]
+    elements: ["a[data-pjax]"]
 });
 
 var isHistoryBackDisabled = false;
@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", function () {
     wiiuBrowser.endStartUp();
     aquamarine.init();
     aquamarine.initSounds();
-    aquamarine.initTabs();
     aquamarine.initEmpathy();
     aquamarine.initSpoilers();
     aquamarine.initNavBar();
@@ -35,7 +34,6 @@ document.addEventListener("pjax:send", function () {
 document.addEventListener("pjax:complete", function () {
     isHistoryBackDisabled = false;
     aquamarine.initSounds();
-    aquamarine.initTabs();
     aquamarine.initEmpathy();
     aquamarine.initSpoilers();
     aquamarine.initNavBar();
@@ -56,10 +54,12 @@ var aquamarine = {
     initSounds: function () {
         var els = document.querySelectorAll("[data-sound]");
         if (!els) return;
+        function soundPlay(e) {
+            wiiuSound.playSoundByName(e.currentTarget.getAttribute('data-sound'), 3);
+        }
         for (var i = 0; i < els.length; i++) {
-            els[i].addEventListener("click", function (e) {
-                wiiuSound.playSoundByName(e.currentTarget.getAttribute('data-sound'), 3);
-            });
+            els[i].removeEventListener("click", soundPlay);
+            els[i].addEventListener("click", soundPlay);
         }
     },
     initNavBar: function () {
@@ -97,7 +97,6 @@ var aquamarine = {
 
             return localizedText;
         } else {
-            // Return a default message if the key is not found
             return 'Localization not available for key: ' + key;
         }
     },
@@ -113,98 +112,116 @@ var aquamarine = {
         function yeah(e) {
             var el = e.currentTarget;
             var id = el.getAttribute("data-post-id");
-            console.log(id);
+            if (el.classList.contains("post-viewer-miitoo-button")) {
+                var miisContainer = document.querySelector(".post-content-miis");
+                var postContent = document.querySelector(".post-content");
+                var userCount = miisContainer.querySelector(".user-count");
+                var userCountText = userCount.innerText;
+                var miis = miisContainer.querySelectorAll(".user-icon-container");
+                var miiVisitor = miisContainer.querySelector(".user-icon-container.visitor");
+                el.disabled = true;
 
-            var parent = document.getElementById("post-" + id);
-            var count = parent.querySelector(".feeling");
-            el.disabled = true;
+                if (!el.getAttribute('data-in-progress')) {
+                    el.setAttribute('data-in-progress', 'true');
 
-            if (!el.getAttribute('data-in-progress')) {
-                el.setAttribute('data-in-progress', 'true');
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "https://api.olv.nonamegiven.xyz/v1/posts/" + id + "/empathies");
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === 4) {
+                            el.removeAttribute('data-in-progress');
 
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", "https://api.olv.nonamegiven.xyz/v1/posts/" + id + "/empathies");
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4) {
-                        el.removeAttribute('data-in-progress');
-
-                        if (xhr.status === 200) {
-                            var response = JSON.parse(xhr.responseText).result;
-                            if (count.classList.contains('added') && response == "deleted") {
-                                count.classList.remove('added');
-                                el.innerHTML = 'Yeah!';
-                                if (count) count.innerText -= 1;
-                            } else if (!count.classList.contains('added') && response == "created") {
-                                count.classList.add('added');
-                                el.innerHTML = 'Unyeah!';
-                                if (count) count.innerText = ++count.innerText;
-                            }
-
-                            if (!count.classList.contains('added')) {
-                                wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
+                            if (xhr.status === 200) {
+                                var response = JSON.parse(xhr.responseText).result;
+                                if (el.classList.contains('added') && response == "deleted") {
+                                    wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
+                                    el.classList.remove('added');
+                                    el.innerHTML = 'Yeah!';
+                                    if (miis.length == 1) {
+                                        postContent.classList.add("no-empathy");
+                                        miiVisitor.style.display = "none";
+                                        userCount.innerText = "";
+                                        miisContainer.classList.add("none");
+                                    } else {
+                                        var regex = /You and (\d+) other (person|people)s?/;
+                                        var match = userCountText.match(regex);
+                                        if (match) {
+                                            userCountText = userCountText.replace(match[0], match[1] + " " + match[2]);
+                                        }
+                                        miiVisitor.style.display = "none";
+                                        userCount.innerText = userCountText;
+                                    }
+                                } else if (!el.classList.contains('added') && response == "created") {
+                                    wiiuSound.playSoundByName('SE_OLV_MII_ADD', 1);
+                                    el.classList.add('added');
+                                    el.innerHTML = 'Unyeah!';
+                                    if (miis.length == 1) {
+                                        if (postContent.classList.contains("no-empathy")) {
+                                            postContent.classList.remove("no-empathy");
+                                        }
+                                        miiVisitor.style.display = "inline-block";
+                                        userCount.innerText = "You gave a Yeah to this post.";
+                                        miisContainer.classList.remove("none");
+                                    } else {
+                                        var regex = /(\d+)\s+(person|people)/;
+                                        var match = userCountText.match(regex);
+                                        if (match) {
+                                            var count = parseInt(match[1]);
+                                            var plural = (count !== 1 || match[2] !== "person") ? " people" : " person";
+                                            if (userCountText.indexOf("You and") === -1) {
+                                                userCountText = "You and " + count + " other" + plural + " " + userCountText.substring(match[0].length);
+                                            }
+                                        }
+                                        miiVisitor.style.display = "inline-block";
+                                        userCount.innerText = userCountText;
+                                    }
+                                }
                             } else {
-                                wiiuSound.playSoundByName('SE_OLV_MII_ADD', 1);
+                                wiiuErrorViewer.openByCode(1155927);
                             }
-                        } else {
-                            wiiuErrorViewer.openByCode(1155927);
+
+                            el.disabled = false;
                         }
-
-                        el.disabled = false;
-                    }
-                };
-                xhr.send();
-            }
-        }
-    },
-    initTabs: function () {
-        var els = document.querySelectorAll(".community-type button");
-        if (!els) return;
-
-        for (var i = 0; i < els.length; i++) {
-            els[i].removeEventListener('click', changeTab);
-            els[i].addEventListener("click", changeTab);
-        }
-
-        function changeTab(e) {
-            wiiuBrowser.lockUserOperation(true);
-            var el = e.currentTarget;
-            var query = el.getAttribute("data-tab-query");
-            var request = new XMLHttpRequest();
-            request.open("GET", "https://portal.olv.nonamegiven.xyz/communities/" +
-                document.querySelector(".wrapper-content").getAttribute("data-community-id") + "/?type=" + query);
-            request.setRequestHeader("x-inline-pjax", "true");
-            request.onreadystatechange = function () {
-                if (request.readyState === 4) {
-                    if (request.status === 200) {
-                        var response = request.responseText;
-                        var post_list = document.getElementById("post_list");
-                        post_list.innerHTML = response;
-                        for (var i = 0; i < els.length; i++) {
-                            els[i].setAttribute("data-tab-selected", "")
-                            els[i].classList.remove("selected");
-                        }
-                        el.setAttribute("data-tab-selected", "true")
-                        el.classList.add("selected");
-                        wiiuBrowser.lockUserOperation(false);
-                    } else if (request.status === 404) {
-                        var post_list = document.getElementById("post_list");
-                        post_list.innerHTML = " ";
-                        for (var i = 0; i < els.length; i++) {
-                            els[i].setAttribute("data-tab-selected", "")
-                            els[i].classList.remove("selected");
-                        }
-                        el.setAttribute("data-tab-selected", "true")
-                        el.classList.add("selected");
-                        wiiuBrowser.lockUserOperation(false);
-                    }
-
-                    wiiuBrowser.lockUserOperation(false);
-                    aquamarine.initSounds();
-                    aquamarine.initSpoilers();
-                    aquamarine.initEmpathy();
+                    };
+                    xhr.send();
                 }
-            };
-            request.send();
+                return;
+            } else {
+                var parent = document.getElementById("post-" + id);
+                var count = parent.querySelector(".feeling");
+                el.disabled = true;
+
+                if (!el.getAttribute('data-in-progress')) {
+                    el.setAttribute('data-in-progress', 'true');
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "https://api.olv.nonamegiven.xyz/v1/posts/" + id + "/empathies");
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === 4) {
+                            el.removeAttribute('data-in-progress');
+
+                            if (xhr.status === 200) {
+                                var response = JSON.parse(xhr.responseText).result;
+                                if (count.classList.contains('added') && response == "deleted") {
+                                    wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
+                                    count.classList.remove('added');
+                                    el.innerHTML = 'Yeah!';
+                                    if (count) count.innerText -= 1;
+                                } else if (!count.classList.contains('added') && response == "created") {
+                                    wiiuSound.playSoundByName('SE_OLV_MII_ADD', 1);
+                                    count.classList.add('added');
+                                    el.innerHTML = 'Unyeah!';
+                                    if (count) count.innerText = ++count.innerText;
+                                }
+                            } else {
+                                wiiuErrorViewer.openByCode(1155927);
+                            }
+
+                            el.disabled = false;
+                        }
+                    };
+                    xhr.send();
+                }
+            }
         }
     },
     initSpoilers: function () {
@@ -238,19 +255,13 @@ var aquamarine = {
             if (xml.readyState === 4) {
                 if (xml.status === 200) {
                     if (favoriteBtn.classList.contains("checked")) {
+                        wiiuSound.playSoundByName("SE_OLV_MII_CANCEL", 3);
                         favoriteBtn.disabled = false;
                         favoriteBtn.classList.remove("checked");
-                        favoriteBtn.innerText = "P";
-                    } else {
-                        favoriteBtn.disabled = false;
-                        favoriteBtn.classList.add("checked");
-                        favoriteBtn.innerText = "s";
-                    }
-
-                    if (!favoriteBtn.classList.contains("checked")) {
-                        wiiuSound.playSoundByName("SE_OLV_MII_CANCEL", 3);
                     } else {
                         wiiuSound.playSoundByName("SE_OLV_MII_ADD", 3);
+                        favoriteBtn.disabled = false;
+                        favoriteBtn.classList.add("checked");
                     }
                 }
                 else {
@@ -936,20 +947,20 @@ var aquamarine = {
     getPostsByTopicTag: function (a) {
         pjax.loadUrl(window.location.pathname + "?topic_tag=" + a.innerText)
     },
-    toggleCaptureModal: function(dom_post) {
-        if (document.querySelector(".screenshot-viewer-screenshot").style.display == "-webkit-box") {
-            document.querySelector(".wrapper-content").style.display = "block";
-            document.querySelector(".screenshot-viewer-screenshot").style.display = "none";
-            document.querySelector("#menu-bar").style.display = "block"
+    toggleCaptureModal: function (dom_post) {
+        if (!document.querySelector(".screenshot-viewer-screenshot").classList.contains("none")) {
+            document.querySelector(".screenshot-viewer-screenshot").classList.add("none");
+            document.querySelector(".wrapper-content").classList.remove("none");
+            document.querySelector("#menu-bar").classList.remove("none");
 
             window.scrollTo(0, scrollPosition)
         } else {
             scrollPosition = window.scrollY;
 
-            document.querySelector("#menu-bar").style.display = "none"
-            document.querySelector(".wrapper-content").style.display = "none";
-            document.querySelector(".screenshot-viewer-screenshot").style.display = "-webkit-box";
+            document.querySelector("#menu-bar").classList.add("none");
+            document.querySelector(".wrapper-content").classList.add("none");
             document.querySelector(".screenshot-viewer-screenshot img").src = dom_post.children[0].src;
+            document.querySelector(".screenshot-viewer-screenshot").classList.remove("none");
         }
     }
 }
@@ -965,12 +976,12 @@ setInterval(function () {
     }
 
     if (wiiu.gamepad.hold === 8) {
-        pjax.reload();
+        window.location.href = "https://portal.olv.nonamegiven.xyz/dumps/manual.html"
     }
 }, 100);
 
 function checkNotifications() {
-    const pid = document.querySelector("body").getAttribute("data-account-pid");
+    const pid = document.body.getAttribute("data-account-pid");
 
     var xhr = new XMLHttpRequest();
     xhr.open('GET', "https://api.olv.nonamegiven.xyz/v1/users/" + pid + "/notifications");

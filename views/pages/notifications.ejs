@@ -6,33 +6,57 @@
                 <h1 class="content-title left">Notifications</h1>
             </header>
 
-            <div class="notification-tab-wrapper">
-                <a class="updates selected" href="javascript:void(0)" data-sound="SE_WAVE_SELECT_TAB" onclick="pjax.loadUrl('/notifications')"><span>Updates</span></a>
-                <a class="friend_requests" href="javascript:void(0)" data-sound="SE_WAVE_SELECT_TAB" onclick="pjax.loadUrl('/notifications/friend_requests')"><span>Friend Requests</span></a>
+            <div class="news-list">
+                <ul class="news-list-content">
+                    
+            <div class="tutorial-window news">
+                <p>In Notifications, you can find out how other people have reacted to your posts or comments, and see if you have any pending friend requests. If you have new notifications, an orange icon will appear to let you know.</p>
+                <a href="javascript:void(0)" data-sound="SE_OLV_OFFBUTTON" class="button tutorial-close-button">Close</a>
+              </div>
+
+            <div class="news-tab-container">
+                <li class="tab-updates"><a class="updates selected" data-news href="/notifications" data-sound="SE_WAVE_SELECT_TAB"><span>Updates</span></a></li>
+                <li class="tab-requests"><a class="friend_requests" data-news href="/notifications/friend_requests" data-sound="SE_WAVE_SELECT_TAB"><span>Friend Requests</span></a></li>
             </div>
 
-            <div class="notifications-content">
-                <ul class="notification-list">
+                    <% if (!notifications || notifications.length === 0) { %>
+                        <div class="no-content-window">
+                            <p>There are no notifications here yet.</p>
+                          </div>
+                    <% } %>
+
                     <% for (const notification of notifications) { %>
-                        <li>
-                            <a onclick="pjax.loadUrl('<%= notification.linkto %>')" class="notification-content-wrapper" href="javascript:void(0)">
-                                
-                            </a>
-                            <a onclick="pjax.loadUrl('/users/<%= notification.from_account.nnid %>')" class="notification-image-wrapper <%= (notification.read_notif == 0) ? "unread" : "" %>" href="javascript:void(0)">
-                                <img width="96px" class="notification-image" src="<%= notification.image_url %>" height="96px">
+                        <li class="news-item">
+                            <a data-pjax data-sound="SE_WAVE_OK" class="news-content-container" href="<%= notification.linkto %>"></a>
+
+                            <a data-pjax data-sound="SE_WAVE_OK_SUB" class="news-img-container <%= (notification.read == 0) ? "unread" : "" %> <%= (notification.admin == 1) ? "admin" : "" %>" href="/users/<%= notification.nnid %>">
+                                <% if (notification.type == "yeah") { %>
+                                    <img class="news-img" src="http://mii-images.account.nintendo.net/<%= notification.mii_hash %>_normal_face.png" onerror="this.src='../../../img/mii_null.png'">
+                                <% } %>
                             </a>
                             <div>
-                                <div class="notification-wrapper">
-                                    <span class="notification-mii-name"><%= notification.from_account.mii_name %></span>
-                                    <span><%= notification.content %></span>
-                                    <span class="notification-secondary"><%= notification.secondary %></span>.
-                                    <span class="notification-created-time"><%= moment(notification.create_time).fromNow() %></span>
+                                <div class="news-content">
+                                    <span class="news-mii-name"><%= notification.mii_name %></span>
+                                    <% if (notification.type == "yeah") { %>
+                                        <span>gave a Yeah to</span>
+                                    <% } %>
+                                    <span class="news-secondary">
+                                        your post
+                                        <% if (notification.post_body) {%>
+                                            (<%= notification.post_body.slice(0, 12) %>..)
+                                        <% } else { %>
+                                            (Handwritten)
+                                        <%} %>
+                                        
+                                    </span>.
+                                    <span class="news-created-time"><%= moment(notification.create_time).fromNow() %></span>
                                 </div>
-                                <span class="notification-button"></span>
+                                <span class="news-button"></span>
                             </div>
                         </li>
                     <% } %>
                 </ul>
             </div>
+
         </div>
     </div>

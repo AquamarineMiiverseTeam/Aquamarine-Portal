@@ -21,6 +21,7 @@
     "colors": "^1.4.0",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
+    "express-pjax": "^0.0.1",
     "fast-xml-parser": "^4.3.2",
     "jimp": "^0.22.10",
     "jpeg-js": "^0.4.4",

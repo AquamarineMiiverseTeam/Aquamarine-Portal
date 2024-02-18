@@ -1,0 +1,109 @@
+<div id="add-new-post-modal" class="window-page none">
+    <div class="window">
+        <h1 class="window-title"><%= ((community.name).toString().includes("Community")) ? community.name : community.name + " Community"  %></h1>
+        <div class="window-body">
+
+            <div class="add-post-inner">
+
+                <a href="javascript:void(0)"
+                    onclick="wiiuSound.playSoundByName('SE_OLV_BALLOON_OPEN', 3),aquamarine.toggleFeelingModal();"
+                    class="mii-icon-container">
+                    <img src="http://mii-images.account.nintendo.net/<%= account[0].mii_hash %>_normal_face.png" class="icon">
+                </a>
+
+                <h1 class="mii-name"><%= account[0].mii_name %></h1>
+
+                <label class="spoiler-button checkbox-button">Spoilers
+                    <input type="checkbox" class="spoiler_input" name="is_spoiler" value="1">
+                </label>
+
+                <a href="javascript:void(0)" data-sound="SE_OLV_TOGGLE_CHECK" class="screenshot-toggle-button none" onclick="aquamarine.toggleScreenshotModal();"></a>
+
+                <div class="screenshot-toggle-container none">
+                <li>
+                <input type="radio" name="_screenshot_value" value="top" data-sound="SE_OLV_TOGGLE_SELECTED_CHECK">
+                <img class="screenshot-tv" src=""/>
+                </li>
+                <li>
+                <input type="radio" name="_screenshot_value" value="bottom" data-sound="SE_OLV_TOGGLE_SELECTED_CHECK">
+                <img class="screenshot-gp" src=""/>
+                </li>
+                <input type="hidden" name="screenshot_value" id="screenshot_val_input" value="">
+                <a href="javascript:void(0)" data-sound="SE_OLV_TOGGLE_SELECTED_CHECK" class="cancel-toggle-button">No Screenshot</a>
+                </div>
+
+                <div class="feeling-selector expression none">
+                    <ul class="buttons">
+                        <li class="checked">
+                            <input type="radio" name="feeling_id" value="0" class="feeling-button-normal"
+                                data-mii-face-url="http://mii-images.account.nintendo.net/<%= account[0].mii_hash %>_normal_face.png"
+                                checked data-sound="SE_WAVE_MII_FACE_00">
+                        </li>
+                        <li class>
+                            <input type="radio" name="feeling_id" value="1" class="feeling-button-happy"
+                                data-mii-face-url="http://mii-images.account.nintendo.net/<%= account[0].mii_hash %>_happy_face.png"
+                                data-sound="SE_WAVE_MII_FACE_01">
+                        </li>
+                        <li class>
+                            <input type="radio" name="feeling_id" value="2" class="feeling-button-like"
+                                data-mii-face-url="http://mii-images.account.nintendo.net/<%= account[0].mii_hash %>_like_face.png"
+                                data-sound="SE_WAVE_MII_FACE_02">
+                        </li>
+                        <li class>
+                            <input type="radio" name="feeling_id" value="3" class="feeling-button-surprised"
+                                data-mii-face-url="http://mii-images.account.nintendo.net/<%= account[0].mii_hash %>_surprised_face.png"
+                                data-sound="SE_WAVE_MII_FACE_03">
+                        </li>
+                        <li class>
+                            <input type="radio" name="feeling_id" value="4" class="feeling-button-frustrated"
+                                data-mii-face-url="http://mii-images.account.nintendo.net/<%= account[0].mii_hash %>_frustrated_face.png"
+                                data-sound="SE_WAVE_MII_FACE_04">
+                        </li>
+                        <li class>
+                            <input type="radio" name="feeling_id" value="5" class="feeling-button-puzzled"
+                                data-mii-face-url="http://mii-images.account.nintendo.net/<%= account[0].mii_hash %>_puzzled_face.png"
+                                data-sound="SE_WAVE_MII_FACE_05">
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="textarea-container textarea-with-menu">
+                    <menu class="textarea-menu">
+                        <li>
+                            <label id="text" class="textarea-menu-text checked">
+                                <input type="radio" name="_post_type" value="body" checked data-sound>
+                                <textarea type="text" guidestring="Write an post." name="body"
+                                    class="textarea-menu-text-input" value="" maxlength="255"
+                                    placeholder="Share your thoughts in a post to this community."></textarea>
+                            </label>
+                        </li>
+
+                        <li class="test-painting-tab">
+                            <label id="memo" class="textarea-menu-memo">
+                                <input type="radio" name="_post_type" value="painting" data-sound>
+                            </label>
+                        </li>
+
+                    </menu>
+                    <textarea type="text" guidestring="Write an post." data-sound name="body"
+                        class="textarea-text" value="" maxlength="255"
+                        placeholder="Share your thoughts in a post to this community."></textarea>
+
+                    <div class="textarea-memo none" data-sound="">
+                        <a href="javascript:void(0)" class="textarea-memo-trigger"></a>
+                        <div class="textarea-memo-preview">
+                        </div>
+                        <input type="hidden" class="textarea-memo-value" name="painting" disabled="">
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="window-bottom-buttons">
+            <a href="javascript:void(0)" class="button cancel-button" onclick="aquamarine.closePostModal()"
+                data-sound="SE_WAVE_CANCEL">Cancel</a>
+            <a href="javascript:void(0)" data-sound="SE_WAVE_OK" class="button ok-confirm-post-button">Post</a>
+        </div>
+    </div>
+</div>

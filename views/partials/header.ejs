@@ -1,3 +1,5 @@
+<% if (locals.pjax == true) {return;} %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,9 +9,10 @@
 
     <link rel="stylesheet" href="/css/aqua.css"></link>
 
-    <script type="text/javascript" src="/js/complete-emu.js"></script>
-    <script type="text/javascript" src="/js/pjax.js"></script>
-    <script type="text/javascript" src="/js/aqua.js"></script>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/olv/complete-emu.js"></script>
+    <script type="text/javascript" src="/js/jquery.pjax.js"></script>
+    <script type="text/javascript" src="/js/aqua.jquery.js"></script>
 </head>
 
 <body data-account-pid="<%= account[0].pid %>" data-account-nnid="<%= account[0].nnid %>" data-account-id="<%= account[0].id %>">

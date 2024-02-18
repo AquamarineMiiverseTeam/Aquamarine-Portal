@@ -1,0 +1,78 @@
+<%- include('../../partials/header'), { account : account } %>
+
+<div id="body" class="wrapper">
+  <header class="header">
+    <h1 class="content-title left">Communities</h1>
+    <div class="filter-dropdown">
+      <a onclick="aquamarine.toggleFilterMainModal()" class="dropdown-toggle" data-sound="SE_WAVE_BALLOON_OPEN" href="javascript:void(0)">Filter</a>
+      <ul class="dropdown-menu none">
+        <li>
+          <a href="javascript:void(0)" class="button checkbox-button selected" data-sound="SE_WAVE_TOGGLE_CHECK">All Software</a>
+        </li>
+        <li>
+          <a href="javascript:void(0)" class="button checkbox-button" data-sound="SE_WAVE_TOGGLE_CHECK">Wii U Games</a>
+        </li>
+        <li>
+          <a href="javascript:void(0)" class="button checkbox-button" data-sound="SE_WAVE_TOGGLE_CHECK">Nintendo 3DS Games</a>
+        </li>
+        <li>
+          <a href="javascript:void(0)" class="button checkbox-button" data-sound="SE_WAVE_TOGGLE_CHECK">Virtual Console</a>
+        </li>
+        <li>
+          <a href="javascript:void(0)" class="button checkbox-button" data-sound="SE_WAVE_TOGGLE_CHECK">Other</a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <div class="communities-listing main-page">
+
+    <div id="important-header-marquee" class="info-content-important-marquee">
+      <marquee>WARNING: Aquamarine is currently going under major revisions. Please stay clear of any unwanted behavior.</marquee>
+    </div>
+
+    <div id="header-news" class="info-content-new-announcment">
+      <a href="https://portal.olv.nonamegiven.xyz/dumps/manual.html" onclick="aquamarine.closeNewAnnouncment();" data-sound="SE_WAVE_BALLOON_CLOSE" class="close-button"></a>
+      <a href="javascript:void(0)" data-sound="SE_WAVE_OK" class="header-link-news-button">There is a new Aquamarine announcement. Tap here for more details.</a>
+    </div>
+
+    <div class="banner-container">
+      <a href="javascript:void(0)" data-sound="SE_WAVE_OK" class="button identified-user-button" onclick="wiiuBOSS.registerBossTask('US');">
+        <span class="title">Get the latest news here!</span>
+        <span class="text">Posts from Verified Users</span>
+      </a>
+    </div>
+
+    <div class="communities-headline">
+      <span class="headline-text">New Communities</span>
+    </div>
+
+    <div class="commnities-new-added">
+      <%- include("../../partials/communities", {
+                        communities : newest_communities
+                    }) %>
+    </div>
+
+    <div class="communities-headline popular">
+      <span class="headline-text">Popular Communities</span>
+    </div>
+
+    <div class="commnities-new-added">
+      <%- include("../../partials/communities", {
+                        communities : popular_communities
+                    }) %>
+    </div>
+
+    <div class="communities-headline special">
+      <span class="headline-text">Special Communities</span>
+    </div>
+
+    <div class="commnities-new-added">
+      <%- include("../../partials/communities", {
+                        communities : special_communities
+                    }) %>
+    </div>
+
+    <a data-pjax href="/titles/communities" class="more-button scroll" data-sound="SE_WAVE_OK">See all communities</a>
+  </div>
+</div>

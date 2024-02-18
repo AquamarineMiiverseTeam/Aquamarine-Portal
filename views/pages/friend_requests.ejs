@@ -6,13 +6,25 @@
                 <h1 class="content-title left">Notifications</h1>
             </header>
 
-            <div class="notification-tab-wrapper">
-                <a class="updates" href="javascript:void(0)" data-sound="SE_WAVE_SELECT_TAB" onclick="pjax.loadUrl('/notifications')"><span>Updates</span></a>
-                <a class="friend_requests selected" href="javascript:void(0)" data-sound="SE_WAVE_SELECT_TAB" onclick="pjax.loadUrl('/notifications/friend_requests')"><span>Friend Requests</span></a>
+            <div class="news-list">
+                <ul class="news-list-content">
+
+            <div class="tutorial-window news">
+                <p>In Notifications, you can find out how other people have reacted to your posts or comments, and see if you have any pending friend requests. If you have new notifications, an orange icon will appear to let you know.</p>
+                <a href="javascript:void(0)" data-sound="SE_OLV_OFFBUTTON" class="button tutorial-close-button">Close</a>
+              </div>
+
+              <div class="news-tab-container">
+                <li class="tab-updates"><a class="updates" data-news href="/notifications" data-sound="SE_WAVE_SELECT_TAB"><span>Updates</span></a></li>
+                <li class="tab-requests"><a class="friend_requests selected" data-news href="/notifications/friend_requests" data-sound="SE_WAVE_SELECT_TAB"><span>Friend Requests</span></a></li>
             </div>
 
-            <div class="notifications-content">
-                <ul class="notification-list">
+                    <% if (!friend_requests || friend_requests.length === 0) { %>
+                        <div class="no-content-window">
+                            <p>There are no pendent friend requests here yet.</p>
+                          </div>
+                    <% } %>
+
                     <% for (const request of friend_requests) { %>
                         <li>
                             
@@ -20,5 +32,6 @@
                     <% } %>
                 </ul>
             </div>
+
         </div>
     </div>

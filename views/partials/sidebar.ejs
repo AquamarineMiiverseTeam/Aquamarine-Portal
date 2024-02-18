@@ -1,30 +1,30 @@
 <menu id="menu-bar">
     <li id="menu-bar-mymenu">
-        <a href="javascript:void(0);" onclick="pjax.loadUrl('/users/@me')" data-sound="SE_WAVE_MENU">
-            <span style="bottom: 2px;" class="mii-icon">
-                <img src="http://mii-images.account.nintendo.net/<%= account[0].mii_hash %>_normal_face.png" onerror="this.src='../../../img/mii_null.png'" width="64px"></img>
+        <a data-pjax=".wrapper" href="/users/@me" data-sound="SE_WAVE_MENU">
+            <span class="mii-icon">
+                <img src="http://mii-images.account.nintendo.net/<%= account[0].mii_hash %>_normal_face.png" onerror="this.src='../../../img/mii_null.png'"/>
             </span>
-            <span style="bottom: 0;">User Page</span>
+            <span>User Page</span>
         </a>
     </li>
     <li id="menu-bar-feed">
-        <a href="javascript:void(0);" data-sound="SE_WAVE_MENU">
+        <a href="/activity_feed" data-pjax=".wrapper" data-sound="SE_WAVE_MENU">
             <span>Activity Feed</span>
         </a>
     </li>
     <li id="menu-bar-community">
-        <a href="javascript:void(0);" data-sound="SE_WAVE_MENU" href="javascript:void(0)" onclick="pjax.loadUrl('/titles/show')">
+        <a data-pjax=".wrapper" href="/titles/show" data-sound="SE_WAVE_MENU">
             <span>Communities</span>
         </a>
     </li>
     <li id="menu-bar-message">
-        <a href="javascript:void(0)" onclick="pjax.loadUrl('/messages')" data-sound="SE_WAVE_MENU">
+        <a data-pjax=".wrapper" href="/messages" data-sound="SE_WAVE_MENU">
             <span>Messages</span>
             <span class="badge" style="display: none;">0</span>
         </a>
     </li>
     <li id="menu-bar-news">
-        <a href="javascript:void(0)" onclick="pjax.loadUrl('/notifications')" data-sound="SE_WAVE_MENU">
+        <a data-pjax=".wrapper" href="/notifications" data-sound="SE_WAVE_MENU">
             <span>Notifications</span>
             <span class="badge" <% if (account.unread_notifications.length >= 1) {%> style="display:block" <%}else{%> style="display:none" <%} %>><%= (account.unread_notifications.length > 99) ? "99+" : account.unread_notifications.length %></span>
         </a>
@@ -35,7 +35,9 @@
         </a>
     </li>
     <li id="menu-bar-back" class="none">
-        <a href="javascript:void(0)" onclick="aquamarine.back()" role="button" data-sound="SE_WAVE_BACK">Back</a>
+        <a href="javascript:void(0)" onclick="history.back()" role="button" data-sound="SE_WAVE_BACK">
+            <span>Back</span>
+        </a>
     </li>
     
     </menu>
