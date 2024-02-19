@@ -13,7 +13,7 @@ route.get("/:nnid", async (req, res, next) => {
         //If the account doesn't exist, render a 404.
         if (!account) { res.render("pages/error/error_404"); return;}
 
-        account.favorited_communities = await db_con("favorites").where({account_id : account.id})
+        account.favorited_communities = await db_con("favorites").where({account_id : account.id}).orderBy("create_time", "desc")
         account.yeahs_recieved = (await db_con("posts")
         .select("posts.id").where({"posts.account_id" : account.id})
         .innerJoin("empathies", "empathies.post_id", "=", "posts.id")).length
