@@ -1,17 +1,17 @@
 var aqua = {
     modifed_posts: [],
-    initSnd: function() {
+    initSnd: function () {
         var e = $("[data-sound]");
-        if (!e) {return;}
-        
+        if (!e) { return; }
+
         function playSnd(event) {
             var soundName = $(event.currentTarget).attr("data-sound");
             wiiuSound.playSoundByName(soundName, 3);
         }
-        
+
         e.off("click").on("click", playSnd);
     },
-    initNav: function() {
+    initNav: function () {
         var el = $("#menu-bar > li")
         var menu = $("#menu-bar")
         var back = $("#menu-bar-back")
@@ -24,7 +24,7 @@ var aqua = {
         var path = location.pathname;
 
         for (var i = 0; i < el.length; i++) {
-            $(el[i]).on("click", function(e) {
+            $(el[i]).on("click", function (e) {
                 var elm = e.currentTarget
                 var isExcluded = elm.id === "menu-bar-back" || elm.id === "menu-bar-exit";
 
@@ -66,11 +66,11 @@ var aqua = {
         }
 
         if (wiiuBrowser.canHistoryBack() &&
-        path.indexOf("/titles/show") === -1 &&
-        path.indexOf("/messages") === -1 &&
-        path.indexOf("/notifications") === -1 &&
-        path.indexOf("/notifications/friend_requests") === -1 &&
-        path.indexOf("/users/@me") === -1) {
+            path.indexOf("/titles/show") === -1 &&
+            path.indexOf("/messages") === -1 &&
+            path.indexOf("/notifications") === -1 &&
+            path.indexOf("/notifications/friend_requests") === -1 &&
+            path.indexOf("/users/@me") === -1) {
             back.removeClass('none');
             fin.addClass('none');
         } else {
@@ -79,9 +79,9 @@ var aqua = {
         }
 
     },
-    initPjx: function() {
+    initPjx: function () {
         $.pjax.defaults.timeout = 10000
-        
+
         $(document).pjax("a[data-pjax]", {
             container: ".wrapper", // Specify the container for PJAX response
             fragment: ".wrapper" // Specify the fragment inside the response to replace
@@ -99,7 +99,7 @@ var aqua = {
             push: false
         });
     },
-    initTbs: function() {
+    initTbs: function () {
         $("a[data-tab-query]").off("click")
         $("a[data-tab-query]").on("click", changeTbs)
 
@@ -110,9 +110,9 @@ var aqua = {
             wiiuSound.playSoundByName("SE_WAVE_SELECT_TAB", 3)
         }
     },
-    initScrl: function() {
+    initScrl: function () {
         function checkScroll() {
-            if(window.scrollY + window.innerHeight >= document.body.scrollHeight) {
+            if (window.scrollY + window.innerHeight >= document.body.scrollHeight) {
                 $(document).trigger("aqua:scroll-end")
             }
         }
@@ -125,12 +125,12 @@ var aqua = {
 
         var currently_downloading = false;
         function download() {
-            if (currently_downloading) {return;}
+            if (currently_downloading) { return; }
             var url = $("[data-scroll-url]").attr("data-scroll-url")
             var cont = $("[data-scroll-container]").attr("data-scroll-container")
             var query;
             if ($("[data-scroll-tab]").length >= 1) {
-                query = "&type="+$("[data-tab-query].selected").attr("data-tab-query")
+                query = "&type=" + $("[data-tab-query].selected").attr("data-tab-query")
             }
             var xhttp = new XMLHttpRequest()
             xhttp.open("GET", url += ("?offset=" + $(cont)[0].children.length) + query)
@@ -138,7 +138,7 @@ var aqua = {
             xhttp.send()
             currently_downloading = true;
 
-            xhttp.onreadystatechange = function() {
+            xhttp.onreadystatechange = function () {
                 if (xhttp.readyState === 4) {
                     switch (xhttp.status) {
                         case 200:
@@ -164,7 +164,7 @@ var aqua = {
         $(document).on("aqua:scroll-end", download)
         $(document).on("scroll", checkScroll);
     },
-    initEmp: function() {
+    initEmp: function () {
         var els = $("button[data-post-id].miitoo-button");
 
         if (!els.length) return;
@@ -195,7 +195,15 @@ var aqua = {
 
                             if (xhr.status === 200) {
                                 var response = JSON.parse(xhr.responseText).result;
-                                aqua.modifed_posts.push({id : id, state : response})
+                                var existingIndex = aqua.modifed_posts.findIndex(function (item) {
+                                    return item.id === id;
+                                });
+
+                                if (existingIndex !== -1) {
+                                    aqua.modifed_posts[existingIndex].state = response;
+                                } else {
+                                    aqua.modifed_posts.push({ id: id, state: response });
+                                }
                                 if (el.hasClass('added') && response == "deleted") {
                                     wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
                                     el.removeClass('added');
@@ -209,13 +217,13 @@ var aqua = {
                                         $(".empathy_and").addClass("none")
                                         $(".empathy_person").removeClass("none")
                                         $(".empathy_other_person").addClass("none")
-                                        miiVisitor.css("display", "none");                                           
-                                    } else  {
+                                        miiVisitor.css("display", "none");
+                                    } else {
                                         $(".empathy_you").addClass("none")
                                         $(".empathy_and").addClass("none")
                                         $(".empathy_people").removeClass("none")
                                         $(".empathy_other_people").addClass("none")
-                                        miiVisitor.css("display", "none");  
+                                        miiVisitor.css("display", "none");
                                     }
                                 } else if (!el.hasClass('added') && response == "created") {
                                     wiiuSound.playSoundByName('SE_OLV_MII_ADD', 1);
@@ -236,13 +244,13 @@ var aqua = {
                                         $(".empathy_and").removeClass("none")
                                         $(".empathy_person").addClass("none")
                                         $(".empathy_other_person").removeClass("none")
-                                        miiVisitor.css("display", "inline-block");                                                                                                                        
+                                        miiVisitor.css("display", "inline-block");
                                     } else {
                                         $(".empathy_you").removeClass("none")
                                         $(".empathy_and").removeClass("none")
                                         $(".empathy_people").addClass("none")
                                         $(".empathy_other_people").removeClass("none")
-                                        miiVisitor.css("display", "inline-block");                                                                                                                        
+                                        miiVisitor.css("display", "inline-block");
                                     }
                                 }
                             } else {
@@ -256,7 +264,7 @@ var aqua = {
                 }
                 return;
             } //post preview miitoo
-             else {
+            else {
                 var parent = $("#post-" + id);
                 var count = parent.find(".feeling");
                 el.prop('disabled', true);
@@ -272,6 +280,15 @@ var aqua = {
 
                             if (xhr.status === 200) {
                                 var response = JSON.parse(xhr.responseText).result;
+                                var existingIndex = aqua.modifed_posts.findIndex(function (item) {
+                                    return item.id === id;
+                                });
+
+                                if (existingIndex !== -1) {
+                                    aqua.modifed_posts[existingIndex].state = response;
+                                } else {
+                                    aqua.modifed_posts.push({ id: id, state: response });
+                                }
                                 if (count.hasClass('added') && response == "deleted") {
                                     wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
                                     count.removeClass('added');
@@ -279,7 +296,7 @@ var aqua = {
                                     if (count) {
                                         var countText = parseInt(count.text());
                                         count.text(countText - 1);
-                                    }                                    
+                                    }
                                 } else if (!count.hasClass('added') && response == "created") {
                                     wiiuSound.playSoundByName('SE_OLV_MII_ADD', 1);
                                     count.addClass('added');
@@ -302,20 +319,20 @@ var aqua = {
         }
 
     },
-    initEmpPopstate: function() {
-        if ($("#post_list").length == 0) {return;}
-        for (let i = 0; i < aqua.modifed_posts.length; i++) {
+    initEmpPopstate: function () {
+        if ($("#post_list").length == 0) { return; }
+        for (var i = 0; i < aqua.modifed_posts.length; i++) {
             if (aqua.modifed_posts[i].state == "created") {
-                $("#post-"+aqua.modifed_posts[i].id+" .post-body-content .post-body .post-meta button").text("Unyeah!")
-                $("#post-"+aqua.modifed_posts[i].id+" .post-body-content .post-body .post-meta a .feeling").addClass("added")
-                $("#post-"+aqua.modifed_posts[i].id+" .post-body-content .post-body .post-meta a .feeling").text(
-                    Number($("#post-"+aqua.modifed_posts[i].id+" .post-body-content .post-body .post-meta a .feeling").text()) + 1
+                $("#post-" + aqua.modifed_posts[i].id + " .post-body-content .post-body .post-meta button").text("Unyeah!")
+                $("#post-" + aqua.modifed_posts[i].id + " .post-body-content .post-body .post-meta a .feeling").addClass("added")
+                $("#post-" + aqua.modifed_posts[i].id + " .post-body-content .post-body .post-meta a .feeling").text(
+                    Number($("#post-" + aqua.modifed_posts[i].id + " .post-body-content .post-body .post-meta a .feeling").text()) + 1
                 )
             } else {
-                $("#post-"+aqua.modifed_posts[i].id+" .post-body-content .post-body .post-meta button").text("Yeah!")
-                $("#post-"+aqua.modifed_posts[i].id+" .post-body-content .post-body .post-meta a .feeling").removeClass("added")
-                $("#post-"+aqua.modifed_posts[i].id+" .post-body-content .post-body .post-meta a .feeling").text(
-                    Number($("#post-"+aqua.modifed_posts[i].id+" .post-body-content .post-body .post-meta a .feeling").text()) - 1
+                $("#post-" + aqua.modifed_posts[i].id + " .post-body-content .post-body .post-meta button").text("Yeah!")
+                $("#post-" + aqua.modifed_posts[i].id + " .post-body-content .post-body .post-meta a .feeling").removeClass("added")
+                $("#post-" + aqua.modifed_posts[i].id + " .post-body-content .post-body .post-meta a .feeling").text(
+                    Number($("#post-" + aqua.modifed_posts[i].id + " .post-body-content .post-body .post-meta a .feeling").text()) - 1
                 )
             }
 
@@ -324,29 +341,32 @@ var aqua = {
     }
 }
 
-$(document).on("DOMContentLoaded", function() {
-    aqua.initSnd()
-    aqua.initPjx()
-    aqua.initTbs()
-    aqua.initNav()
+$(document).on("DOMContentLoaded", function () {
+    wiiuBrowser.endStartUp();
+    wiiuBrowser.lockUserOperation(true);
+    aqua.initSnd();
+    aqua.initPjx();
+    aqua.initTbs();
+    aqua.initNav();
     aqua.initScrl();
     aqua.initEmp();
-    wiiuBrowser.endStartUp();
+    aqua.initEmpPopstate();
     wiiuSound.playSoundByName("BGM_OLV_MAIN", 3);
     setTimeout(function () {
         wiiuSound.playSoundByName("BGM_OLV_MAIN_LOOP_NOWAIT", 3);
     }, 90000);
-})
-
-$(document).on("pjax:click", function() {
-    wiiuBrowser.lockUserOperation(true);
-})
-
-$(document).on("pjax:beforeReplace", function() {
     wiiuBrowser.lockUserOperation(false);
 })
 
-$(document).on("pjax:end", function() {
+$(document).on("pjax:click", function () {
+    wiiuBrowser.lockUserOperation(true);
+})
+
+$(document).on("pjax:beforeReplace", function () {
+    wiiuBrowser.lockUserOperation(false);
+})
+
+$(document).on("pjax:end", function () {
     aqua.initTbs();
     aqua.initSnd();
     aqua.initNav();
