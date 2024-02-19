@@ -9,6 +9,14 @@ const language = {
     "es" : require("../static/languages/es.json")
 }
 
+function local(args, string) {
+    for (let i = 0; i < args.length; i++) {
+        string = string.replace(args[i].rpl, args[i].str)
+    }
+
+    return string
+}
+
 async function getAccountData(req, res, next) {
     //This middleware is meant for getting all extra account data that may be used in places such as
     //the navbar, and other UI elements
@@ -26,6 +34,8 @@ async function getAccountData(req, res, next) {
     } else {
         res.locals.language = language["en"]
     }
+
+    res.locals.local = local;
 
     next();
 }

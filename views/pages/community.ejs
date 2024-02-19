@@ -4,8 +4,8 @@
                 <% if (community.sub_communities.length != 0) { %>
                     <a data-pjax class="header-other-button" data-sound="SE_WAVE_OK_SUB" href="/communities/<%= community.id %>/other"><%= locals.language.aqua.portal.community.other %></a>
                 <% } %>
-                <h1 class="content-title title-label <%= (community.sub_communities.length !== 0) ? 'button-ellipsis' : '' %>"><%= community.name %></h1>
-                <% if (!community.ingame_only) { %><a href="javascript:void(0)" class="add-post-button" onclick="wiiuSound.playSoundByName('SE_WAVE_OK', 3); aquamarine.openPostModal()">Post</a><% } %>
+                <h1 class="content-title title-label"><%= (community.app_name) ? community.app_name : community.name %></h1>
+                <% if (!community.ingame_only) { %><a href="javascript:void(0)" class="add-post-button" onclick="wiiuSound.playSoundByName('SE_WAVE_OK', 3); aquamarine.openPostModal()"><%= locals.language.aqua.portal.community.post.post %></a><% } %>
             </header>
 
             <div class="header-banner-container">
@@ -23,9 +23,9 @@
                 <%} else if (community.type=="sub" ) {%>
                     <span class="news-community-badge"><%= locals.language.aqua.portal.community.types.sub_community %></span>
                 <%} else if (community.type=="announcement" ) {%>
-                    <span class="news-community-badge"><%= locals.language.aqua.portal.community.types.announcment_community %></span>
+                    <span class="news-community-badge"><%= locals.language.aqua.portal.community.types.announcements_community %></span>
                 <%}%>
-                    <span class="title"><%= ((community.name).toString().includes("Community")) ? community.name : community.name + " Community"  %></span>
+                    <span class="title"><%= locals.local([{str : community.name, rpl : "%s"}], locals.language.aqua.portal.community.community) %></span>
                     <span class="text"><%= community.description %></span>
             </div>
 
@@ -39,13 +39,13 @@
 
                 </a>
                 <a href="?type=newest" data-tab-query="newest" data-tab-context="community" class="new_posts <%= (posts.query == "newest" || !posts.query) ? "selected" : "" %>">
-                    <span>New Posts</span>
+                    <span><%= locals.language.aqua.portal.community.tabs.new %></span>
                 </a>
                 <a href="?type=played" data-tab-query="played" data-tab-context="community" class="player_posts  <%= (posts.query == "played") ? "selected" : "" %>" <%= (community.platform == "topic" || community.platform == "wii") ? "disabled" : "" %>>
-                    <span>Player Posts</span>
+                    <span><%= locals.language.aqua.portal.community.tabs.player %></span>
                 </a>
                 <a href="?type=popular" data-tab-query="popular" data-tab-context="community" class="popular_posts  <%= (posts.query == "popular") ? "selected" : "" %>">
-                    <span>Popular Posts</span>
+                    <span><%= locals.language.aqua.portal.community.tabs.popular %></span>
                 </a>
             </div>
 
@@ -55,6 +55,12 @@
                     <%- include("../partials/posts.ejs", {
                         posts : posts
                     }) %>
+
+                    <% if (posts.length == 0) { %>
+                        <div class="no-content-window">
+                            <p><%= locals.language.aqua.portal.community.no_posts %></p>
+                        </div>
+                    <%} %>
                 </div>
                 
                 <a class="loading" id="loading" style="display: none;"></a>

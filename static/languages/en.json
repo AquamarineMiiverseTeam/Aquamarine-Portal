@@ -1,107 +1,112 @@
 {
     "aqua": {
-     "portal": {
         "language": "en",
-        "community": {
-            "communities": "Communities",
-            "filter": {
-                "filter": "Filter",
-                "all_software": "All Software",
-                "wiiu_games": "Wii U Games",
-                "n3ds_games": "Nintendo 3DS Games",
-                "vc_games": "Virtual Console",
-                "other": "Other"
+        "portal": {
+            "community": {
+                "communities": "Communities",
+                "filter": {
+                    "filter": "Filter",
+                    "all_software": "All Software",
+                    "wiiu_games": "Wii U Games",
+                    "n3ds_games": "Nintendo 3DS Games",
+                    "vc_games": "Virtual Console",
+                    "other": "Other"
+                },
+                "new_communities": "New Communities",
+                "popular_communities": "Popular Communities",
+                "special_communities": "Special Communities",
+                "see_all_communities": "See all communities",
+                "all_communities" : "All Communities",
+                "community": "%s Community",
+                "other": "Other Communities",
+                "no_posts": "No posts have been made for this community, why don't you try making one?",
+                "settings": {
+                    "header": "Community Post Display Setting",
+                    "show": "Show All",
+                    "spoiler": "Hide Spoilers",
+                    "screenshot": "Hide Screenshots",
+                    "both": "Hide Both",
+                    "cancel": "Cancel"
+                },
+                "types": {
+                    "main_community": "Main Community",
+                    "sub_community": "Sub-Community",
+                    "announcements_community": "Announcements Community",
+                    "user_community": "User-Generated Community"
+                },
+                "platforms": {
+                    "topic": "Topic",
+                    "general_topic": "General Topic",
+                    "virtual_console": "Virtual Console Games",
+                    "wii": "Wii Games",
+                    "wiiu": "Wii U Games",
+                    "wiiu/n3ds": "Wii U/Nintendo 3DS Games",
+                    "n3ds": "Nintendo 3DS Games",
+                    "n_switch": "Nintendo Switch Games"
+                },
+                "tabs": {
+                    "popular": "Popular Posts",
+                    "player": "Player Posts",
+                    "new": "New Posts"
+                },
+                "post": {
+                    "post": "Post",
+                    "cancel": "Cancel",
+                    "post_body_placeholder": "Share your thoughts to this community!",
+                    "spoilers": "Spoilers"
+                }
             },
-            "new_communities": "New Communities",
-            "popular_communities": "Popular Communities",
-            "special_communities": "Special Communities",
-            "all_communities" : "See all communities",
-            "community": " Community",
-            "other": "Other Communities",
-            "settings": {
-                "header": "Community Post Display Setting",
-                "show": "Show All",
-                "spoiler": "Hide Spoilers",
-                "screenshot": "Hide Screenshots",
-                "both": "Hide Both",
-                "cancel": "Cancel"
+            "miitoo": {
+                "default": "Yeah!",
+                "default.delete": "Unyeah",
+                "happy": "Yeah!",
+                "happy.delete": "Unyeah!",
+                "like": "Yeah\u2665",
+                "like.delete": "Unyeah\u2661",
+                "surprised": "Yeah?!",
+                "surprised.delete": "Unyeah?!",
+                "puzzled": "Yeah..!",
+                "puzzled.delete": "Unyeah..!",
+                "frustrated": "Yeah...",
+                "frustrated.delete": "Unyeah...",
+                "special": "Yeah\u2605",
+                "special.delete": "Unyeah\u2606"
             },
-            "types": {
-                "main_community": "Main Community",
-                "sub_community": "Sub-Community",
-                "announcements_community": "Announcements Community",
-                "user_community": "User-Generated Community"
+            "messages": {
+                "header": "Messages",
+                "tutorial": "In Messages, you can send messages to friends and view past messages. If you want to play a game with a friend or get some tips if you're stuck, try sending a message!",
+                "close": "Close",
+                "no_messages": "There are no messages here yet."
             },
-            "platforms": {
-                "topic": "Topic",
-                "general_topic": "General Topic",
-                "games": "Games",
-                "virtual_console": "Virtual Console",
-                "wii": "Wii",
-                "wiiu": "Wii U",
-                "wiiu/n3ds": "Wii U/Nintendo 3DS",
-                "n3ds": "Nintendo 3DS",
-                "n_switch": "Nintendo Switch"
+            "news": {
+                "header": "Notifications",
+                "tutorial": "In Notifications, you can find out how other people have reacted to your posts or comments, and see if you have any pending friend requests. If you have new notifications, an orange icon will appear to let you know.",
+                "close": "Close",
+                "no_news": "You have no new notifications yet.",
+                "no_friend_request": "There are no pendent friend requests here yet.",
+                "tab": {
+                    "update_tab": "Updates",
+                    "friend_req_tab": "Friend Requests"
+                },
+                "content": {
+                    "gave_yeah": "gave a Yeah to",
+                    "gave_reply": "replied to",
+                    "your_post": "your post",
+                    "handwritten" : "Handwritten"
+                },
+                "get_news_header" : "Get the latest news here!",
+                "get_news_content" : "Posts from Verified Users",
+                "announcement" : "There is a new Aquamarine announcement. Tap here for more details."
             },
-            "tabs": {
-                "popular": "Popular Posts",
-                "player": "Player Posts",
-                "new": "New Posts"
-            },
-            "post": {
-                "post": "Post",
-                "cancel": "Cancel",
-                "post_body_placeholder": "Share your thoughts to this community!",
-                "spoilers": "Spoilers"
+            "menu": {
+                "my_menu": "My Menu",
+                "activity_feed": "Activity Feed",
+                "communities": "Communities",
+                "messages": "Messages",
+                "notifications": "Notifications",
+                "close": "Close",
+                "back": "Back"
             }
-        },
-        "miitoo": {
-            "default": "Yeah!",
-            "default.delete": "Unyeah",
-            "happy": "Yeah!",
-            "happy.delete": "Unyeah!",
-            "like": "Yeah\u2665",
-            "like.delete": "Unyeah\u2661",
-            "surprised": "Yeah?!",
-            "surprised.delete": "Unyeah?!",
-            "puzzled": "Yeah..!",
-            "puzzled.delete": "Unyeah..!",
-            "frustrated": "Yeah...",
-            "frustrated.delete": "Unyeah...",
-            "special": "Yeah\u2605",
-            "special.delete": "Unyeah\u2606"
-        },
-        "messages": {
-            "header": "Messages",
-            "tutorial": "In Messages, you can send messages to friends and view past messages. If you want to play a game with a friend or get some tips if you're stuck, try sending a message!",
-            "close": "Close",
-            "no_messages": "There are no messages here yet."
-        },
-        "news": {
-            "header": "Notifications",
-            "tutorial": "In Notifications, you can find out how other people have reacted to your posts or comments, and see if you have any pending friend requests. If you have new notifications, an orange icon will appear to let you know.",
-            "close": "Close",
-            "no_news": "You have no new notifications yet.",
-            "no_friend_request": "There are no pendent friend requests here yet.",
-            "tab": {
-                "update_tab": "Updates",
-                "friend_req_tab": "Friend Requests"
-            },
-            "content": {
-                "gave_yeah": "gave a Yeah to",
-                "gave_reply": "replied to",
-                "your_post": "your post"
-            }
-        },
-        "menu": {
-            "my_menu": "My Menu",
-            "activity_feed": "Activity Feed",
-            "communities": "Communities",
-            "messages": "Messages",
-            "notifications": "Notifications",
-            "close": "Close",
-            "back": "Back"
         }
-      }
     }
 }

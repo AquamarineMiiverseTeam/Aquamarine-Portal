@@ -11,11 +11,7 @@
     <div class="body">
         <div class="body-content">
           <span class="community-name title">
-            <% if (locals.language.aqua.portal.language == "en") { %>
-              <%= community.name + locals.language.aqua.portal.community.community %>
-          <% } else if (locals.language.aqua.portal.language == "es") { %>
-            <%= locals.language.aqua.portal.community.community + community.name %>
-          <% } %>
+            <%= locals.local([{str : community.name, rpl : "%s"}], locals.language.aqua.portal.community.community) %>
           </span>
             <span class="community-name name">
                 <%= (community.app_name) ? community.app_name : community.name %>
@@ -30,25 +26,25 @@
                     <% } else {
                         switch(community.platform) {
                             case "wiiu":%>
-                                <%= locals.language.aqua.portal.community.platforms.wiiu %> <%= locals.language.aqua.portal.community.platforms.games %>
+                                <%= locals.language.aqua.portal.community.platforms.wiiu %>
                             <%break;
                             case "3ds":%>
-                                <%= locals.language.aqua.portal.community.platforms.n3ds %> <%= locals.language.aqua.portal.community.platforms.games %>
+                                <%= locals.language.aqua.portal.community.platforms.n3ds %>
                             <%break;
                             case "wii":%>
-                                <%= locals.language.aqua.portal.community.platforms.wii %> <%= locals.language.aqua.portal.community.platforms.games %>
+                                <%= locals.language.aqua.portal.community.platforms.wii %>
                             <%break;
                             case "topic":%>
-                                <%= locals.language.aqua.portal.community.platforms.topic %> <%= locals.language.aqua.portal.community.platforms.games %>
+                                <%= locals.language.aqua.portal.community.platforms.topic %>
                             <%break;
                             case "both":%>
-                                <%= locals.language.aqua.portal.community.platforms['wiiu/n3ds'] %> <%= locals.language.aqua.portal.community.platforms.games %>
+                                <%= locals.language.aqua.portal.community.platforms['wiiu/n3ds'] %>
                             <%break;
                             case "vc":%>
-                                <%= locals.language.aqua.portal.community.platforms.virtual_console %> <%= locals.language.aqua.portal.community.platforms.games %>
+                                <%= locals.language.aqua.portal.community.platforms.virtual_console %>
                             <%break;
                             default:%>
-                            <%= locals.language.aqua.portal.community.platforms.games %>
+                                <%= locals.language.aqua.portal.community.platforms.topic %>
                             <%break;
                         }
                     }

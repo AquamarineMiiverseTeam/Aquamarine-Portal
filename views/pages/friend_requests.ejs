@@ -3,25 +3,25 @@
     <div class="wrapper">
         <div class="wrapper-content">
             <header class="header">
-                <h1 class="content-title left">Notifications</h1>
+                <h1 class="content-title left"><%= locals.language.aqua.portal.news.header %></h1>
             </header>
 
             <div class="news-list">
                 <ul class="news-list-content">
 
             <div class="tutorial-window news">
-                <p>In Notifications, you can find out how other people have reacted to your posts or comments, and see if you have any pending friend requests. If you have new notifications, an orange icon will appear to let you know.</p>
-                <a href="javascript:void(0)" data-sound="SE_OLV_OFFBUTTON" class="button tutorial-close-button">Close</a>
+                <p><%= locals.language.aqua.portal.news.tutorial %></p>
+                <a href="javascript:void(0)" data-sound="SE_OLV_OFFBUTTON" class="button tutorial-close-button"><%= locals.language.aqua.portal.news.close %></a>
               </div>
 
               <div class="news-tab-container">
-                <li class="tab-updates"><a class="updates" data-news href="/notifications" data-sound="SE_WAVE_SELECT_TAB"><span>Updates</span></a></li>
-                <li class="tab-requests"><a class="friend_requests selected" data-news href="/notifications/friend_requests" data-sound="SE_WAVE_SELECT_TAB"><span>Friend Requests</span></a></li>
+                <li class="tab-updates"><a class="updates" data-news href="/notifications" data-sound="SE_WAVE_SELECT_TAB"><span><%= locals.language.aqua.portal.news.tab.update_tab %></span></a></li>
+                <li class="tab-requests"><a class="friend_requests selected" data-news href="/notifications/friend_requests" data-sound="SE_WAVE_SELECT_TAB"><span><%= locals.language.aqua.portal.news.tab.friend_req_tab %></span></a></li>
             </div>
 
                     <% if (!friend_requests || friend_requests.length === 0) { %>
                         <div class="no-content-window">
-                            <p>There are no pendent friend requests here yet.</p>
+                            <p><%= locals.language.aqua.portal.news.no_friend_request %></p>
                           </div>
                     <% } %>
 
