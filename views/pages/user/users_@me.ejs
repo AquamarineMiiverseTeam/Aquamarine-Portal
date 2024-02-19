@@ -98,15 +98,18 @@
           <div class="favorite-communities scroll">
             <h2 class="headline">Favorite Communities</h2>
             <ul class="list-content-with-icon arrow-list">
-              <% 
-                const iterate = (view_account.favorited_communities.length >= 7) ? 7 : view_account.favorited_communities.length;
-                for (let i = 0; i < iterate ; i++) { %>
+              <% for (let i = 0; i < view_account.favorited_communities.length; i++) { %>
                 <li class="favorite-community empty">
                   <a data-pjax="" data-sound="SE_WAVE_MENU" class="icon-container" href="/communities/<%= view_account.favorited_communities[i].community_id %>">
                     <img src="/img/icons/<%= view_account.favorited_communities[i].community_id %>.jpg" onerror="this.src = '/img/app.png'"  width="96px">
                   </a>
                 </li>
-              <% } %>
+              <% }
+                for (let i = 0; i < (7 - view_account.favorited_communities.length); i++) {%>
+                  <li class="favorite-community empty">
+                    <span class="icon-container"></span>
+                  </li>
+              <%} %>
                 
               <li>
                 <a href="/titles/favorites" data-pjax="#body"
