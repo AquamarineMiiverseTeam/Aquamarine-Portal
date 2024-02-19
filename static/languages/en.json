@@ -1,13 +1,14 @@
 {
     "aqua": {
      "portal": {
+        "language": "en",
         "community": {
             "communities": "Communities",
             "new_communities": "New Communities",
             "popular_communities": "Popular Communities",
             "special_communities": "Special Communities",
             "all_communities" : "See all communities",
-            "community": "Community",
+            "community": " Community",
             "other": "Other Communities",
             "settings": {
                 "header": "Community Post Display Setting",

@@ -10,7 +10,13 @@
     </a>
     <div class="body">
         <div class="body-content">
-            <span class="community-name title"><%= ((community.name).toString().includes("Community")) ? community.name : community.name%></span>
+          <span class="community-name title">
+            <% if (locals.language.aqua.portal.language == "en") { %>
+              <%= locals.language.aqua.portal.community.community + community.name %>
+          <% } else { %>
+            <%= community.name + locals.language.aqua.portal.community.community %>
+          <% } %>
+          </span>
             <span class="community-name name">
                 <%= (community.app_name) ? community.app_name : community.name %>
             </span>

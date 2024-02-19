@@ -1,13 +1,14 @@
 {
     "aqua": {
      "portal": {
+        "language": "es",
         "community": {
             "communities": "Comunidades",
             "new_communities": "Nuevas Comunidades",
             "popular_communities": "Comunidades Populares",
             "special_communities": "Comunidades Especiales",
             "all_communities" : "Ver todas las comunidades",
-            "community": "Comunidad",
+            "community": "Comunidad ",
             "other": "Otras Comunidades",
             "settings": {
                 "header": "Configurar publicaciones en esta Comunidad",
@@ -21,7 +22,7 @@
                 "main_community": "Comunidad Principal",
                 "sub_community": "Sub-Comunidad",
                 "announcements_community": "Comunidad de Anuncios",
-                "user_community": "User-Generated Community (Spanish Translation Awaiting)"
+                "user_community": "Comunidad de Usuario"
             },
             "platforms": {
                 "topic": "Tópico",
