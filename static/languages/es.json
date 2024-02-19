@@ -1,0 +1,94 @@
+{
+    "aqua": {
+     "portal": {
+        "community": {
+            "communities": "Comunidades",
+            "new_communities": "Nuevas Comunidades",
+            "community": "Comunidad",
+            "other": "Otras Comunidades",
+            "settings": {
+                "header": "Configurar publicaciones en esta Comunidad",
+                "show": "Mostrar todo",
+                "spoiler": "Ocultar Revelaciones",
+                "screenshot": "Ocultar Capturas",
+                "both": "Ocultar Ambos",
+                "cancel": "Cancelar"
+            },
+            "types": {
+                "main_community": "Comunidad Principal",
+                "sub_community": "Sub-Comunidad",
+                "announcements_community": "Comunidad de Anuncios"
+            },
+            "platforms": {
+                "topic": "Tópico",
+                "general_topic": "Tópico General",
+                "games": "Juegos",
+                "virtual_console": "Virtual Console",
+                "wii": "Wii",
+                "wiiu": "Wii U",
+                "wiiu/n3ds": "Wii U",
+                "n3ds": "Nintendo 3DS",
+                "n_switch": "Nintendo Switch"
+            },
+            "tabs": {
+                "popular": "Publicaciones",
+                "player": "Publicaciones de Jugadores",
+                "new": "Nuevas Publicaciones"
+            },
+            "post": {
+                "post": "Publicar",
+                "cancel": "Cancelar",
+                "post_body_placeholder": "Comparte tus pensamientos con una publicación a esta comunidad.",
+                "spoilers": "Revelaciones"
+            }
+        },
+        "miitoo": {
+            "default": "Buena!",
+            "default.delete": "Mejor no",
+            "happy": "Buena!",
+            "happy.delete": "Mejor no!",
+            "like": "Buena\u2665",
+            "like.delete": "Mejor no\u2661",
+            "surprised": "Buena?!",
+            "surprised.delete": "Mejor no?!",
+            "puzzled": "Buena..!",
+            "puzzled.delete": "Mejor no..!",
+            "frustrated": "Buena...",
+            "frustrated.delete": "Mejor no...",
+            "special": "Buena\u2605",
+            "special.delete": "Mejor no\u2606"
+        },
+        "messages": {
+            "header": "Mensajes",
+            "tutorial": "En Mensajes, puedes enviar mensajes a amigos y mirar mensajes pasados. Si quieres jugar a un juego con un amigo o compartir consejos si lo necesitan, intenta enviar un mensaje!",
+            "close": "Cerrar",
+            "no_messages": "Todavia no tienes ningún mensaje."
+        },
+        "news": {
+            "header": "Notificaciones",
+            "tutorial": "En Notificaciones, puedes encontrar cómo otras personas han reaccionado a tus publicaciones o comentarios, y ver si tienes algunas solicitudes de amistad pendientes. Si tienes notificaciones, un icono naranja aparacera para hacerte saber.",
+            "close": "Cerrar",
+            "no_news": "Todavia no tienes notificaciones.",
+            "no_friend_request": "No tienes solicitudes de amistad pendientes",
+            "tab": {
+                "update_tab": "Actualizaciones",
+                "friend_req_tab": "Solicitudes de Amistad"
+            },
+            "content": {
+                "gave_yeah": "le dio una Buena a",
+                "gave_reply": "le respondio a",
+                "your_post": "tu publicación"
+            }
+        },
+        "menu": {
+            "my_menu": "Perfil de Usuario",
+            "activity_feed": "Actividad",
+            "communities": "Comunidades",
+            "messages": "Mensajes",
+            "notifications": "Notificaciones",
+            "close": "Cerrar",
+            "back": "Volver"
+        }
+      }
+    }
+}
