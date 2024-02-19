@@ -60,8 +60,10 @@ route.get('/favorites', async (req, res, next) => {
         const offset = req.query['offset'];
         const communities = await db_con("communities").select("communities.*", "favorites.community_id as fav_community_id")
         .innerJoin("favorites", "favorites.community_id", "=", "communities.id")
+        .where({"favorites.account_id" : req.account[0].id})
         .offset(Number(offset))
         .limit(15)
+        .orderBy("favorites.create_time", "desc")
 
         for (let i = 0; i < communities.length; i++) {
             communities[i].favorites = await db_con("favorites").where({community_id : communities[i].id})

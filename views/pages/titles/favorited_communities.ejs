@@ -8,8 +8,16 @@
         <div class="communities-listing main-page" style="padding-top: 10px;" data-scroll-event data-scroll-container="#community_wrapper" data-scroll-url="/titles/favorites">
             <div class="commnities-new-added" id="community_wrapper">
                 <%- include("../../partials/communities.ejs", { communities : communities }) %>
+                
+                <% if (communities.length == 0) {%>
+                    <div class="no-content-window">
+                        <p>There are no favorited communities yet.</p>
+                    </div>
+                <% } %>
             </div>
 
-            <a class="loading" id="loading"></a>
+            <% if (communities.length > 15) { %>
+                <a class="loading" id="loading"></a>
+            <% } %>
         </div>
     </div>
