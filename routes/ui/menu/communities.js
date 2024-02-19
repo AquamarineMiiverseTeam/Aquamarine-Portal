@@ -17,7 +17,7 @@ route.get('/:community_id', async (req, res, next) => {
         const offset = (req.query['offset']) ? req.query['offset'] : 0;
 
         const posts = await db_con("posts")
-        .select("posts.*", "accounts.mii_hash", "accounts.mii_name", "accounts.admin")
+        .select("posts.*", "accounts.mii_hash", "accounts.mii_name", "accounts.admin", "accounts.nnid")
         .where({community_id : community_id}).whereNot({moderated : 1}).where(function() {
             switch (req.query['type']) {
                 case "played":

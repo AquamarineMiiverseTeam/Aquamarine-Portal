@@ -1,6 +1,6 @@
 <% for(const post of posts) { %>
     <div id="post-<%= post.id %>" class="post<%= (post.spoiler == 1) ? " hidden" : "" %>">
-        <a data-pjax=".wrapper" href="/users/undefined" class="user-icon-container <%= post.admin ? 'admin' : '' %>">
+        <a data-pjax=".wrapper" href="/users/<%= post.nnid %>" class="user-icon-container <%= post.admin ? 'admin' : '' %>">
             <% switch (post.feeling_id) {
                 case 0:%>
                     <img src="http://mii-images.account.nintendo.net/<%= post.mii_hash %>_normal_face.png" class="user-icon" onerror="this.src='../../../img/mii_null.png'">
