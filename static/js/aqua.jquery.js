@@ -128,7 +128,7 @@ var aqua = {
             if (currently_downloading) { return; }
             var url = $("[data-scroll-url]").attr("data-scroll-url")
             var cont = $("[data-scroll-container]").attr("data-scroll-container")
-            var query;
+            var query = "";
             if ($("[data-scroll-tab]").length >= 1) {
                 query = "&type=" + $("[data-tab-query].selected").attr("data-tab-query")
             }
