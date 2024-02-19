@@ -395,7 +395,7 @@ body {
   color: #323232;
   border-radius: 80px 0 0 0;
   -webkit-border-radius: 80px 0 0 0;
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADcAAAAwCAYAAAC13uL+AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAPQSURBVGhD7ZhHTxVRGIbfAS7SLYlRQYq4MLHgzrow/gGWJgZjFBEFxBIVNUGjYm9ho1sUy4IN6kJj1JCIMTHBFcadO0uiRI31UvT4flMEbHfKmYHFPMnHzDnn3uE8fKcNiIkZfxj2dWzoUQn0YQGG2I+v6MUqY8Bu0UKafY2eDpWJt6iGQjfS0YN87MQtNcFu1cLYyIlYPtbz7hwjx6wDjjG0CkYvJ2IFzNhoMQsDR9mjnWhTWXZNIKKdc1ZWqvlbz/A6WmwkCs3IxlmsNJJ2jS+ik3MrNsx+ZPGzAQSjGZYiZmCDBzGhBUns4jDOtsueCV+ui/NHxIDTDLdiDi3Io+Ajf4LhDksRS5pipxhexYYxcAADnIOVxle7xhXhZU6XmKBwGBnM4E3l6TnhyMk86UcN74KLORg4hEwKetgH9cvJ/MijmMJJlvSIOSgcZI9X2qWU6JWTYfOBYgZOsKRXjBRkYGhGFqbaxZTokxOxRHhi2expVSESr1ZgkV2VEj1yjhhwnKFdLCcdWFcEXJiLQRY/W7WpCS53R+Vyom/knXYx2adyHbF5pthDxnlpc0OwfU7EvlNMDrwhiE3nurimkEvunF9iaw3DeCHtbvAvF4HY7lnAjjLullyDGSL2Utrd4m9Ydqg8/EBtBGLfWOxkeBYTvGeui2JJc44dYWgXmyFi5cD2UlPsGqVkofKFt8xZYrW8C0+MGaOYnCGvBhET3GfOWu43866FoVUsjb1wxLYNi8kfMRDuM5dAJY8/2jNmimWOEruiQ0zwMiz3Mc/me1U6O5QIvkOaYoXMWBPnGMW+sErENlmtwfHSxQr7iikJYFFBMEFHTDK2NQQxwXf32hdiYPFECrKTXhGxIsnYsNhlisl81opvufJsPLhUgf4lk7wJOmKSscZS85woYnVWq158yX1XQPd7tFLwxsUKJJdOdicoYjOzrDkWtpjgS+4dT3r1z7Da6ES9CLbNp2CKDJpisiqWAVtKTLF2itVbreHge1g+/YQqbgpNxn00lOfgumRwOTOY+ZcnilixZGw2xUrxiVUi1mC1hodvOROFJp7X9xh3caBvEPf2lqFfVsCRmGL24tFQEp2Y8J+B9Bu3FWfaP3kuP3jgncYH5r7ut54rYiXMmCwe9ZbYJYo1SlsU6JL7A0dMFo+6YnxklYhttVqjwfWwzEvnS45L5N8CpTzLyFC0xS5GLSa4zlxNr3r/5CO4JqZmfj6wjJ/cbIm1UWy71TJOUUo9ZrhlgPGO0Wp/fUxwnTl2VDZbeUl1wxtGDzPWbBVjYmJiYmJi9AL8BBX4KNJZmti4AAAAAElFTkSuQmCC) no-repeat 36px 30px, -webkit-gradient(linear, left top, left bottom, from(#ffffff), color-stop(0.5, #ffffff), to(#e6e6e6)) 0 0;
+  background: url("/img/sprsheet/post.png") no-repeat 48px 36px, -webkit-gradient(linear, left top, left bottom, from(#ffffff), color-stop(0.5, #ffffff), to(#e6e6e6)) 0 0;
   padding-left: 100px;
   max-width: 160px;
   line-height: 1.2;
@@ -720,6 +720,7 @@ body {
   min-height: 68px;
   padding: 0 25px 0 67px;
   color: #323232;
+  line-height: 1.2;
 }
 
 .community-type a.tag_posts {
