@@ -4,6 +4,14 @@
         "language": "en",
         "community": {
             "communities": "Communities",
+            "filter": {
+                "filter": "Filter",
+                "all_software": "All Software",
+                "wiiu_games": "Wii U Games",
+                "n3ds_games": "Nintendo 3DS Games",
+                "vc_games": "Virtual Console",
+                "other": "Other"
+            },
             "new_communities": "New Communities",
             "popular_communities": "Popular Communities",
             "special_communities": "Special Communities",

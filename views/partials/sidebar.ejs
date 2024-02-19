@@ -4,39 +4,39 @@
             <span class="mii-icon">
                 <img src="http://mii-images.account.nintendo.net/<%= account[0].mii_hash %>_normal_face.png" onerror="this.src='../../../img/mii_null.png'"/>
             </span>
-            <span>User Page</span>
+            <span><%= locals.language.aqua.portal.menu.my_menu %></span>
         </a>
     </li>
     <li id="menu-bar-feed">
         <a href="/activity_feed" data-pjax=".wrapper" data-sound="SE_WAVE_MENU">
-            <span>Activity Feed</span>
+            <span><%= locals.language.aqua.portal.menu.activity_feed %></span>
         </a>
     </li>
     <li id="menu-bar-community">
         <a data-pjax=".wrapper" href="/titles/show" data-sound="SE_WAVE_MENU">
-            <span>Communities</span>
+            <span><%= locals.language.aqua.portal.menu.communities %></span>
         </a>
     </li>
     <li id="menu-bar-message">
         <a data-pjax=".wrapper" href="/messages" data-sound="SE_WAVE_MENU">
-            <span>Messages</span>
+            <span><%= locals.language.aqua.portal.menu.messages %></span>
             <span class="badge" style="display: none;">0</span>
         </a>
     </li>
     <li id="menu-bar-news">
         <a data-pjax=".wrapper" href="/notifications" data-sound="SE_WAVE_MENU">
-            <span>Notifications</span>
+            <span><%= locals.language.aqua.portal.menu.notifications %></span>
             <span class="badge" <% if (account.unread_notifications.length >= 1) {%> style="display:block" <%}else{%> style="display:none" <%} %>><%= (account.unread_notifications.length > 99) ? "99+" : account.unread_notifications.length %></span>
         </a>
     </li>
     <li id="menu-bar-exit">
         <a href="javascript:void(0)" onclick="setTimeout(function() {wiiuBrowser.closeApplication()}, 130);" data-sound="SE_WAVE_EXIT">
-            <span>Close</span>
+            <span><%= locals.language.aqua.portal.menu.close %></span>
         </a>
     </li>
     <li id="menu-bar-back" class="none">
         <a href="javascript:void(0)" onclick="history.back()" role="button" data-sound="SE_WAVE_BACK">
-            <span>Back</span>
+            <span><%= locals.language.aqua.portal.menu.back %></span>
         </a>
     </li>
     

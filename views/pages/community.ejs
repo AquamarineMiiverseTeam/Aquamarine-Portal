@@ -2,7 +2,7 @@
     <div id="body" class="wrapper" data-community-id="<%= community.id %>" data-community-title-id="<%= JSON.parse(community.title_ids)[0]; %>" data-community-title-id-hex="<%= JSON.parse(community.title_ids).map(titleId => Number(titleId).toString(16).padStart(16, '0')).join(',') %>"  data-community-title-name="<%= community.name %>">
             <header class="header">
                 <% if (community.sub_communities.length != 0) { %>
-                    <a data-pjax class="header-other-button" data-sound="SE_WAVE_OK_SUB" href="/communities/<%= community.id %>/other">Other Communities</a>
+                    <a data-pjax class="header-other-button" data-sound="SE_WAVE_OK_SUB" href="/communities/<%= community.id %>/other"><%= locals.language.aqua.portal.community.other %></a>
                 <% } %>
                 <h1 class="content-title title-label <%= (community.sub_communities.length !== 0) ? 'button-ellipsis' : '' %>"><%= community.name %></h1>
                 <% if (!community.ingame_only) { %><a href="javascript:void(0)" class="add-post-button" onclick="wiiuSound.playSoundByName('SE_WAVE_OK', 3); aquamarine.openPostModal()">Post</a><% } %>
@@ -19,11 +19,11 @@
                 <button data-sound="SE_WAVE_OK" class="settings-button button" onclick="aquamarine.openComSettingsModal()"></button>
                 <button data-sound="" class="favorite-button button <%= (community.favorites.some(favorite => favorite.account_id == account[0].id)) ? "checked" : "" %>" onclick="aquamarine.toggleFavorite()"></button>
                 <% if (community.type=="main" ) {%>
-                    <span class="news-community-badge">Main Community</span>
+                    <span class="news-community-badge"><%= locals.language.aqua.portal.community.types.main_community %></span>
                 <%} else if (community.type=="sub" ) {%>
-                    <span class="news-community-badge">Sub Community</span>
+                    <span class="news-community-badge"><%= locals.language.aqua.portal.community.types.sub_community %></span>
                 <%} else if (community.type=="announcement" ) {%>
-                    <span class="news-community-badge">Announcements Community</span>
+                    <span class="news-community-badge"><%= locals.language.aqua.portal.community.types.announcment_community %></span>
                 <%}%>
                     <span class="title"><%= ((community.name).toString().includes("Community")) ? community.name : community.name + " Community"  %></span>
                     <span class="text"><%= community.description %></span>

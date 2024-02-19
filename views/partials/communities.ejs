@@ -12,9 +12,9 @@
         <div class="body-content">
           <span class="community-name title">
             <% if (locals.language.aqua.portal.language == "en") { %>
-              <%= locals.language.aqua.portal.community.community + community.name %>
-          <% } else { %>
-            <%= community.name + locals.language.aqua.portal.community.community %>
+              <%= community.name + locals.language.aqua.portal.community.community %>
+          <% } else if (locals.language.aqua.portal.language == "es") { %>
+            <%= locals.language.aqua.portal.community.community + community.name %>
           <% } %>
           </span>
             <span class="community-name name">

@@ -4,6 +4,14 @@
         "language": "es",
         "community": {
             "communities": "Comunidades",
+            "filter": {
+                "filter": "Filtrar",
+                "all_software": "Todos los juegos",
+                "wiiu_games": "Juegos de Wii U",
+                "n3ds_games": "Juegos de Nintendo 3DS",
+                "vc_games": "Consola Virtual (Virtual Console)",
+                "other": "Otros"
+            },
             "new_communities": "Nuevas Comunidades",
             "popular_communities": "Comunidades Populares",
             "special_communities": "Comunidades Especiales",
@@ -28,7 +36,7 @@
                 "topic": "Tópico",
                 "general_topic": "Tópico General",
                 "games": "Juegos",
-                "virtual_console": "Virtual Console",
+                "virtual_console": "Consola Virtual (Virtual Console)",
                 "wii": "Wii",
                 "wiiu": "Wii U",
                 "wiiu/n3ds": "Wii U/Nintendo 3DS",
