@@ -22,7 +22,7 @@ route.get("/:nnid", async (req, res, next) => {
 
         //If the account page is being visited by the same user, send a @me
         if (req.account[0].nnid == account.nnid) {
-            res.render("pages/users_@me", {
+            res.render("pages/user/users_@me", {
                 account : req.account,
                 view_account : account
             });
@@ -30,8 +30,7 @@ route.get("/:nnid", async (req, res, next) => {
             return;
         }
 
-
-        res.render("pages/users_visitor", {
+        res.render("pages/user/users_visitor", {
             account : account
         })
     } catch (err) {
