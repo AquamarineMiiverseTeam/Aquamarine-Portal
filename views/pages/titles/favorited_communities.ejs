@@ -10,6 +10,8 @@
                 <%- include("../../partials/communities.ejs", { communities : communities }) %>
             </div>
 
-            <a class="loading" id="loading"></a>
+            <% if (communities.length < 15) { %>
+                <a class="loading" id="loading"></a>
+            <% } %>
         </div>
     </div>
