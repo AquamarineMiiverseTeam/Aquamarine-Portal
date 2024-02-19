@@ -2,7 +2,7 @@
 
 <div id="body" class="wrapper">
   <header class="header">
-    <h1 class="content-title left">Communities</h1>
+    <h1 class="content-title left"><%= locals.language.aqua.portal.community.communities %></h1>
     <div class="filter-dropdown">
       <a onclick="aquamarine.toggleFilterMainModal()" class="dropdown-toggle" data-sound="SE_WAVE_BALLOON_OPEN" href="javascript:void(0)">Filter</a>
       <ul class="dropdown-menu none">
@@ -44,7 +44,7 @@
     </div>
 
     <div class="communities-headline">
-      <span class="headline-text">New Communities</span>
+      <span class="headline-text"><%= locals.language.aqua.portal.community.new_communities %></span>
     </div>
 
     <div class="commnities-new-added">
@@ -54,7 +54,7 @@
     </div>
 
     <div class="communities-headline popular">
-      <span class="headline-text">Popular Communities</span>
+      <span class="headline-text"><%= locals.language.aqua.portal.community.popular_communities %></span>
     </div>
 
     <div class="commnities-new-added">
@@ -64,7 +64,7 @@
     </div>
 
     <div class="communities-headline special">
-      <span class="headline-text">Special Communities</span>
+      <span class="headline-text"><%= locals.language.aqua.portal.community.special_communities %></span>
     </div>
 
     <div class="commnities-new-added">
@@ -73,6 +73,6 @@
                     }) %>
     </div>
 
-    <a data-pjax href="/titles/communities" class="more-button scroll" data-sound="SE_WAVE_OK">See all communities</a>
+    <a data-pjax href="/titles/communities" class="more-button scroll" data-sound="SE_WAVE_OK"><%= locals.language.aqua.portal.community.all_communities %></a>
   </div>
 </div>

@@ -4,6 +4,9 @@
         "community": {
             "communities": "Comunidades",
             "new_communities": "Nuevas Comunidades",
+            "popular_communities": "Comunidades Populares",
+            "special_communities": "Comunidades Especiales",
+            "all_communities" : "Ver todas las comunidades",
             "community": "Comunidad",
             "other": "Otras Comunidades",
             "settings": {
@@ -17,7 +20,8 @@
             "types": {
                 "main_community": "Comunidad Principal",
                 "sub_community": "Sub-Comunidad",
-                "announcements_community": "Comunidad de Anuncios"
+                "announcements_community": "Comunidad de Anuncios",
+                "user_community": "User-Generated Community (Spanish Translation Awaiting)"
             },
             "platforms": {
                 "topic": "Tópico",
@@ -26,7 +30,7 @@
                 "virtual_console": "Virtual Console",
                 "wii": "Wii",
                 "wiiu": "Wii U",
-                "wiiu/n3ds": "Wii U",
+                "wiiu/n3ds": "Wii U/Nintendo 3DS",
                 "n3ds": "Nintendo 3DS",
                 "n_switch": "Nintendo Switch"
             },

@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 
 const auth = require('../Aquamarine-Utils/middleware/auth_middleware');
-const adm = require('../Aquamarine-Utils/middleware/account_data_middleware')
+const adm = require('./middleware/account_data_middleware')
 const pjax = require("express-pjax")
 
 const app = express();

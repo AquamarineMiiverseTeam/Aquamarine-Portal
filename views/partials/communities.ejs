@@ -10,39 +10,39 @@
     </a>
     <div class="body">
         <div class="body-content">
-            <span class="community-name title"><%= ((community.name).toString().includes("Community")) ? community.name : community.name + " Community" %></span>
+            <span class="community-name title"><%= ((community.name).toString().includes("Community")) ? community.name : community.name%></span>
             <span class="community-name name">
                 <%= (community.app_name) ? community.app_name : community.name %>
             </span>
             <span class="empathy-count"><span><%= community.favorites.length.toLocaleString() %></span></span>
             <span class="text">
                 <% if (community.user_community == 1) { %>
-                    User-Generated-Communities
+                    <%= locals.language.aqua.portal.community.types.user_community %>
                 <% } else {
                     if (community.type == "sub") { %>
-                        Sub-Communities
+                        <%= locals.language.aqua.portal.community.types.sub_community %>
                     <% } else {
                         switch(community.platform) {
                             case "wiiu":%>
-                                Wii U Games
+                                <%= locals.language.aqua.portal.community.platforms.wiiu %> <%= locals.language.aqua.portal.community.platforms.games %>
                             <%break;
                             case "3ds":%>
-                                Nintendo 3DS Games
+                                <%= locals.language.aqua.portal.community.platforms.n3ds %> <%= locals.language.aqua.portal.community.platforms.games %>
                             <%break;
                             case "wii":%>
-                                Wii Games
+                                <%= locals.language.aqua.portal.community.platforms.wii %> <%= locals.language.aqua.portal.community.platforms.games %>
                             <%break;
                             case "topic":%>
-                                General Topic
+                                <%= locals.language.aqua.portal.community.platforms.topic %> <%= locals.language.aqua.portal.community.platforms.games %>
                             <%break;
                             case "both":%>
-                                Wii U/Nintendo 3DS Games
+                                <%= locals.language.aqua.portal.community.platforms['wiiu/n3ds'] %> <%= locals.language.aqua.portal.community.platforms.games %>
                             <%break;
                             case "vc":%>
-                                Virtual Console Games
+                                <%= locals.language.aqua.portal.community.platforms.virtual_console %> <%= locals.language.aqua.portal.community.platforms.games %>
                             <%break;
                             default:%>
-                                Games
+                            <%= locals.language.aqua.portal.community.platforms.games %>
                             <%break;
                         }
                     }
