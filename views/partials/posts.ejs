@@ -1,5 +1,5 @@
 <% for(const post of posts) { %>
-    <div id="post-<%= post.id %>" class="post <%= (post.spoiler == 1) ? "hidden" : "" %>">
+    <div id="post-<%= post.id %>" class="post<%= (post.spoiler == 1) ? " hidden" : "" %>">
         <a data-pjax=".wrapper" href="/users/undefined" class="user-icon-container <%= post.admin ? 'admin' : '' %>">
             <% switch (post.feeling_id) {
                 case 0:%>

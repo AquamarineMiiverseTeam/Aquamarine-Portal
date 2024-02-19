@@ -94,7 +94,7 @@
 
                         <div class="post-meta">
                             <a href="javascript:void(0)" class="button edit-post none"></a>
-                            <button <%= (post.account_id == account[0].id) ? "disabled" : "" %> class="miitoo-button post-viewer-miitoo-button<%= (post.empathies.some(empathy => empathy.account_id == account[0].id)) ? " added" : "" %>" data-post-id="<%= post.id %>" >
+                            <button data-empathy-count="<%= post.empathies.length %>" data-reply-count="0" <%= (post.account_id == account[0].id) ? "disabled" : "" %> class="miitoo-button post-viewer-miitoo-button<%= (post.empathies.some(empathy => empathy.account_id == account[0].id)) ? " added" : "" %>" data-post-id="<%= post.id %>" >
                                 <%= (post.empathies.some(empathy => empathy.account_id == account[0].id)) ? "Unyeah!" : "Yeah!" %>
                             </button>
                             <a href="javascript:void(0)" class="button link-button none"></a>
