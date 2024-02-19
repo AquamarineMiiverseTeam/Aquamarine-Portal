@@ -1,0 +1,96 @@
+{
+    "ui" : {
+        "community" : {
+            "communities" : "Communities",
+            "new_communities" : "New Communities",
+            "community" : "Community",
+            "other" : "Other Communities",
+
+            "settings" : {
+                "header" : "Community Post Display Setting",
+                "show" : "Show All",
+                "spoiler" : "Hide Spoilers",
+                "screenshot" : "Hide Screenshots",
+                "both" : "Hide Both",
+
+                "cancel" : "Cancel"
+            },
+
+            "types" : {
+                "main_community" : "Main Community",
+                "sub_community" : "Sub-Community",
+                "announcements_community" : "Announcements Community"
+            },
+
+            "platforms" : {
+                "topic" : "Topic",
+                "general_topic" : "General Topic",
+                "games" : "Games",
+                "virtual_console" : "Virtual Console",
+
+                "wii" : "Wii",
+                "wiiu" : "Wii U",
+                "nin_3ds" : "Nintendo 3DS",
+                "nin_switch" : "Nintendo Switch"
+            },
+            
+            "tabs" : {
+                "popular" : "Popular Posts",
+                "player" : "Player Posts",
+                "new" : "New Posts"
+            },
+
+            "post" : {
+                "post" : "Post",
+                "cancel" : "Cancel",
+    
+                "post_body_placeholder" : "Share your thoughts to this community!",
+                "spoilers" : "Spoilers"
+            }
+        },
+
+        "post" : {
+            "yeah" : "Yeah!",
+            "unyeah" : "Unyeah"
+        },
+
+        "messages" : {
+            "header" : "Messages",
+            "tutorial" : "In Messages, you can send messages to friends and view past messages. If you want to play a game with a friend or get some tips if you're stuck, try sending a message!",
+            "close" : "Close",
+            "no_messages" : "There are no messages here yet."
+        },
+
+        "notifications" : {
+            "header" : "Notifications",
+            "tutorial" : "In Notifications, you can find out how other people have reacted to your posts or comments, and see if you have any pending friend requests. If you have new notifications, an orange icon will appear to let you know.",
+            "close" : "Close",
+
+            "no_notifications" : "You have no new notifications yet.",
+            "no_friend_request" : "There are no pendent friend requests here yet.",
+
+            "tab" : {
+                "update_tab" : "Updates",
+                "friend_req_tab" : "Friend Requests"
+            },
+
+            "content" : {
+                "gave_yeah" : "gave a Yeah to",
+                "gave_reply" : "replied to",
+
+                "your_post" : "your post"
+            }
+        }
+    },
+
+    "portal_specific" : {
+        "my_menu" : "My Menu",
+        "activity_feed" : "Activity Feed",
+        "communities" : "Communities",
+        "messages" : "Messages",
+        "notifications" : "Notifications",
+
+        "close" : "Close",
+        "back" : "Back"
+    }
+}
