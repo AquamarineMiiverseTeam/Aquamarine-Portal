@@ -2,16 +2,16 @@
 
     <div id="body" class="wrapper">
         <header class="header">
-            <h1 class="content-title">Favorited Communities</h1>
+            <h1 class="content-title"><%= locals.language.aqua.portal.menu.profile.me_favorite_communities %></h1>
         </header>
 
-        <div class="communities-listing main-page" style="padding-top: 10px;" data-scroll-event data-scroll-container="#community_wrapper" data-scroll-url="/titles/favorites">
+        <div class="communities-listing subcommunities-page" data-scroll-event data-scroll-container="#community_wrapper" data-scroll-url="/titles/favorites">
             <div class="commnities-new-added" id="community_wrapper">
                 <%- include("../../partials/communities.ejs", { communities : communities }) %>
                 
                 <% if (communities.length == 0) {%>
                     <div class="no-content-window">
-                        <p>There are no favorited communities yet.</p>
+                        <p><%= locals.language.aqua.portal.menu.profile.no_favorite_communities %></p>
                     </div>
                 <% } %>
             </div>

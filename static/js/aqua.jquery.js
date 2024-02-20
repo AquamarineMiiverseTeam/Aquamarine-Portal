@@ -352,7 +352,11 @@ var aqua = {
                 aqua.modifed_posts.splice(i, 1);
             }
         }
-    }
+    },
+    initToggle: function () {
+        var elt = $("[data-toggle]");
+        
+    },
 }
 
 $(document).on("DOMContentLoaded", function () {

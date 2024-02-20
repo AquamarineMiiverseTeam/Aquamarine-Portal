@@ -18,6 +18,7 @@
                 "see_all_communities": "Ver todas las comunidades",
                 "all_communities" : "Todas las Comunidades",
                 "community": "Comunidad %s",
+                "other_sub_communities": "Otras Comunidades para %s",
                 "other": "Otras Comunidades",
                 "no_posts": "Todavía no hay publicaciones en esta comunidad, por que no eres el primero?",
                 "settings": {
@@ -83,7 +84,7 @@
                 "tutorial": "En Notificaciones, puedes encontrar cómo otras personas han reaccionado a tus publicaciones o comentarios, y ver si tienes algunas solicitudes de amistad pendientes. Si tienes notificaciones, un icono naranja aparacera para hacerte saber.",
                 "close": "Cerrar",
                 "no_news": "Todavia no tienes notificaciones.",
-                "no_friend_request": "No tienes solicitudes de amistad pendientes",
+                "no_friend_request": "No tienes solicitudes de amistad pendientes.",
                 "tab": {
                     "update_tab": "Actualizaciones",
                     "friend_req_tab": "Solicitudes de Amistad"
@@ -105,7 +106,37 @@
                 "messages": "Mensajes",
                 "notifications": "Notificaciones",
                 "close": "Cerrar",
-                "back": "Volver"
+                "back": "Volver",
+                "profile": {
+                    "visitor_user_page": "Perfil de %s",
+                    "me_user_page": "Perfil de Usuario",
+                    "visitor_favorite_communities": "Comunidades Favoritas de %s",
+                    "me_favorite_communities": "Tus Comunidades Favoritas",
+                    "no_favorite_communities": "No tienes comunidades favoritas aún.",
+                    "user_menu": "Menú de Usuario",
+                    "profile_country": "País",
+                    "profile_birthday": "Cumpleaños",
+                    "profile_yeahs": "Buenas recibidos",
+                    "profile_exp": "Experiencia de Juego",
+                    "profile_beginner": "Principiante",
+                    "profile_intermediate": "Intermediante",
+                    "profile_expert": "Experto",
+                    "profile_settings": "Ajustes de Perfil",
+                    "no_favorite_post": "Tu publicación favorita se mostrara aqui.",
+                    "profile_posts": "Publicaciones",
+                    "profile_friends": "Amigos",
+                    "profile_following": "Siguiendo",
+                    "profile_followers": "Seguidores",
+                    "profile_view_journal": "Ver Diario de Juego",
+                    "profile_view_album": "Ver Album de Capturas",
+                    "profile_favorite_communities": "Comunidades Favoritas",
+                    "profile_recent_journal": "Entradas recientes del Diario de Juego",
+                    "profile_no_journal": "No has escrito entradas del Diario de Juego recientes.",
+                    "profile_no_discussions": "No has escrito o participado en Discusiones recientes.",
+                    "profile_no_screenshots": "No has guardado ninguna Captura aún.",
+                    "profile_recent_discussions": "Discusiones Recientes",
+                    "profile_recent_screenshots": "Capturas recientemente guardadas"
+                }
             }
         }
     }

@@ -18,6 +18,7 @@
                 "see_all_communities": "See all communities",
                 "all_communities" : "All Communities",
                 "community": "%s Community",
+                "other_sub_communities": "Other Communities for %s",
                 "other": "Other Communities",
                 "no_posts": "No posts have been made for this community, why don't you try making one?",
                 "settings": {
@@ -105,7 +106,37 @@
                 "messages": "Messages",
                 "notifications": "Notifications",
                 "close": "Close",
-                "back": "Back"
+                "back": "Back",
+                "profile": {
+                    "visitor_user_page": "%s's Profile",
+                    "me_user_page": "User Page",
+                    "visitor_favorite_communities": "%s's Favorite Communities",
+                    "me_favorite_communities": "Your Favorite Communities",
+                    "no_favorite_communities": "There are no favorited communities yet.",
+                    "user_menu": "User Menu",
+                    "profile_country": "Country",
+                    "profile_birthday": "Birthday",
+                    "profile_yeahs": "Yeahs Recieved",
+                    "profile_exp": "Game Experience",
+                    "profile_beginner": "Beginner",
+                    "profile_intermediate": "Intermediate",
+                    "profile_expert": "Expert",
+                    "profile_settings": "Profile Settings",
+                    "no_favorite_post": "You favorite post can be displayed here.",
+                    "profile_posts": "Posts",
+                    "profile_friends": "Friends",
+                    "profile_following": "Following",
+                    "profile_followers": "Followers",
+                    "profile_view_journal": "View Play Journal",
+                    "profile_view_album": "View Screenshot Album",
+                    "profile_favorite_communities": "Favorite Communities",
+                    "profile_recent_journal": "Recent Play Journal Entries",
+                    "profile_no_journal": "No Play Journal entries written yet.",
+                    "profile_no_discussions": "No recent discussions.",
+                    "profile_no_screenshots": "No screenshots saved yet.",
+                    "profile_recent_discussions": "Recent Discussions",
+                    "profile_recent_screenshots": "Recently Saved Screenshots"
+                }
             }
         }
     }

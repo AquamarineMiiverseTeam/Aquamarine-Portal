@@ -3,7 +3,7 @@
 <div class="wrapper">
     <div class="wrapper-content">
         <header class="header">
-            <h1 class="content-title">Other Communities for <%= main_community.name %></h1>
+            <h1 class="content-title"><%= locals.local([{str : main_community.name, rpl : "%s"}], locals.language.aqua.portal.community.other_sub_communities) %></h1>
         </header>
 
         <div class="header-banner-container">
@@ -11,7 +11,7 @@
                 onerror="this.src='../../../img/banners-wup/placeholder-wup.jpg'">
         </div>
 
-        <div class="communities-listing main-page" style="padding-top: 10px;">
+        <div class="communities-listing subcommunities-page">
             <div class="commnities-new-added" id="community_wrapper">
                 <%- include("../partials/communities", {
                     communities : main_community.sub_communities
