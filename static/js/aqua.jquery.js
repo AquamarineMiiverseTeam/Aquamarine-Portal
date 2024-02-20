@@ -7,6 +7,7 @@ var aqua = {
         function playSnd(event) {
             var soundName = $(event.currentTarget).attr("data-sound");
             wiiuSound.playSoundByName(soundName, 3);
+            console.log("the list.")
         }
 
         e.off("click").on("click", playSnd);
