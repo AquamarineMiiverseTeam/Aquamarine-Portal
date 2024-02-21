@@ -32,7 +32,7 @@
                     <span class="user-name"><%= post.mii_name %></span>
                     <span class="other-user-empathy"><span>Dummy</span> gave a "Yeah!"</span>
                     <span class="timestamp"><%= moment(post.create_time).fromNow() %></span>
-                    <span class="spoiler-status <%= (post.spoiler == 1) ? "spoiler show" : "" %>"><%= (post.spoiler == 1) ? "Spoilers" : "" %></span>
+                    <span class="spoiler-status <%= (post.spoiler == 1) ? "spoiler inline-show" : "" %>"><%= (post.spoiler == 1) ? "Spoilers" : "" %></span>
                 </header>
 
                 <span class="post-title-icon">
@@ -62,7 +62,7 @@
                 <% if (post.spoiler == 1) { %>
                     <div class="hidden-content">
                         <p>This post contains spoilers.</p>
-                        <div><a href="javascript:void(0)" data-sound="SE_OLV_OK_SUB" class="hidden-content-button">View Post</a></div>
+                        <div><a href="javascript:void(0)" class="hidden-content-button">View Post</a></div>
                     </div>
                 <% } %>
     

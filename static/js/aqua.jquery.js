@@ -1,5 +1,6 @@
 var aqua = {
     modifed_posts: [],
+    scrollPosition: 0,
     initSnd: function () {
         var e = $("[data-sound]");
         if (!e) { return; }
@@ -175,6 +176,7 @@ var aqua = {
 
         function yeah(e) {
             wiiuSound.playSoundByName('', 1);
+            wiiuBrowser.lockUserOperation(true);
             var el = $(e.currentTarget);
             var id = el.attr("data-post-id");
             var emc = +el.attr("data-empathy-count");
@@ -216,7 +218,8 @@ var aqua = {
                                         aqua.modifed_posts[existingIndex].changed = true;
                                     } else {
                                         aqua.modifed_posts.push({ id: id, count: emc, state: response, changed: true });
-                                    }                                    
+                                    }
+                                    wiiuBrowser.lockUserOperation(false);                                    
                                     el.removeClass('added');
                                     el.text("Yeah!");
                                     if (miis.length == 1) {
@@ -254,7 +257,8 @@ var aqua = {
                                         aqua.modifed_posts[existingIndex].changed = true;
                                     } else {
                                         aqua.modifed_posts.push({ id: id, count: emc, state: response, changed: true });
-                                    }                                    
+                                    }
+                                    wiiuBrowser.lockUserOperation(false);                                    
                                     el.addClass('added');
                                     el.text("Unyeah!");
                                     if (miis.length == 1) {
@@ -282,6 +286,7 @@ var aqua = {
                                     }
                                 }
                             } else {
+                                wiiuBrowser.lockUserOperation(false);
                                 wiiuErrorViewer.openByCode(1155927);
                             }
 
@@ -325,7 +330,8 @@ var aqua = {
                                         aqua.modifed_posts[existingIndex].changed = true;
                                     } else {
                                         aqua.modifed_posts.push({ id: id, count: emc, state: response, changed: true });
-                                    }     
+                                    }
+                                    wiiuBrowser.lockUserOperation(false);
                                     count.removeClass('added');
                                     el.text("Yeah!");
                                     if (count) {
@@ -349,7 +355,8 @@ var aqua = {
                                         aqua.modifed_posts[existingIndex].changed = true;
                                     } else {
                                         aqua.modifed_posts.push({ id: id, count: emc, state: response, changed: true });
-                                    }    
+                                    }
+                                    wiiuBrowser.lockUserOperation(false);
                                     count.addClass('added');
                                     el.text("Unyeah!");
                                     if (count) {
@@ -358,6 +365,7 @@ var aqua = {
                                     }
                                 }
                             } else {
+                                wiiuBrowser.lockUserOperation(false);
                                 wiiuErrorViewer.openByCode(1155927);
                             }
 
@@ -412,6 +420,7 @@ var aqua = {
         if (!els) return;
         els.off("click").on("click", function (e) {
             e.preventDefault();
+            wiiuSound.playSoundByName("SE_WAVE_OK_SUB", 3)
             var el = $(e.currentTarget);
             var postToShow = el.parent().parent().parent().parent().parent();
             postToShow.removeClass("hidden");
@@ -420,21 +429,31 @@ var aqua = {
         });
     },
     openCaptureModal: function (capture) {
+        $(document).off("aqua:scroll-end")
         var viewer = $(".screenshot-viewer-screenshot");
         var picture =  $(".screenshot-viewer-screenshot div div img");
-        var scrollPosition;
-        if (!viewer.hasClass("none")) {
+        if (viewer.hasClass("none")) {
+            aqua.scrollPosition = window.scrollY;
+            $("#menu-bar").addClass("none");
+            $(".header").addClass("none");
+            $(".header-banner-container").addClass("none");
+            $(".community-info").addClass("none");
+            $(".community-type").addClass("none");
+            $(".community-post-list").addClass("none");
+            $(".post-permalink").addClass("none");
+            picture.attr("src", $(capture).children(":first-child").attr("src"));
+            viewer.removeClass("none");
+        } else {
             viewer.addClass("none");
             $("#menu-bar").removeClass("none");
-            $(".wrapper").removeClass("none");
-            window.scrollTo(0, scrollPosition)
-        } else {
-            scrollPosition = window.scrollY;
-
-            $("#menu-bar").addClass("none");
-            $(".wrapper").addClass("none");
-            picture.attr("src", $(capture).children(":first").attr("src"));
-            viewer.removeClass("none");
+            $(".header").removeClass("none");
+            $(".header-banner-container").removeClass("none");
+            $(".community-info").removeClass("none");
+            $(".community-type").removeClass("none");
+            $(".community-post-list").removeClass("none");
+            $(".post-permalink").removeClass("none");
+            window.scrollTo(0, aqua.scrollPosition)
+            aqua.initScrl();
         }
     },
     closeNotification: function () {
@@ -446,7 +465,7 @@ var aqua = {
          if (!wiiuBOSS.isRegisteredDirectMessageTask().isRegistered) {
           aqua.setBOSS(true);
          }
-        }
+       }
     },
     setBOSS: function (set) {
          if (set) {
