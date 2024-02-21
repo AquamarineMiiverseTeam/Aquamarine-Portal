@@ -46,15 +46,17 @@
                     "n_switch": "Juegos de Nintendo Switch"
                 },
                 "tabs": {
-                    "popular": "Publicaciones",
-                    "player": "Publicaciones de Jugadores",
+                    "popular": "Publicaciones Populares",
+                    "player": "Publicaciones con distintivo de uso",
                     "new": "Nuevas Publicaciones"
                 },
                 "post": {
                     "post": "Publicar",
                     "cancel": "Cancelar",
                     "post_body_placeholder": "Comparte tus pensamientos con una publicación a esta comunidad.",
-                    "spoilers": "Revelaciones"
+                    "spoilers": "Revelaciones",
+                    "has_spoilers": "Esta publicación contiene revelaciones.",
+                    "see_spoiler": "Ver publicación"
                 }
             },
             "miitoo": {

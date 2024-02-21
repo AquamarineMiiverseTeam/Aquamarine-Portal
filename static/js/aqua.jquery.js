@@ -7,7 +7,6 @@ var aqua = {
         function playSnd(event) {
             var soundName = $(event.currentTarget).attr("data-sound");
             wiiuSound.playSoundByName(soundName, 3);
-            console.log("the list.")
         }
 
         e.off("click").on("click", playSnd);
@@ -143,21 +142,23 @@ var aqua = {
                 if (xhttp.readyState === 4) {
                     switch (xhttp.status) {
                         case 200:
-                            $(cont).children()[$(cont).children().length - 1].outerHTML += xhttp.responseText;
+                            $(cont).append(xhttp.responseText);
                             aqua.initSnd();
+                            aqua.initEmp();
+                            aqua.initEmpPopstate();
                             currently_downloading = false;
                             break;
                         case 204:
-                            $("#loading").hide()
+                            $("#loading").css("visibility", "hidden")
                             currently_downloading = false;
                             break;
                         default:
-                            $("#loading").hide()
+                            $("#loading").css("visibility", "hidden")
                             currently_downloading = false;
                             break;
                     }
                 } else {
-                    $("#loading").show()
+                    $("#loading").css("visibility", "visible")
                 }
             }
         }
@@ -308,7 +309,23 @@ var aqua = {
                             if (xhr.status === 200) {
                                 var response = JSON.parse(xhr.responseText).result;
                                 if (count.hasClass('added') && response == "deleted") {
+                                    emc -= 1;
+                                    el.attr("data-empathy-count", emc);
                                     wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
+                                    var existingIndex = -1;
+                                    for (var i = 0; i < aqua.modifed_posts.length; i++) {
+                                        if (aqua.modifed_posts[i].id === id) {
+                                            existingIndex = i;
+                                            break;
+                                        }
+                                    }     
+                                    if (existingIndex !== -1) {
+                                        aqua.modifed_posts[existingIndex].count = emc;
+                                        aqua.modifed_posts[existingIndex].state = response;
+                                        aqua.modifed_posts[existingIndex].changed = true;
+                                    } else {
+                                        aqua.modifed_posts.push({ id: id, count: emc, state: response, changed: true });
+                                    }     
                                     count.removeClass('added');
                                     el.text("Yeah!");
                                     if (count) {
@@ -316,7 +333,23 @@ var aqua = {
                                         count.text(countText - 1);
                                     }
                                 } else if (!count.hasClass('added') && response == "created") {
+                                    emc += 1;
+                                    el.attr("data-empathy-count", emc);
                                     wiiuSound.playSoundByName('SE_OLV_MII_ADD', 1);
+                                    var existingIndex = -1;
+                                    for (var i = 0; i < aqua.modifed_posts.length; i++) {
+                                        if (aqua.modifed_posts[i].id === id) {
+                                            existingIndex = i;
+                                            break;
+                                        }
+                                    }     
+                                    if (existingIndex !== -1) {
+                                        aqua.modifed_posts[existingIndex].count = emc;
+                                        aqua.modifed_posts[existingIndex].state = response;
+                                        aqua.modifed_posts[existingIndex].changed = true;
+                                    } else {
+                                        aqua.modifed_posts.push({ id: id, count: emc, state: response, changed: true });
+                                    }    
                                     count.addClass('added');
                                     el.text("Unyeah!");
                                     if (count) {
@@ -353,22 +386,93 @@ var aqua = {
                 aqua.modifed_posts.splice(i, 1);
             }
         }
+
+        if (aqua.modifed_posts.length > 50) {
+            aqua.modifed_posts.length = 0;
+        }
     },
     initToggle: function () {
         var elt = $("[data-toggle]");
+        if (!elt.length) return;
+        elt.off("click").on("click", function() {
+            var target = $(elt.attr("data-toggle"));
+            if (target.hasClass("none")) {
+            wiiuSound.playSoundByName('', 3);
+            wiiuSound.playSoundByName('SE_OLV_BALLOON_OPEN', 3);
+            target.removeClass("none");
+            } else {
+            wiiuSound.playSoundByName('', 3);
+            wiiuSound.playSoundByName('SE_OLV_BALLOON_CLOSE', 3);
+            target.addClass("none");
+            }
+        })
+    },
+    initSpoiler: function () {
+        var els = $("a.hidden-content-button");
+        if (!els) return;
+        els.off("click").on("click", function (e) {
+            e.preventDefault();
+            var el = $(e.currentTarget);
+            var postToShow = el.parent().parent().parent().parent().parent();
+            postToShow.removeClass("hidden");
+            el.html("");
+            el.parent().parent().html("");
+        });
+    },
+    openCaptureModal: function (capture) {
+        var viewer = $(".screenshot-viewer-screenshot");
+        var picture =  $(".screenshot-viewer-screenshot div div img");
+        var scrollPosition;
+        if (!viewer.hasClass("none")) {
+            viewer.addClass("none");
+            $("#menu-bar").removeClass("none");
+            $(".wrapper").removeClass("none");
+            window.scrollTo(0, scrollPosition)
+        } else {
+            scrollPosition = window.scrollY;
+
+            $("#menu-bar").addClass("none");
+            $(".wrapper").addClass("none");
+            picture.attr("src", $(capture).children(":first").attr("src"));
+            viewer.removeClass("none");
+        }
+    },
+    closeNotification: function () {
         
+    },
+    prepareBOSS: function () {
+        var isBOSSEnabled = wiiuLocalStorage.getItem("boss_state");
+        if (isBOSSEnabled == "true") {
+         if (!wiiuBOSS.isRegisteredDirectMessageTask().isRegistered) {
+          aqua.setBOSS(true);
+         }
+        }
+    },
+    setBOSS: function (set) {
+         if (set) {
+            wiiuLocalStorage.setItem("boss_state", "true");
+            console.log("boss is set")
+            wiiuBOSS.registerDirectMessageTaskEx(720,2);
+         } else {
+            wiiuLocalStorage.removeItem("boss_state");
+            console.log("boss is unset")
+            wiiuBOSS.unregisterDirectMessageTask();
+         }
     },
 }
 
 $(document).on("DOMContentLoaded", function () {
     wiiuBrowser.endStartUp();
     wiiuBrowser.lockUserOperation(true);
+    aqua.prepareBOSS();
     aqua.initSnd();
     aqua.initPjx();
     aqua.initTbs();
     aqua.initNav();
     aqua.initScrl();
     aqua.initEmp();
+    aqua.initSpoiler();
+    aqua.initToggle();
     wiiuSound.playSoundByName("BGM_OLV_MAIN", 3);
     setTimeout(function () {
         wiiuSound.playSoundByName("BGM_OLV_MAIN_LOOP_NOWAIT", 3);
@@ -391,4 +495,6 @@ $(document).on("pjax:end", function () {
     aqua.initScrl();
     aqua.initEmp();
     aqua.initEmpPopstate();
+    aqua.initSpoiler();
+    aqua.initToggle();
 })

@@ -38,11 +38,11 @@
                 <a href="?type=topictag" data-tab-query="topictag" data-tab-context="community" class="tag_posts <%= (posts.query == "topictag") ? "selected" : "" %>">
 
                 </a>
-                <a href="?type=newest" data-tab-query="newest" data-tab-context="community" class="new_posts <%= (posts.query == "newest" || !posts.query) ? "selected" : "" %>">
-                    <span><%= locals.language.aqua.portal.community.tabs.new %></span>
-                </a>
                 <a href="?type=played" data-tab-query="played" data-tab-context="community" class="player_posts  <%= (posts.query == "played") ? "selected" : "" %>" <%= (community.platform == "topic" || community.platform == "wii") ? "disabled" : "" %>>
                     <span><%= locals.language.aqua.portal.community.tabs.player %></span>
+                </a>
+                <a href="?type=newest" data-tab-query="newest" data-tab-context="community" class="new_posts <%= (posts.query == "newest" || !posts.query) ? "selected" : "" %>">
+                    <span><%= locals.language.aqua.portal.community.tabs.new %></span>
                 </a>
                 <a href="?type=popular" data-tab-query="popular" data-tab-context="community" class="popular_posts  <%= (posts.query == "popular") ? "selected" : "" %>">
                     <span><%= locals.language.aqua.portal.community.tabs.popular %></span>
@@ -63,12 +63,12 @@
                     <%} %>
                 </div>
                 
-                <a class="loading" id="loading" style="display: none;"></a>
+                <a class="loading" id="loading"></a>
             </div>
-
-        <%- include("../partials/modal/screenshot-viewer.ejs") %>
-
-        <%- include("../partials/modal/create_post.ejs") %>
-
-        <%- include("../partials/modal/community-settings.ejs") %>
     </div>
+    
+    <%- include("../partials/modal/screenshot-viewer.ejs") %>
+
+    <%- include("../partials/modal/create_post.ejs") %>
+
+    <%- include("../partials/modal/community-settings.ejs") %>

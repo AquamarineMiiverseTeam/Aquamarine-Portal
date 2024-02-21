@@ -4,7 +4,7 @@
   <header class="header">
     <h1 class="content-title left"><%= locals.language.aqua.portal.community.communities %></h1>
     <div class="filter-dropdown">
-      <a onclick="aquamarine.toggleFilterMainModal()" class="dropdown-toggle" data-sound="SE_WAVE_BALLOON_OPEN" href="javascript:void(0)"><%= locals.language.aqua.portal.community.filter.filter %></a>
+      <a class="dropdown-toggle" data-toggle=".dropdown-menu" data-sound="SE_WAVE_BALLOON_OPEN" href="javascript:void(0)"><%= locals.language.aqua.portal.community.filter.filter %></a>
       <ul class="dropdown-menu none">
         <li>
           <a href="javascript:void(0)" class="button checkbox-button selected" data-sound="SE_WAVE_TOGGLE_CHECK"><%= locals.language.aqua.portal.community.filter.all_software %></a>
@@ -25,7 +25,7 @@
     </div>
   </header>
 
-  <div class="communities-listing main-page">
+  <div class="communities-listing main-page wiiu">
 
     <div id="important-header-marquee" class="info-content-important-marquee">
       <marquee>WARNING: Aquamarine is currently going under major revisions. Please stay clear of any unwanted behavior.</marquee>
@@ -37,7 +37,7 @@
     </div>
 
     <div class="banner-container">
-      <a href="javascript:void(0)" data-sound="SE_WAVE_OK" class="button identified-user-button" onclick="wiiuBOSS.registerBossTask('US');">
+      <a href="javascript:void(0)" data-sound="SE_WAVE_OK" class="button identified-user-button">
         <span class="title"><%= locals.language.aqua.portal.news.get_news_header %></span>
         <span class="text"><%= locals.language.aqua.portal.news.get_news_content %></span>
       </a>

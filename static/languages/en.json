@@ -54,7 +54,9 @@
                     "post": "Post",
                     "cancel": "Cancel",
                     "post_body_placeholder": "Share your thoughts to this community!",
-                    "spoilers": "Spoilers"
+                    "spoilers": "Spoilers",
+                    "has_spoilers": "This post contains spoilers.",
+                    "see_spoiler": "View Post"
                 }
             },
             "miitoo": {

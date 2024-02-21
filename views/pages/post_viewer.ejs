@@ -18,7 +18,7 @@
                                 <% } %>
                             </span>
                         </a>
-                        <% if (post.community_type == "sub") { %>
+                        <% if (post.community_type != "main") { %>
                             <a data-pjax data-sound="SE_OLV_OK_SUB" href="/communities/<%= post.community_id %>" class="community">
                                 <img class="community-icon" src="/img/icons/<%= post.community_id %>.jpg">
                                 <%= post.community_name %>
@@ -58,23 +58,24 @@
                             } %>
                         </a>
 
+                        <% if (post.screenshot) {%>
+                                <a href="javascript:void(0)" class="screenshot-permalink" onclick="aqua.openCaptureModal(this)" data-sound="SE_WAVE_OK">
+                                    <img onerror="this.src='../../../img/banners-wup/placeholder-wup.jpg'" class="post-content-screenshot" src="/img/screenshots/<%= post.id %>.jpg">
+                                </a>
+                        <%} %>
+
                         <p class="user-name"><%= post.mii_name %>
                             <span class="user-id"><%= post.nnid %></span>
                         </p>
 
                         <p class="time-stamp"><%= moment(post.create_time).fromNow() %>
-                            <span class="spoiler-status">Spoilers</span>
+                            <span class="spoiler-status <%= (post.spoiler) ? 'inline-show' : '' %> ">Spoilers</span>
                             <% if (post.title_owned) { %>
                                 <span class="played">Played</span>
                             <% } %>
                         </p>
 
                         <div class="post-content-body">
-                            <% if (post.screenshot) {%>
-                                <a href="javascript:void(0)" class="screenshot-permalink" onclick="aquamarine.toggleCaptureModal(this)" data-sound="SE_WAVE_OK">
-                                    <img onerror="this.src='../../../img/banners-wup/placeholder-wup.jpg'" class="post-content-screenshot" src="/img/screenshots/<%= post.id %>.jpg">
-                                </a>
-                            <%} %>
 
                             <% if (post.topic_tag) {%>
                                <a data-sound="SE_OLV_OK" href="javascript:void(0)" class="post-tag big"><%= post.topic_tag %></a>
