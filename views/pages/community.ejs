@@ -1,6 +1,6 @@
 <%- include('../partials/header'), { account : account } %>
-    <div id="body" class="wrapper" data-community-id="<%= community.id %>" data-community-title-id="<%= JSON.parse(community.title_ids)[0]; %>" data-community-title-id-hex="<%= JSON.parse(community.title_ids).map(titleId => Number(titleId).toString(16).padStart(16, '0')).join(',') %>"  data-community-title-name="<%= community.name %>">
-            <header class="header">
+    <div id="body" class="wrapper">
+            <header class="header with-data" data-community-id="<%= community.id %>" data-community-title-id="<%= JSON.parse(community.title_ids)[0]; %>" data-community-title-id-hex="<%= JSON.parse(community.title_ids).map(titleId => Number(titleId).toString(16).padStart(16, '0')).join(',') %>"  data-community-title-name="<%= community.name %>">
                 <% if (community.sub_communities.length != 0) { %>
                     <a data-pjax class="header-other-button" data-sound="SE_WAVE_OK_SUB" href="/communities/<%= community.id %>/other"><%= locals.language.aqua.portal.community.other %></a>
                 <% } %>
@@ -17,7 +17,7 @@
                     <img src="../../../img/icons/<%= community.id %>.jpg" class="icon">
                 </span>
                 <button data-sound="SE_WAVE_OK" class="settings-button button" onclick="aquamarine.openComSettingsModal()"></button>
-                <button data-sound="" class="favorite-button button <%= (community.favorites.some(favorite => favorite.account_id == account[0].id)) ? "checked" : "" %>" onclick="aquamarine.toggleFavorite()"></button>
+                <button data-sound="" class="favorite-button button <%= (community.favorites.some(favorite => favorite.account_id == account[0].id)) ? "checked" : "" %>" onclick="aqua.favoriteCommunity()"></button>
                 <% if (community.type=="main" ) {%>
                     <span class="news-community-badge"><%= locals.language.aqua.portal.community.types.main_community %></span>
                 <%} else if (community.type=="sub" ) {%>

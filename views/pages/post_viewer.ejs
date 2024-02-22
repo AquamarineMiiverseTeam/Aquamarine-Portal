@@ -3,7 +3,7 @@
 <div class="wrapper">
 
             <header class="header">
-                <h1 class="content-title button-ellipsis"><%= post.mii_name %>'s post</h1>
+                <h1 class="content-title"><%= post.mii_name %>'s post</h1>
             </header>
 
             <div class="post-permalink">
@@ -25,7 +25,7 @@
                             </a>
                         <% } %>
 
-                        <% if (post.search_key) { %>
+                        <% if (post.search_key || post.topic_tag) { %>
                             <a data-sound="SE_OLV_DECIDE" href="javascript:void(0)" class="post-type in-game">In-Game</a>
                         <% } %>
                     </div>

@@ -39,7 +39,8 @@ route.get('/communities', async (req, res, next) => {
             if (communities.length == 0) {res.sendStatus(204); return;}
 
             res.render('partials/communities', {
-                communities: communities
+                communities: communities,
+                account: req.account
             })
     
             return;

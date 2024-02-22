@@ -1,5 +1,6 @@
 var aqua = {
     modifed_posts: [],
+    modifed_communities: [],
     scrollPosition: 0,
     initSnd: function () {
         var e = $("[data-sound]");
@@ -114,7 +115,7 @@ var aqua = {
     initScrl: function () {
         $(document).off("scroll");
         $(document).off("aqua:scroll-end")
-        
+
         function checkScroll() {
             if (window.scrollY + window.innerHeight >= document.body.scrollHeight) {
                 $(document).trigger("aqua:scroll-end")
@@ -132,7 +133,8 @@ var aqua = {
 
         var currently_downloading = false;
         function download() {
-            if (currently_downloading) { return; }
+            var viewer = $(".screenshot-viewer-screenshot")
+            if (currently_downloading || viewer.length && !viewer.hasClass("none")) { return; }
             var url = $("[data-scroll-url]").attr("data-scroll-url")
             var cont = $("[data-scroll-container]").attr("data-scroll-container")
             var query = "";
@@ -149,10 +151,24 @@ var aqua = {
                 if (xhttp.readyState === 4) {
                     switch (xhttp.status) {
                         case 200:
-                            $(cont).append(xhttp.responseText);
+                            var appendedContent = $(xhttp.responseText).css('display', 'none');
+                            $(cont).append(appendedContent);
+
+                            var totalImages = appendedContent.find('img').length;
+                            var imagesLoadedCount = 0;
+
+                            function handleDisplay() {
+                                imagesLoadedCount++;
+                                if (imagesLoadedCount >= totalImages) {
+                                    appendedContent.css('display', 'block');
+                                    imagesLoadedCount = 0;
+                                }
+                            }
+                            appendedContent.find('img').on('load', handleDisplay);
+
                             aqua.initSnd();
                             aqua.initEmp();
-                            aqua.initEmpPopstate();
+                            aqua.initPopstate();
                             currently_downloading = false;
                             break;
                         case 204:
@@ -214,7 +230,7 @@ var aqua = {
                                             existingIndex = i;
                                             break;
                                         }
-                                    }     
+                                    }
                                     if (existingIndex !== -1) {
                                         aqua.modifed_posts[existingIndex].count = emc;
                                         aqua.modifed_posts[existingIndex].state = response;
@@ -222,7 +238,7 @@ var aqua = {
                                     } else {
                                         aqua.modifed_posts.push({ id: id, count: emc, state: response, changed: true });
                                     }
-                                    wiiuBrowser.lockUserOperation(false);                                    
+                                    wiiuBrowser.lockUserOperation(false);
                                     el.removeClass('added');
                                     el.text("Yeah!");
                                     if (miis.length == 1) {
@@ -261,7 +277,7 @@ var aqua = {
                                     } else {
                                         aqua.modifed_posts.push({ id: id, count: emc, state: response, changed: true });
                                     }
-                                    wiiuBrowser.lockUserOperation(false);                                    
+                                    wiiuBrowser.lockUserOperation(false);
                                     el.addClass('added');
                                     el.text("Unyeah!");
                                     if (miis.length == 1) {
@@ -326,7 +342,7 @@ var aqua = {
                                             existingIndex = i;
                                             break;
                                         }
-                                    }     
+                                    }
                                     if (existingIndex !== -1) {
                                         aqua.modifed_posts[existingIndex].count = emc;
                                         aqua.modifed_posts[existingIndex].state = response;
@@ -351,7 +367,7 @@ var aqua = {
                                             existingIndex = i;
                                             break;
                                         }
-                                    }     
+                                    }
                                     if (existingIndex !== -1) {
                                         aqua.modifed_posts[existingIndex].count = emc;
                                         aqua.modifed_posts[existingIndex].state = response;
@@ -381,40 +397,50 @@ var aqua = {
         }
 
     },
-    initEmpPopstate: function () {
-        if ($("#post_list").length == 0) { return; }
-        for (var i = 0; i < aqua.modifed_posts.length; i++) {
-            if (aqua.modifed_posts[i].state == "created" && aqua.modifed_posts[i].changed) {
-                $("#post-" + aqua.modifed_posts[i].id + " .post-body-content .post-body .post-meta button").text("Unyeah!")
-                $("#post-" + aqua.modifed_posts[i].id + " .post-body-content .post-body .post-meta a .feeling").addClass("added")
-                $("#post-" + aqua.modifed_posts[i].id + " .post-body-content .post-body .post-meta a .feeling").text(aqua.modifed_posts[i].count);
-                aqua.modifed_posts[i].changed = false;
-            } else if (aqua.modifed_posts[i].state == "deleted" && aqua.modifed_posts[i].changed) {
-                $("#post-" + aqua.modifed_posts[i].id + " .post-body-content .post-body .post-meta button").text("Yeah!")
-                $("#post-" + aqua.modifed_posts[i].id + " .post-body-content .post-body .post-meta a .feeling").removeClass("added")
-                $("#post-" + aqua.modifed_posts[i].id + " .post-body-content .post-body .post-meta a .feeling").text(aqua.modifed_posts[i].count);
-                aqua.modifed_posts[i].changed = false;
-                aqua.modifed_posts.splice(i, 1);
+    initPopstate: function () {
+        if ($("#post_list").length != 0) {
+            for (var i = 0; i < aqua.modifed_posts.length; i++) {
+                if (aqua.modifed_posts[i].state == "created" && aqua.modifed_posts[i].changed) {
+                    $("#post-" + aqua.modifed_posts[i].id + " .post-body-content .post-body .post-meta button").text("Unyeah!")
+                    $("#post-" + aqua.modifed_posts[i].id + " .post-body-content .post-body .post-meta a .feeling").addClass("added")
+                    $("#post-" + aqua.modifed_posts[i].id + " .post-body-content .post-body .post-meta a .feeling").text(aqua.modifed_posts[i].count);
+                    aqua.modifed_posts[i].changed = false;
+                    aqua.modifed_posts.splice(i, 1);
+                } else if (aqua.modifed_posts[i].state == "deleted" && aqua.modifed_posts[i].changed) {
+                    $("#post-" + aqua.modifed_posts[i].id + " .post-body-content .post-body .post-meta button").text("Yeah!")
+                    $("#post-" + aqua.modifed_posts[i].id + " .post-body-content .post-body .post-meta a .feeling").removeClass("added")
+                    $("#post-" + aqua.modifed_posts[i].id + " .post-body-content .post-body .post-meta a .feeling").text(aqua.modifed_posts[i].count);
+                    aqua.modifed_posts[i].changed = false;
+                    aqua.modifed_posts.splice(i, 1);
+                }
+            }
+        } else if ($(".communities-listing").length != 0) {
+        for (var i = 0; i < aqua.modifed_communities.length; i++) {
+            if (aqua.modifed_communities[i].state == "created" && aqua.modifed_communities[i].changed) {
+                $("li#community-" + aqua.modifed_communities[i].id + " .favorited").removeClass("none")
+                aqua.modifed_communities[i].changed = false;
+                aqua.modifed_communities.splice(i, 1);
+            } else if (aqua.modifed_communities[i].state == "deleted" && aqua.modifed_communities[i].changed) {
+                $("li#community-" + aqua.modifed_communities[i].id + " .favorited").addClass("none")
+                aqua.modifed_communities[i].changed = false;
+                aqua.modifed_communities.splice(i, 1);
             }
         }
-
-        if (aqua.modifed_posts.length > 50) {
-            aqua.modifed_posts.length = 0;
-        }
+      }
     },
     initToggle: function () {
         var elt = $("[data-toggle]");
         if (!elt.length) return;
-        elt.off("click").on("click", function() {
+        elt.off("click").on("click", function () {
             var target = $(elt.attr("data-toggle"));
             if (target.hasClass("none")) {
-            wiiuSound.playSoundByName('', 3);
-            wiiuSound.playSoundByName('SE_OLV_BALLOON_OPEN', 3);
-            target.removeClass("none");
+                wiiuSound.playSoundByName('', 3);
+                wiiuSound.playSoundByName('SE_OLV_BALLOON_OPEN', 3);
+                target.removeClass("none");
             } else {
-            wiiuSound.playSoundByName('', 3);
-            wiiuSound.playSoundByName('SE_OLV_BALLOON_CLOSE', 3);
-            target.addClass("none");
+                wiiuSound.playSoundByName('', 3);
+                wiiuSound.playSoundByName('SE_OLV_BALLOON_CLOSE', 3);
+                target.addClass("none");
             }
         })
     },
@@ -432,9 +458,8 @@ var aqua = {
         });
     },
     openCaptureModal: function (capture) {
-        $(document).off("aqua:scroll-end")
         var viewer = $(".screenshot-viewer-screenshot");
-        var picture =  $(".screenshot-viewer-screenshot div div img");
+        var picture = $(".screenshot-viewer-screenshot div div img");
         if (viewer.hasClass("none")) {
             aqua.scrollPosition = window.scrollY;
             $("#menu-bar").addClass("none");
@@ -458,27 +483,82 @@ var aqua = {
             window.scrollTo(0, aqua.scrollPosition)
         }
     },
-    closeNotification: function () {
-        
+    favoriteCommunity: function () {
+        var favoriteBtn = $(".favorite-button.button");
+        favoriteBtn.prop("disabled", true);
+        wiiuBrowser.lockUserOperation(true);
+        var id = $("header.header.with-data").attr("data-community-id");
+        var xml = new XMLHttpRequest();
+        xml.open("POST", "https://api.olv.nonamegiven.xyz/v1/communities/" + id + "/favorite");
+        xml.send();
+        xml.onreadystatechange = function () {
+            if (xml.readyState === 4) {
+                if (xml.status === 200) {
+                    var response = JSON.parse(xml.responseText).result;
+                    if (favoriteBtn.hasClass("checked")) {
+                        var existingIndex = -1;
+                        for (var i = 0; i < aqua.modifed_communities.length; i++) {
+                            if (aqua.modifed_communities[i].id === id) {
+                                existingIndex = i;
+                                break;
+                            }
+                        }
+                        if (existingIndex !== -1) {
+                            aqua.modifed_communities[existingIndex].state = response;
+                            aqua.modifed_communities[existingIndex].changed = true;
+                        } else {
+                            aqua.modifed_communities.push({ id: id, state: response, changed: true });
+                        }
+                        wiiuBrowser.lockUserOperation(false);
+                        wiiuSound.playSoundByName("SE_OLV_MII_CANCEL", 3);
+                        favoriteBtn.prop("disabled", false);
+                        favoriteBtn.removeClass("checked");
+                    } else {
+                        var existingIndex = -1;
+                        for (var i = 0; i < aqua.modifed_communities.length; i++) {
+                            if (aqua.modifed_communities[i].id === id) {
+                                existingIndex = i;
+                                break;
+                            }
+                        }
+                        if (existingIndex !== -1) {
+                            aqua.modifed_communities[existingIndex].state = response;
+                            aqua.modifed_communities[existingIndex].changed = true;
+                        } else {
+                            aqua.modifed_communities.push({ id: id, state: response, changed: true });
+                        }
+                        wiiuBrowser.lockUserOperation(false);
+                        wiiuSound.playSoundByName("SE_OLV_MII_ADD", 3);
+                        favoriteBtn.prop("disabled", false);
+                        favoriteBtn.addClass("checked");
+                    }
+                }
+                else {
+                    wiiuBrowser.lockUserOperation(false);
+                    wiiuErrorViewer.openByCodeAndMessage(155299, 'There was an error favoriting this community.')
+                    favoriteBtn.prop("disabled", false);
+                }
+            }
+        }
     },
     prepareBOSS: function () {
         var isBOSSEnabled = wiiuLocalStorage.getItem("boss_state");
         if (isBOSSEnabled == "true") {
-         if (!wiiuBOSS.isRegisteredDirectMessageTask().isRegistered) {
-          aqua.setBOSS(true);
-         }
-       }
+            if (!wiiuBOSS.isRegisteredDirectMessageTask().isRegistered) {
+                aqua.setBOSS(true);
+            }
+        }
     },
     setBOSS: function (set) {
-         if (set) {
+        if (set) {
             wiiuLocalStorage.setItem("boss_state", "true");
             console.log("boss is set")
-            wiiuBOSS.registerDirectMessageTaskEx(720,2);
-         } else {
+            wiiuBOSS.registerDirectMessageTaskEx(720, 2);
+        } else {
             wiiuLocalStorage.removeItem("boss_state");
             console.log("boss is unset")
             wiiuBOSS.unregisterDirectMessageTask();
-         }
+        }
     },
 }
 
@@ -515,7 +595,7 @@ $(document).on("pjax:end", function () {
     aqua.initNav();
     aqua.initScrl();
     aqua.initEmp();
-    aqua.initEmpPopstate();
+    aqua.initPopstate();
     aqua.initSpoiler();
     aqua.initToggle();
 })
