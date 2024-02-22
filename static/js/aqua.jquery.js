@@ -112,6 +112,9 @@ var aqua = {
         }
     },
     initScrl: function () {
+        $(document).off("scroll");
+        $(document).off("aqua:scroll-end")
+        
         function checkScroll() {
             if (window.scrollY + window.innerHeight >= document.body.scrollHeight) {
                 $(document).trigger("aqua:scroll-end")
@@ -122,6 +125,9 @@ var aqua = {
             $(document).off("scroll");
             $(document).off("aqua:scroll-end")
             return;
+        } else {
+            $(document).on("aqua:scroll-end", download)
+            $(document).on("scroll", checkScroll);
         }
 
         var currently_downloading = false;
@@ -163,9 +169,6 @@ var aqua = {
                 }
             }
         }
-
-        $(document).on("aqua:scroll-end", download)
-        $(document).on("scroll", checkScroll);
     },
     initEmp: function () {
         var els = $("button[data-post-id].miitoo-button");
