@@ -57,13 +57,15 @@
                     }) %>
 
                     <% if (posts.length == 0) { %>
-                        <div class="no-content-window">
+                        <div class="no-content-window" style="margin-top: 0;">
                             <p><%= locals.language.aqua.portal.community.no_posts %></p>
                         </div>
+                    <%} else if (posts.length >= 8) {%>
+                        <a class="loading" id="loading"></a>
+                    <%} else {%>
+                        <a class="loading none" id="loading"></a>
                     <%} %>
                 </div>
-                
-                <a class="loading" id="loading"></a>
             </div>
 
                 
