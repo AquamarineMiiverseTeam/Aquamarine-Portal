@@ -446,15 +446,13 @@ var aqua = {
         } else {
             viewer.addClass("none");
             $("#menu-bar").removeClass("none");
-            $(".wrapper").removeClass("none");
-            window.scrollTo(0, scrollPosition)
-        } else {
-            scrollPosition = window.scrollY;
-
-            $("#menu-bar").addClass("none");
-            $(".wrapper").addClass("none");
-            picture.attr("src", $(capture).children(":first").attr("src"));
-            viewer.removeClass("none");
+            $(".header").removeClass("none");
+            $(".header-banner-container").removeClass("none");
+            $(".community-info").removeClass("none");
+            $(".community-type").removeClass("none");
+            $(".community-post-list").removeClass("none");
+            $(".post-permalink").removeClass("none");
+            window.scrollTo(0, aqua.scrollPosition)
         }
     },
     closeNotification: function () {
