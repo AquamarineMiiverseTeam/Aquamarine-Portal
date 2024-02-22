@@ -5,11 +5,17 @@
     <span class="icon-content">
         <img class="icon" src="../../img/icons/<%= community.id %>.jpg"></img>
     </span>
+
     <a data-sound="SE_WAVE_OK" href="/communities/<%= community.id %>" data-pjax=".wrapper" class="scroll to-community-button">
+    <% if (community.sub_communities && community.sub_communities.length != 0) { %>
+    <a data-sound="SE_WAVE_OK_SUB" href="/communities/<%= community.id %>/other" data-pjax=".wrapper" class="to-related-community-button">Related Communities</a>
+    <% } else { %>
         <span class="community-button"></span>
+    <% } %>
     </a>
+
     <div class="body">
-        <div class="body-content">
+        <div class="body-content <%= community.sub_communities && community.sub_communities.length !== 0 ? 'related' : '' %>">
           <span class="community-name title">
             <%= locals.local([{str : community.name, rpl : "%s"}], locals.language.aqua.portal.community.community) %>
           </span>

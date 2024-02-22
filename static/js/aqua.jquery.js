@@ -114,7 +114,7 @@ var aqua = {
     initScrl: function () {
         $(document).off("scroll");
         $(document).off("aqua:scroll-end")
-        
+
         function checkScroll() {
             if (window.scrollY + window.innerHeight >= document.body.scrollHeight) {
                 $(document).trigger("aqua:scroll-end")
@@ -132,7 +132,8 @@ var aqua = {
 
         var currently_downloading = false;
         function download() {
-            if (currently_downloading) { return; }
+            var viewer = $(".screenshot-viewer-screenshot")
+            if (currently_downloading || viewer.length && !viewer.hasClass("none")) { return; }
             var url = $("[data-scroll-url]").attr("data-scroll-url")
             var cont = $("[data-scroll-container]").attr("data-scroll-container")
             var query = "";
@@ -149,7 +150,21 @@ var aqua = {
                 if (xhttp.readyState === 4) {
                     switch (xhttp.status) {
                         case 200:
-                            $(cont).append(xhttp.responseText);
+                            var appendedContent = $(xhttp.responseText).css('display', 'none');
+                            $(cont).append(appendedContent);
+
+                            var totalImages = appendedContent.find('img').length;
+                            var imagesLoadedCount = 0;
+
+                            function handleDisplay() {
+                                imagesLoadedCount++;
+                                if (imagesLoadedCount >= totalImages) {
+                                    appendedContent.css('display', 'block');
+                                    imagesLoadedCount = 0;
+                                }
+                            }
+                            appendedContent.find('img').on('load', handleDisplay);
+
                             aqua.initSnd();
                             aqua.initEmp();
                             aqua.initEmpPopstate();
@@ -214,7 +229,7 @@ var aqua = {
                                             existingIndex = i;
                                             break;
                                         }
-                                    }     
+                                    }
                                     if (existingIndex !== -1) {
                                         aqua.modifed_posts[existingIndex].count = emc;
                                         aqua.modifed_posts[existingIndex].state = response;
@@ -222,7 +237,7 @@ var aqua = {
                                     } else {
                                         aqua.modifed_posts.push({ id: id, count: emc, state: response, changed: true });
                                     }
-                                    wiiuBrowser.lockUserOperation(false);                                    
+                                    wiiuBrowser.lockUserOperation(false);
                                     el.removeClass('added');
                                     el.text("Yeah!");
                                     if (miis.length == 1) {
@@ -261,7 +276,7 @@ var aqua = {
                                     } else {
                                         aqua.modifed_posts.push({ id: id, count: emc, state: response, changed: true });
                                     }
-                                    wiiuBrowser.lockUserOperation(false);                                    
+                                    wiiuBrowser.lockUserOperation(false);
                                     el.addClass('added');
                                     el.text("Unyeah!");
                                     if (miis.length == 1) {
@@ -326,7 +341,7 @@ var aqua = {
                                             existingIndex = i;
                                             break;
                                         }
-                                    }     
+                                    }
                                     if (existingIndex !== -1) {
                                         aqua.modifed_posts[existingIndex].count = emc;
                                         aqua.modifed_posts[existingIndex].state = response;
@@ -351,7 +366,7 @@ var aqua = {
                                             existingIndex = i;
                                             break;
                                         }
-                                    }     
+                                    }
                                     if (existingIndex !== -1) {
                                         aqua.modifed_posts[existingIndex].count = emc;
                                         aqua.modifed_posts[existingIndex].state = response;
@@ -405,16 +420,16 @@ var aqua = {
     initToggle: function () {
         var elt = $("[data-toggle]");
         if (!elt.length) return;
-        elt.off("click").on("click", function() {
+        elt.off("click").on("click", function () {
             var target = $(elt.attr("data-toggle"));
             if (target.hasClass("none")) {
-            wiiuSound.playSoundByName('', 3);
-            wiiuSound.playSoundByName('SE_OLV_BALLOON_OPEN', 3);
-            target.removeClass("none");
+                wiiuSound.playSoundByName('', 3);
+                wiiuSound.playSoundByName('SE_OLV_BALLOON_OPEN', 3);
+                target.removeClass("none");
             } else {
-            wiiuSound.playSoundByName('', 3);
-            wiiuSound.playSoundByName('SE_OLV_BALLOON_CLOSE', 3);
-            target.addClass("none");
+                wiiuSound.playSoundByName('', 3);
+                wiiuSound.playSoundByName('SE_OLV_BALLOON_CLOSE', 3);
+                target.addClass("none");
             }
         })
     },
@@ -432,9 +447,8 @@ var aqua = {
         });
     },
     openCaptureModal: function (capture) {
-        $(document).off("aqua:scroll-end")
         var viewer = $(".screenshot-viewer-screenshot");
-        var picture =  $(".screenshot-viewer-screenshot div div img");
+        var picture = $(".screenshot-viewer-screenshot div div img");
         if (viewer.hasClass("none")) {
             aqua.scrollPosition = window.scrollY;
             $("#menu-bar").addClass("none");
@@ -459,26 +473,26 @@ var aqua = {
         }
     },
     closeNotification: function () {
-        
+
     },
     prepareBOSS: function () {
         var isBOSSEnabled = wiiuLocalStorage.getItem("boss_state");
         if (isBOSSEnabled == "true") {
-         if (!wiiuBOSS.isRegisteredDirectMessageTask().isRegistered) {
-          aqua.setBOSS(true);
-         }
-       }
+            if (!wiiuBOSS.isRegisteredDirectMessageTask().isRegistered) {
+                aqua.setBOSS(true);
+            }
+        }
     },
     setBOSS: function (set) {
-         if (set) {
+        if (set) {
             wiiuLocalStorage.setItem("boss_state", "true");
             console.log("boss is set")
-            wiiuBOSS.registerDirectMessageTaskEx(720,2);
-         } else {
+            wiiuBOSS.registerDirectMessageTaskEx(720, 2);
+        } else {
             wiiuLocalStorage.removeItem("boss_state");
             console.log("boss is unset")
             wiiuBOSS.unregisterDirectMessageTask();
-         }
+        }
     },
 }
 
