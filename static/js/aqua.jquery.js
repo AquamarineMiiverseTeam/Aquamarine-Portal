@@ -483,63 +483,8 @@ var aqua = {
             window.scrollTo(0, aqua.scrollPosition)
         }
     },
-    favoriteCommunity: function () {
-        var favoriteBtn = $(".favorite-button.button");
-        favoriteBtn.prop("disabled", true);
-        wiiuBrowser.lockUserOperation(true);
-        var id = $("header.header.with-data").attr("data-community-id");
-        var xml = new XMLHttpRequest();
-        xml.open("POST", "https://api.olv.nonamegiven.xyz/v1/communities/" + id + "/favorite");
-        xml.send();
-        xml.onreadystatechange = function () {
-            if (xml.readyState === 4) {
-                if (xml.status === 200) {
-                    var response = JSON.parse(xml.responseText).result;
-                    if (favoriteBtn.hasClass("checked")) {
-                        var existingIndex = -1;
-                        for (var i = 0; i < aqua.modifed_communities.length; i++) {
-                            if (aqua.modifed_communities[i].id === id) {
-                                existingIndex = i;
-                                break;
-                            }
-                        }
-                        if (existingIndex !== -1) {
-                            aqua.modifed_communities[existingIndex].state = response;
-                            aqua.modifed_communities[existingIndex].changed = true;
-                        } else {
-                            aqua.modifed_communities.push({ id: id, state: response, changed: true });
-                        }
-                        wiiuBrowser.lockUserOperation(false);
-                        wiiuSound.playSoundByName("SE_OLV_MII_CANCEL", 3);
-                        favoriteBtn.prop("disabled", false);
-                        favoriteBtn.removeClass("checked");
-                    } else {
-                        var existingIndex = -1;
-                        for (var i = 0; i < aqua.modifed_communities.length; i++) {
-                            if (aqua.modifed_communities[i].id === id) {
-                                existingIndex = i;
-                                break;
-                            }
-                        }
-                        if (existingIndex !== -1) {
-                            aqua.modifed_communities[existingIndex].state = response;
-                            aqua.modifed_communities[existingIndex].changed = true;
-                        } else {
-                            aqua.modifed_communities.push({ id: id, state: response, changed: true });
-                        }
-                        wiiuBrowser.lockUserOperation(false);
-                        wiiuSound.playSoundByName("SE_OLV_MII_ADD", 3);
-                        favoriteBtn.prop("disabled", false);
-                        favoriteBtn.addClass("checked");
-                    }
-                }
-                else {
-                    wiiuBrowser.lockUserOperation(false);
-                    wiiuErrorViewer.openByCodeAndMessage(155299, 'There was an error favoriting this community.')
-                    favoriteBtn.prop("disabled", false);
-                }
-            }
-        }
+    closeNotification: function () {
+        
     },
     prepareBOSS: function () {
         var isBOSSEnabled = wiiuLocalStorage.getItem("boss_state");

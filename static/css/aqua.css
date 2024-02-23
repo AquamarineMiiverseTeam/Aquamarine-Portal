@@ -952,42 +952,6 @@ body {
   padding: 0;
 }
 
-.communities-listing .commnities-new-added li .to-related-community-button {
-  min-height: 72px;
-  border-radius: 12px;
-  float: right;
-  max-width: 377px;
-  z-index: 2;
-  display: -webkit-box;
-  padding: 0px 14px 0px 67px;
-  margin: 10px 0px 0px 0px;
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAAAjCAQAAABS+bCWAAACI0lEQVR4AeXVA4wcURzH8d9783YHZyOdRW07qs2oca4x60Zl7OQaN7qLa9tGUNv22ZrXuTfL+n+N77Ma+5tlwKwQCzEo1UduIWLWcJbJQHKLzQqJm0amgLdi+9Kd5WpTJf4yHQIUzj6BkJ6ZATOysdYgFC1oIhN+kOSIoemvYcKCp7cNZYj9HiZxY9kFvDidAZCRl25CsUwGSXxxTUQHldhvdPMUEiKrLnE1vfF/NsZk3yNb69IEOpmto7YUbofr/ZIza3VwUPQ/z6SN9YjbwU7DJedhPqieMEBORDY8TbjKGtXGLEwB1W10D2xSprZXTNK8nF51LD6mUp883J0a0kBQ7ZQKDPdNSoPhbSzUuhBqY1ioh9JoOWV2TBI99GqYsdCLMqAEM2pgQgdFRg4fnscQr7OwAIpdwECt07RUmw6cn9v0phI4EN4GJJLJLrXJZzzq96EDjlo1o27MdSiTrmfVudMIL701+NwNHasRd5Ad6nqbHO/wBFEVsb5uowI0jXiM7oEB40p4kEOpkeVXqgF3WiZbzsFAsl+MHS7KDMT+hIFSdFru22xAA4UzSbBMH6xYhf5cKBk+BykQoNB1Pj2fQ8ReA2woI8Mcgvgqyhcp/sScNJGcFI3AbyrsUpv936e2xlfK/gIl7wv9uIwmt823mz+lcXRKaelfHm3zQUmjzkARvi5QYX+26xBVGf0dWAGqCgbIHOTA08TeIkLaMEHz7jsylPU5WdXzkgAAAABJRU5ErkJggg==) no-repeat 13px center, -webkit-gradient(linear, left top, left bottom, from(#ffffff), color-stop(0.5, #ffffff), color-stop(0.8, #f7f7f7), color-stop(0.96, #e6e6e6), to(#9a9a9a)) 0 0;
-  height: 70px;
-  text-shadow: 0px 2px 0px #fff;
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
-  position: relative;
-  -webkit-box-align: center;
-  -webkit-box-pack: center;
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  text-align: center;
-  font-size: 23px;
-  color: #323232;
-  line-height: 1.2;
-}
-
-.communities-listing .commnities-new-added li .favorited {
-  background: url(../img/sprsheet/community_favorite.png) no-repeat 0px 0px;
-  position: relative;
-  display: block;
-  float: left;
-  margin-left: 10px;
-  pointer-events: none;
-  top: 1px;
-  width: 25px;
-  height: 24px;
-}
-
 .communities-listing .commnities-new-added li .community-button {
   display: block;
   border-radius: 150px;
