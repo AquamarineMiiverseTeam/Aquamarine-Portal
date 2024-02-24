@@ -7,11 +7,78 @@ var aqua = {
         if (!e) { return; }
 
         function playSnd(event) {
-            var soundName = $(event.currentTarget).attr("data-sound");
-            wiiuSound.playSoundByName(soundName, 3);
+            wiiuSound.playSoundByName($(event.currentTarget).attr("data-sound"), 3);
         }
 
         e.off("click").on("click", playSnd);
+    },
+    initButton: function () {
+        setInterval(inputButton, 0);
+        function inputButton() {
+            wiiu.gamepad.update();
+
+            if (wiiu.gamepad.hold == 128 || wiiu.gamepad.hold == 64) {
+                var scrollSpeed = 0;
+                var accY = wiiu.gamepad.accY;
+                scrollSpeed = Math.round(accY * 40);
+                window.scrollBy(0, scrollSpeed);
+            }
+
+
+            if (wiiu.gamepad.isDataValid === 0) {
+                pressedButton = null;
+                return;
+            }
+
+            switch (wiiu.gamepad.hold) {
+                case 16384:
+                    if (pressedButton !== 16384) {
+                        pressedButton = 16384;
+                        wiiuSound.playSoundByName("SE_WAVE_BACK", 3);
+                        var path = location.pathname;
+                        var viewer = $(".screenshot-viewer-screenshot");
+                        if (viewer && viewer.length != 0 && !viewer.hasClass("none"))  {
+                            viewer.addClass("none");
+                            $("#menu-bar").removeClass("none");
+                            $(".header").removeClass("none");
+                            $(".header-banner-container").removeClass("none");
+                            $(".community-info").removeClass("none");
+                            $(".community-type").removeClass("none");
+                            $(".community-post-list").removeClass("none");
+                            $(".post-permalink").removeClass("none");
+                            window.scrollTo(0, aqua.scrollPosition)
+                            return;
+                        }
+
+                        if (wiiuBrowser.canHistoryBack() && path.indexOf("/titles/show") === -1 && path.indexOf("/messages") === -1 && path.indexOf("/notifications") === -1 && path.indexOf("/notifications/friend_requests") === -1 && path.indexOf("/users/@me") === -1) {
+                            history.back();
+                        }
+                    }
+                    break;
+                case 262144:
+                    if (pressedButton !== 262144) {
+                        pressedButton = 262144;
+                        window.scrollTo(0, 0);
+                    }
+                    break;
+                case 131072:
+                    if (pressedButton !== 131072) {
+                        pressedButton = 131072;
+                        window.scrollTo(0, 0);
+                    }
+                    break;
+                case 4096:
+                    if (pressedButton !== 4096) {
+                        pressedButton = 4096;
+                        wiiuSound.playSoundByName("SE_WAVE_BALLOON_OPEN", 3);
+                        window.location.reload();
+                    }
+                    break;
+                default:
+                    pressedButton = null;
+                    break;
+            }
+        }
     },
     initNav: function () {
         var el = $("#menu-bar > li")
@@ -65,6 +132,10 @@ var aqua = {
                 $(el[i]).removeClass("selected")
             }
             news.addClass("selected");
+        } else {
+            for (var i = 0; i < el.length; i++) {
+                $(el[i]).removeClass("selected")
+            }
         }
 
         if (wiiuBrowser.canHistoryBack() &&
@@ -415,18 +486,18 @@ var aqua = {
                 }
             }
         } else if ($(".communities-listing").length != 0) {
-        for (var i = 0; i < aqua.modifed_communities.length; i++) {
-            if (aqua.modifed_communities[i].state == "created" && aqua.modifed_communities[i].changed) {
-                $("li#community-" + aqua.modifed_communities[i].id + " .favorited").removeClass("none")
-                aqua.modifed_communities[i].changed = false;
-                aqua.modifed_communities.splice(i, 1);
-            } else if (aqua.modifed_communities[i].state == "deleted" && aqua.modifed_communities[i].changed) {
-                $("li#community-" + aqua.modifed_communities[i].id + " .favorited").addClass("none")
-                aqua.modifed_communities[i].changed = false;
-                aqua.modifed_communities.splice(i, 1);
+            for (var i = 0; i < aqua.modifed_communities.length; i++) {
+                if (aqua.modifed_communities[i].state == "created" && aqua.modifed_communities[i].changed) {
+                    $("li#community-" + aqua.modifed_communities[i].id + " .favorited").removeClass("none")
+                    aqua.modifed_communities[i].changed = false;
+                    aqua.modifed_communities.splice(i, 1);
+                } else if (aqua.modifed_communities[i].state == "deleted" && aqua.modifed_communities[i].changed) {
+                    $("li#community-" + aqua.modifed_communities[i].id + " .favorited").addClass("none")
+                    aqua.modifed_communities[i].changed = false;
+                    aqua.modifed_communities.splice(i, 1);
+                }
             }
         }
-      }
     },
     initToggle: function () {
         var elt = $("[data-toggle]");
@@ -574,6 +645,7 @@ $(document).on("DOMContentLoaded", function () {
     aqua.initEmp();
     aqua.initSpoiler();
     aqua.initToggle();
+    aqua.initButton();
     wiiuSound.playSoundByName("BGM_OLV_MAIN", 3);
     setTimeout(function () {
         wiiuSound.playSoundByName("BGM_OLV_MAIN_LOOP_NOWAIT", 3);
@@ -583,6 +655,11 @@ $(document).on("DOMContentLoaded", function () {
 
 $(document).on("pjax:click", function () {
     wiiuBrowser.lockUserOperation(true);
+})
+
+$(document).on("pjax:error", function () {
+    wiiuBrowser.lockUserOperation(false);
+    wiiuErrorViewer.openByCodeAndMessage(115000, "There was an error loading content.");
 })
 
 $(document).on("pjax:beforeReplace", function () {
@@ -598,4 +675,5 @@ $(document).on("pjax:end", function () {
     aqua.initPopstate();
     aqua.initSpoiler();
     aqua.initToggle();
+    aqua.initButton();
 })

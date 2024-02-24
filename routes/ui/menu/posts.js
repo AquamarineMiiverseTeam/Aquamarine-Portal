@@ -7,10 +7,13 @@ const common = require('../../../../Aquamarine-Utils/common')
 
 route.get("/:post_id", async (req, res, next) => {
     const post = (await db_con("posts")
-        .select("posts.*", "accounts.mii_hash", "accounts.nnid", "accounts.mii_name", "accounts.admin", "communities.name as community_name", "communities.type as community_type")
+        .select("posts.*", "accounts.mii_hash", "accounts.nnid", "accounts.mii_name", "accounts.admin", "communities.name as community_name", "communities.type as community_type", "parent_community.id as parent_community_id")
         .where({"posts.id" : req.params.post_id})
         .leftOuterJoin("accounts", "accounts.id", "=", "posts.account_id")
         .leftOuterJoin("communities", "communities.id", "=", "posts.community_id")
+        .leftOuterJoin("communities as parent_community", function() {
+            this.on("parent_community.id", "=", "communities.parent_community_id")
+        })
     )[0]
 
     post.empathies = (await db_con("empathies")

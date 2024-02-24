@@ -11,7 +11,7 @@
                 <div class="post-content-viewer">
 
                     <div class="post-content-header">
-                        <a data-pjax data-sound="SE_OLV_OK_SUB" href="/communities/<%= post.community_id %>" <% if (post.community_type == "main") { %> class="community"<% } else {%> class="program" <%} %>>
+                        <a data-pjax data-sound="SE_OLV_OK_SUB" href="/communities/<%= (post.community_type == "main") ? post.community_id : post.parent_community_id %>" <% if (post.community_type == "main") { %> class="community"<% } else {%> class="program" <%} %>>
                             <span><img class="title-icon" src="/img/icons/<%= post.community_id %>.jpg">
                                 <% if (post.community_type == "main") {%>
                                     <%= post.community_name %>
