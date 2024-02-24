@@ -52,7 +52,9 @@
                 },
                 "post": {
                     "post": "Post",
+                    "window_post": "Post to %s Community",
                     "cancel": "Cancel",
+                    "post_body_guide": "Write a post.",
                     "post_body_placeholder": "Share your thoughts to this community!",
                     "spoilers": "Spoilers",
                     "has_spoilers": "This post contains spoilers.",
@@ -73,7 +75,15 @@
                 "frustrated": "Yeah...",
                 "frustrated.delete": "Unyeah...",
                 "special": "Yeah\u2605",
-                "special.delete": "Unyeah\u2606"
+                "special.delete": "Unyeah\u2606",
+                "viewer": {
+                    "added_people": "You and %s other people gave a Yeah to this post.",
+                    "default_people": "%s people gave a Yeah to this post.",
+                    "added_person": "You and %s other person gave a Yeah to this post.",
+                    "default_person": "%s person gave a Yeah to this post.",
+                    "added": "You gave a Yeah to this post.",
+                    "default": ""
+                }
             },
             "messages": {
                 "header": "Messages",

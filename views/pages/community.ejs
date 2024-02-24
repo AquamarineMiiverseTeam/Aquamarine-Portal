@@ -5,7 +5,7 @@
                     <a data-pjax class="header-other-button" data-sound="SE_WAVE_OK_SUB" href="/communities/<%= community.id %>/other"><%= locals.language.aqua.portal.community.other %></a>
                 <% } %>
                 <h1 class="content-title title-label"><%= (community.app_name) ? community.app_name : community.name %></h1>
-                <% if (!community.ingame_only) { %><a href="javascript:void(0)" class="add-post-button" onclick="wiiuSound.playSoundByName('SE_WAVE_OK', 3); aquamarine.openPostModal()"><%= locals.language.aqua.portal.community.post.post %></a><% } %>
+                <% if (!community.ingame_only) { %><a href="javascript:void(0)" class="add-post-button" onclick="wiiuSound.playSoundByName('SE_WAVE_OK', 3); aqua.openPostModal()"><%= locals.language.aqua.portal.community.post.post %></a><% } %>
             </header>
 
             <div class="header-banner-container">

@@ -52,7 +52,9 @@
                 },
                 "post": {
                     "post": "Publicar",
+                    "window_post": "Publicar en Comunidad %s",
                     "cancel": "Cancelar",
+                    "post_body_guide": "Escribe una publicación.",
                     "post_body_placeholder": "Comparte tus pensamientos con una publicación a esta comunidad.",
                     "spoilers": "Revelaciones",
                     "has_spoilers": "Esta publicación contiene revelaciones.",
@@ -73,7 +75,15 @@
                 "frustrated": "Buena...",
                 "frustrated.delete": "Mejor no...",
                 "special": "Buena\u2605",
-                "special.delete": "Mejor no\u2606"
+                "special.delete": "Mejor no\u2606",
+                "viewer": {
+                    "added_people": "Tú y %s otras personas le dieron una Buena a esta publicación.",
+                    "default_people": "%s personas le dieron una Buena a esta publicación",
+                    "added_person": "Tú y %s persona más le dieron una Buena a esta publicación.",
+                    "default_person": "%s persona le dio una Buena a esta publicación.",
+                    "added": "Tú le diste una Buena a esta publicación.",
+                    "default": ""
+                }
             },
             "messages": {
                 "header": "Mensajes",

@@ -102,9 +102,9 @@
                     <span class="icon-container"></span>
                   </li>
                 <% } else { %>
-                  <li class="favorite-community empty">
+                  <li class="favorite-community">
                     <a data-pjax="" data-sound="SE_WAVE_MENU" class="icon-container" href="/communities/<%= view_account.favorited_communities[i].community_id %>">
-                      <img src="/img/icons/<%= view_account.favorited_communities[i].community_id %>.jpg" onerror="this.src = '/img/app.png'" width="96px">
+                      <img src="/img/icons/<%= view_account.favorited_communities[i].community_id %>.jpg" onerror="this.src = '/img/app.png'">
                     </a>
                   </li>
                 <% } %>

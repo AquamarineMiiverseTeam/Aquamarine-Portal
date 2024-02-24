@@ -37,7 +37,7 @@ var aqua = {
                         wiiuSound.playSoundByName("SE_WAVE_BACK", 3);
                         var path = location.pathname;
                         var viewer = $(".screenshot-viewer-screenshot");
-                        if (viewer && viewer.length != 0 && !viewer.hasClass("none"))  {
+                        if (viewer && viewer.length != 0 && !viewer.hasClass("none")) {
                             viewer.addClass("none");
                             $("#menu-bar").removeClass("none");
                             $(".header").removeClass("none");
@@ -316,17 +316,9 @@ var aqua = {
                                         postContent.addClass("no-empathy");
                                         miiVisitor.css("display", "none")
                                         miisContainer.addClass("none");
-                                    } else if (miis.length == 2) {
-                                        $(".empathy_you").addClass("none")
-                                        $(".empathy_and").addClass("none")
-                                        $(".empathy_person").removeClass("none")
-                                        $(".empathy_other_person").addClass("none")
-                                        miiVisitor.css("display", "none");
                                     } else {
-                                        $(".empathy_you").addClass("none")
-                                        $(".empathy_and").addClass("none")
-                                        $(".empathy_people").removeClass("none")
-                                        $(".empathy_other_people").addClass("none")
+                                        $(".count-added").addClass("none")
+                                        $(".count").removeClass("none")
                                         miiVisitor.css("display", "none");
                                     }
                                 } else if (!el.hasClass('added') && response == "created") {
@@ -355,23 +347,13 @@ var aqua = {
                                         if (postContent.hasClass("no-empathy")) {
                                             postContent.removeClass("no-empathy");
                                         }
-                                        $(".empathy_number").addClass("none")
-                                        $(".empathy_person").addClass("none")
-                                        $(".empathy_you").removeClass("none")
-                                        $(".empathy_gave").removeClass("none")
+                                        $(".count-added").removeClass("none")
+                                        $(".count").addClass("none")
                                         miiVisitor.css("display", "inline-block");
                                         miisContainer.removeClass("none");
-                                    } else if (miis.length == 2) {
-                                        $(".empathy_you").removeClass("none")
-                                        $(".empathy_and").removeClass("none")
-                                        $(".empathy_person").addClass("none")
-                                        $(".empathy_other_person").removeClass("none")
-                                        miiVisitor.css("display", "inline-block");
                                     } else {
-                                        $(".empathy_you").removeClass("none")
-                                        $(".empathy_and").removeClass("none")
-                                        $(".empathy_people").addClass("none")
-                                        $(".empathy_other_people").removeClass("none")
+                                        $(".count-added").removeClass("none")
+                                        $(".count").addClass("none")
                                         miiVisitor.css("display", "inline-block");
                                     }
                                 }
@@ -612,6 +594,287 @@ var aqua = {
             }
         }
     },
+    initPostModal: function () {
+        if (!$("#add-new-post-modal").length && !$(".add-post-button").length) return;
+
+        var screenshotToggleButton = $(".screenshot-toggle-button");
+        if (wiiuMainApplication.getScreenShot(true) || wiiuMainApplication.getScreenShot(false)) {
+            screenshotToggleButton.removeClass("none");
+            $(".screenshot-toggle-container .screenshot-gp").attr("src", "data:image/png;base64," + wiiuMainApplication.getScreenShot(false));
+            $(".screenshot-toggle-container .screenshot-tv").attr("src", "data:image/png;base64," + wiiuMainApplication.getScreenShot(true));
+        }
+
+        $(".screenshot-toggle-button").on("click", function () {
+            $(".screenshot-toggle-container").toggleClass("none")
+        })
+
+        var screenshotInput = $("#screenshot_val_input");
+        var cancelScreenshot = $(".screenshot-toggle-container .cancel-toggle-button");
+
+        var screenshotLis = $(".screenshot-toggle-container li");
+        screenshotLis.on("click", sLiClick);
+
+        cancelScreenshot.on("click", sSelectorReset);
+
+        function sLiClick(event) {
+            var eLi = $(event.currentTarget);
+            $.each(screenshotLis, function (index, li) {
+                if (li !== eLi) {
+                    $(li).find("img").removeClass("checked");
+                }
+            });
+            eLi.find("img").addClass("checked");
+            if (eLi.find("input").val() === "top") {
+                $(screenshotToggleButton).css({
+                    'background': 'url(data:image/png;base64,' + wiiuMainApplication.getScreenShot(true) + ')',
+                    'background-size': 'cover'
+                });
+                screenshotInput.val(wiiuMainApplication.getScreenShot(true));
+            } else if (eLi.find("input").val() === "bottom") {
+                screenshotInput.val(wiiuMainApplication.getScreenShot(false));
+                $(screenshotToggleButton).css({
+                    'background': 'url(data:image/png;base64,' + wiiuMainApplication.getScreenShot(false) + ')',
+                    'background-size': 'cover'
+                });
+            } else {
+                screenshotInput.val("");
+            }
+            $(".screenshot-toggle-container").toggleClass("none")
+        }
+
+        function sSelectorReset() {
+            var bgAlbum = "data:image/png;base64,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";
+            $.each(screenshotLis, function (index, li) {
+                $(li).find("img").removeClass("checked");
+            });
+            screenshotToggleButton.css({
+                'background': 'url(' + bgAlbum + ') center center no-repeat, ' +
+                    '-webkit-gradient(linear, left top, left bottom, from(#ffffff), color-stop(0.5, #ffffff), ' +
+                    'color-stop(0.8, #f6f6f6), color-stop(0.96, #f5f5f5), to(#bbbbbb)) 0 0',
+                'background-size': 'initial'
+            });
+            screenshotInput.val("");
+            $(".screenshot-toggle-container").toggleClass("none")
+        }
+
+        var feelingInputs = $(".feeling-selector.expression .buttons li");
+        var userMii = $('.mii-icon-container');
+        var spoilerLabel = $('.spoiler-button');
+        var postTypeLi = $('.textarea-menu li label');
+        var postButton = $('.ok-confirm-post-button');
+
+        $('.textarea-menu-text-input').on('input', function () {
+            syncTextAreas($(this).val());
+        });
+
+        $('.textarea-text').on('input', function () {
+            syncTextAreas($(this).val());
+        });
+
+        function syncTextAreas(value) {
+            $('.textarea-text').val(value);
+            $('.textarea-menu-text-input').val(value);
+        }
+
+        function addClassType(label) {
+            $(postTypeLi).each(function (index, ty) {
+                if (!$(ty).is(label)) {
+                    $(ty).removeClass("checked");
+                }
+            });
+            $(label).addClass("checked");
+        }
+
+        function addClassFeeling(li) {
+            $.each(feelingInputs, function (index, feelingLi) {
+                if (!$(feelingLi).is(li)) {
+                    $(feelingLi).removeClass("checked");
+                }
+            });
+            $(li).addClass("checked");
+            var feelingUrl = $(li).find('input[type="radio"]').data("mii-face-url");
+            changeImageSource(feelingUrl);
+        }
+
+        function changeImageSource(feelingUrl) {
+            var userMiiImg = userMii.find('.icon');
+            $(userMiiImg).attr("src", feelingUrl);
+        }
+
+        function changePostType(li) {
+            if (li.id == 'text') {
+                $('.textarea-text').prop('disabled', false);
+                $('.textarea-memo-value').prop('disabled', true);
+                $('.textarea-memo').addClass('none');
+                $('.textarea-text').removeClass('none');
+            } else if (li.id == 'memo') {
+                $('.textarea-text').prop('disabled', true);
+                $('.textarea-memo-value').prop('disabled', false);
+                $('.textarea-text').addClass('none');
+                $('.textarea-memo').removeClass('none');
+                $('.textarea-memo-trigger').on('click', makeMemo);
+                makeMemo();
+                function makeMemo() {
+                    wiiuMemo.open(false);
+                    $('.textarea-memo-preview').css('background-image', 'url(data:image/png;base64,' + wiiuMemo.getImage(false) + ')');
+                    $('.textarea-memo-value').val(wiiuMemo.getImage(true));
+                }
+            }
+        }
+
+        function toggleSpoilerClass(event) {
+            var label = $(event.currentTarget);
+            var input = label.find('input[type="checkbox"]');
+            if (input.prop('checked')) {
+                wiiuSound.playSoundByName('SE_OLV_CHECKBOX_CHECK', 3);
+                label.addClass('checked');
+            } else {
+                wiiuSound.playSoundByName('SE_OLV_CHECKBOX_UNCHECK', 3);
+                label.removeClass('checked');
+            }
+        }
+
+        function feelingClick() {
+            addClassFeeling(this);
+            $('.feeling-selector.expression').toggleClass('none');
+            wiiuSound.playSoundByName('SE_OLV_BALLOON_CLOSE', 3);
+        }
+
+        function liClick(event) {
+            addClassType(event.currentTarget);
+            changePostType(event.currentTarget);
+        }
+
+        $(spoilerLabel).on('click', toggleSpoilerClass);
+
+        $.each(feelingInputs, function (index, fe) {
+            $(fe).on('click', feelingClick);
+        });
+
+        $.each(postTypeLi, function (index, li) {
+            $(li).on('click', liClick);
+        });
+
+        $(".mii-icon-container").on('click', function(){
+          $(".feeling-selector").toggleClass("none")
+        });
+
+        $(postButton).on('click', makeNewPost);
+
+        function makeNewPost() {
+            wiiuBrowser.lockUserOperation(true);
+            wiiuBrowser.lockHomeButtonMenu(true);
+            var type_radios = $('input[name="_post_type"]');
+            var type_of_post;
+            
+            type_radios.each(function() {
+                if ($(this).prop('checked')) {
+                    type_of_post = $(this).val();
+                }
+            });
+            
+            if (type_of_post == 'body' && !$('.textarea-text').val()) {
+                wiiuDialog.alert('Please input text in your post.', 'OK');
+                wiiuBrowser.lockUserOperation(false);
+                wiiuBrowser.lockHomeButtonMenu(false);
+                return;
+            }            
+
+            postButton.addClass('disabled');
+            postButton.off("click", makeNewPost);
+            var aquaForm = new FormData();
+            var feeling_radios = $('input[name="feeling_id"]');
+            var checked_feeling;
+            
+            feeling_radios.each(function() {
+                if ($(this).prop('checked')) {
+                    checked_feeling = $(this).val();
+                }
+            });
+
+            aquaForm.append('feeling_id', checked_feeling);
+            aquaForm.append('community_id', $("header.header").data('community-id'));
+
+            var spoilerStatus = $('.spoiler_input');
+            var spoilerVal;
+            if (spoilerStatus.prop('checked')) {
+                spoilerVal = 1;
+            } else {
+                spoilerVal = 0;
+            }
+            
+            if (screenshotInput.val() || screenshotInput.val() !== '') {
+                aquaForm.append('screenshot', screenshotInput.val());
+            }
+
+            var titleIDhex = $("header.header").data("community-title-id-hex");
+            var isOwnedCheck = wiiuDevice.existsTitle(titleIDhex);
+            var isOwned;
+            if (isOwnedCheck) {
+                isOwned = 1;
+            } else {
+                isOwned = 0;
+            }
+
+            aquaForm.append('owns_title', isOwned);
+            aquaForm.append('is_spoiler', spoilerVal);
+            aquaForm.append("language_id", 254);
+            aquaForm.append("is_autopost", 0);
+            aquaForm.append("is_app_jumpable", 0);
+
+            if (type_of_post == 'body') {
+                aquaForm.append('body', $('.textarea-text').val());
+            } else if (type_of_post == 'painting') {
+                aquaForm.append('painting', $('.textarea-memo-value').val());
+            }
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'https://api.olv.nonamegiven.xyz/v1/posts');
+            xhr.send(aquaForm);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        postButton.removeClass('disabled');
+                        postButton.on("click", makeNewPost);
+                        wiiuBrowser.lockUserOperation(false);
+                        wiiuBrowser.lockHomeButtonMenu(false);
+                        window.location.reload()
+                    }
+                    else {
+                        wiiuErrorViewer.openByCodeAndMessage(155289, 'There was an error making a new post, Please try again later.')
+                        postButton.removeClass('disabled');
+                        postButton.on("click", makeNewPost);
+                        wiiuBrowser.lockUserOperation(false);
+                        wiiuBrowser.lockHomeButtonMenu(false);
+                    }
+                }
+            }
+
+        }
+
+    },
+    openPostModal: function () {
+        aqua.scrollPosition = window.scrollY;
+        $("#menu-bar").addClass("none");
+        $(".header").addClass("none");
+        $(".header-banner-container").addClass("none");
+        $(".community-info").addClass("none");
+        $(".community-type").addClass("none");
+        $(".community-post-list").addClass("none");
+        $(".post-permalink").addClass("none");
+        $("#add-new-post-modal").removeClass("none")
+    },
+    closePostModal: function () {
+        $("#add-new-post-modal").addClass("none")
+        $("#menu-bar").removeClass("none");
+        $(".header").removeClass("none");
+        $(".header-banner-container").removeClass("none");
+        $(".community-info").removeClass("none");
+        $(".community-type").removeClass("none");
+        $(".community-post-list").removeClass("none");
+        $(".post-permalink").removeClass("none");
+        window.scrollTo(0, aqua.scrollPosition)
+    },
     prepareBOSS: function () {
         var isBOSSEnabled = wiiuLocalStorage.getItem("boss_state");
         if (isBOSSEnabled == "true") {
@@ -646,6 +909,7 @@ $(document).on("DOMContentLoaded", function () {
     aqua.initSpoiler();
     aqua.initToggle();
     aqua.initButton();
+    aqua.initPostModal();
     wiiuSound.playSoundByName("BGM_OLV_MAIN", 3);
     setTimeout(function () {
         wiiuSound.playSoundByName("BGM_OLV_MAIN_LOOP_NOWAIT", 3);
@@ -676,4 +940,5 @@ $(document).on("pjax:end", function () {
     aqua.initSpoiler();
     aqua.initToggle();
     aqua.initButton();
+    aqua.initPostModal();
 })

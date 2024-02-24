@@ -108,33 +108,53 @@
                     <div class="post-content-miis<% if (post.empathies.length == 0) {%> none <%} %>">
 
                         <a href="javascript:void(0)" class="user-count">
-                            <% if (post.empathies.some(empathy => empathy.account_id == account[0].id)) { %>
-                                <span class="empathy_you">You</span>
-                                <% if (post.empathies.length - 1 > 0) { %>
-                                    <span class="empathy_and">and</span>
-                                    <span class="empathy_number"><%= post.empathies.length - 1 %></span>
-                                    <% if ((post.empathies.length - 1) == 1) { %>
-                                        <span class="empathy_other_person">other person</span>
-                                    <%} else if ((post.empathies.length - 1) > 1) { %>
-                                        <span class="empathy_other_people">other people</span>
-                                    <% } %>
-                                <%} %>
-                                <span class="empathy_people none">people</span>
-                                <span class="empathy_person none">person</span>
+
+                        <% if (post.empathies.some(empathy => empathy.account_id == account[0].id)) { %>
+                         <span class="count none">
+                            <% if (post.empathies.length == 1) { %>
+                            <%= locals.language.aqua.portal.miitoo.viewer.default %>
+                            <% } else if (post.empathies.length == 2) { %>
+                            <%= locals.local([{str : post.empathies.length - 1, rpl : "%s"}], locals.language.aqua.portal.miitoo.viewer.default_person) %>
                             <% } else { %>
-                                <span class="empathy_you none">You</span>
-                                <span class="empathy_and none">and</span>
-                                <span class="empathy_number"><%= post.empathies.length %></span>
-                                <span class="empathy_other_person none">other person</span>
-                                <span class="empathy_other_people none">other people</span>
-                                <% if (post.empathies.length > 1) { %>
-                                    <span class="empathy_people">people</span>
-                                <% } else { %>
-                                    <span class="empathy_person">person</span>
-                                <%} %> 
-                            <%} %>
-                           
-                            <span class="empathy_gave">gave a Yeah to this post.</span>
+                            <%= locals.local([{str : post.empathies.length -1, rpl : "%s"}], locals.language.aqua.portal.miitoo.viewer.default_people) %>
+                            <% } %>
+                        </span>
+
+                        <span class="count-added">
+                            <% if (post.empathies.length == 1) { %>
+                            <%= locals.language.aqua.portal.miitoo.viewer.added %>
+                            <% } else if (post.empathies.length == 2)  { %>
+                            <%= locals.local([{str : post.empathies.length - 1, rpl : "%s"}], locals.language.aqua.portal.miitoo.viewer.added_person) %>
+                            <% } else { %>
+                            <%= locals.local([{str : post.empathies.length - 1, rpl : "%s"}], locals.language.aqua.portal.miitoo.viewer.added_people) %>
+                            <% } %>
+                         </span>
+                        <% } else { %>
+                            <span class="count">
+                            <% if (post.empathies.length == 0) { %>
+                            <%= locals.language.aqua.portal.miitoo.viewer.default %>
+                            <% } else if (post.empathies.length == 1) { %>
+                            <%= locals.local([{str : post.empathies.length, rpl : "%s"}], locals.language.aqua.portal.miitoo.viewer.default_person) %>
+                            <% } else { %>
+                            <%= locals.local([{str : post.empathies.length, rpl : "%s"}], locals.language.aqua.portal.miitoo.viewer.default_people) %>
+                            <% } %>
+                        </span>
+
+                        <span class="count-added none">
+                            <% if (post.empathies.length == 0) { %>
+                            <%=  locals.language.aqua.portal.miitoo.viewer.added %>
+                            <% } else if (post.empathies.length == 1) { %>
+                            <%= locals.local([{str : post.empathies.length, rpl : "%s"}], locals.language.aqua.portal.miitoo.viewer.added_person) %>
+                            <% } else if (post.empathies.length == 2) { %>
+                            <%= locals.local([{str : post.empathies.length, rpl : "%s"}], locals.language.aqua.portal.miitoo.viewer.added_people) %>
+                            <% } else if (post.empathies.length == 3)  { %>
+                            <%= locals.local([{str : post.empathies.length, rpl : "%s"}], locals.language.aqua.portal.miitoo.viewer.added_people) %>
+                            <% } else { %>
+                            <%= locals.local([{str : post.empathies.length, rpl : "%s"}], locals.language.aqua.portal.miitoo.viewer.added_people) %>
+                            <% } %>
+                         </span>
+                        <% } %>
+
                         </a>
 
                         <%- include("../partials/user_empathy_icon", {
