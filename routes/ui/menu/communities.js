@@ -16,8 +16,15 @@ route.get('/:community_id', async (req, res, next) => {
         //Grabbing all querys for specific types of posts
         const offset = (req.query['offset']) ? req.query['offset'] : 0;
 
-        const posts = await db_con("posts")
-        .select("posts.*", "accounts.mii_hash", "accounts.mii_name", "accounts.admin", "accounts.nnid")
+        const posts_query = db_con("posts")
+        .select("posts.*", 
+        "accounts.mii_hash", 
+        "accounts.mii_name", 
+        "accounts.admin", 
+        "accounts.nnid",
+        db_con.raw("COUNT(empathies.post_id) as empathy_count"),
+        db_con.raw(`CASE WHEN empathies.account_id = ${req.account[0].id} THEN TRUE ELSE FALSE END AS empathied_by_user`))
+        
         .where({community_id : community_id}).whereNot({moderated : 1}).where(function() {
             switch (req.query['type']) {
                 case "played":
@@ -32,13 +39,19 @@ route.get('/:community_id', async (req, res, next) => {
                 default:
                     break;
             }
-        }).orderBy("posts.create_time", "desc").offset(Number(offset))
-        .limit(8)
-        .leftOuterJoin("accounts", "accounts.id", "=", "posts.account_id")
+        }).groupBy("posts.id")
 
-        for (let i = 0; i < posts.length; i++) {
-            posts[i].empathies = await db_con("empathies").where({post_id : posts[i].id})
+        if (req.query['type'] == "popular") {
+            posts_query.orderBy("empathy_count", "desc")
+        } else {
+            posts_query.orderBy("posts.create_time", "desc")
         }
+        
+        posts_query.limit(8).offset(Number(offset))
+        .innerJoin("accounts", "accounts.id", "=", "posts.account_id")
+        .leftJoin("empathies", "posts.id", "=", "empathies.post_id")
+        
+        const posts = await posts_query;
 
         //const posts = await common.ui.getTypedPosts(req.query['type'], community_id, offset, 12, req)
 

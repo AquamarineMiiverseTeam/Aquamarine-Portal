@@ -67,9 +67,9 @@
                 <% } %>
     
                 <div class="post-meta">
-                    <button data-empathy-count="<%= post.empathies.length %>" data-reply-count="0" data-post-id="<%= post.id %>" class="submit miitoo-button" <%= (post.account_id == account[0].id) ? "disabled" : "" %>><%= (post.empathies.some(empathy => empathy.account_id == account[0].id)) ? "Unyeah!" : "Yeah!" %></button>
+                    <button data-empathy-count="<%= post.empathy_count %>" data-reply-count="0" data-post-id="<%= post.id %>" class="submit miitoo-button" <%= (post.account_id == account[0].id) ? "disabled" : "" %>><%= (post.empathied_by_user) ? "Unyeah!" : "Yeah!" %></button>
                     <a data-pjax=".wrapper" href="/posts/<%= post.id %>" data-sound="SE_WAVE_OK" class="to-permalink-button">
-                        <span class="feeling <%= (post.empathies.some(empathy => empathy.account_id == account[0].id)) ? "added" : "" %>"><%= post.empathies.length %></span>
+                        <span class="feeling <%= (post.empathied_by_user) ? "added" : "" %>"><%= post.empathy_count %></span>
                         <span class="reply">0</span>
                         <% if (post.title_owned) {%>
                             <span class="owns-game">1</span>
