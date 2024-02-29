@@ -598,13 +598,13 @@ var aqua = {
 
         var screenshotInput = $("#screenshot_val_input");
         var cancelScreenshot = $(".screenshot-toggle-container .cancel-toggle-button");
-
         var screenshotLis = $(".screenshot-toggle-container li");
-        screenshotLis.on("click", sLiClick);
+
+        screenshotLis.on("click", changeScreenshotSource);
 
         cancelScreenshot.on("click", sSelectorReset);
 
-        function sLiClick(event) {
+        function changeScreenshotSource(event) {
             var eLi = $(event.currentTarget);
             $.each(screenshotLis, function (index, li) {
                 if (li !== eLi) {
@@ -635,6 +635,7 @@ var aqua = {
             $.each(screenshotLis, function (index, li) {
                 $(li).find("img").removeClass("checked");
             });
+
             screenshotToggleButton.css({
                 'background': 'url(' + bgAlbum + ') center center no-repeat, ' +
                     '-webkit-gradient(linear, left top, left bottom, from(#ffffff), color-stop(0.5, #ffffff), ' +
@@ -723,6 +724,7 @@ var aqua = {
         }
 
         function feelingClick() {
+            console.log("feeling")
             addClassFeeling(this);
             $('.feeling-selector.expression').toggleClass('none');
             wiiuSound.playSoundByName('SE_OLV_BALLOON_CLOSE', 3);
@@ -736,6 +738,7 @@ var aqua = {
         $(spoilerLabel).on('click', toggleSpoilerClass);
 
         $.each(feelingInputs, function (index, fe) {
+            $(fe).off("click", feelingClick)
             $(fe).on('click', feelingClick);
         });
 
@@ -743,6 +746,7 @@ var aqua = {
             $(li).on('click', liClick);
         });
 
+        $(".mii-icon-container").off("click")
         $(".mii-icon-container").on('click', function () {
             $(".feeling-selector").toggleClass("none")
         });
