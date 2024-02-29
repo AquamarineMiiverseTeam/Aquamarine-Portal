@@ -841,27 +841,10 @@ var aqua = {
         }
 
     },
-    openPostModal: function () {
+    toggleCommunityPostModal: function () {
         aqua.scrollPosition = window.scrollY;
-        $("#menu-bar").addClass("none");
-        $(".header").addClass("none");
-        $(".header-banner-container").addClass("none");
-        $(".community-info").addClass("none");
-        $(".community-type").addClass("none");
-        $(".community-post-list").addClass("none");
-        $(".post-permalink").addClass("none");
-        $("#add-new-post-modal").removeClass("none")
-    },
-    closePostModal: function () {
-        $("#add-new-post-modal").addClass("none")
-        $("#menu-bar").removeClass("none");
-        $(".header").removeClass("none");
-        $(".header-banner-container").removeClass("none");
-        $(".community-info").removeClass("none");
-        $(".community-type").removeClass("none");
-        $(".community-post-list").removeClass("none");
-        $(".post-permalink").removeClass("none");
-        window.scrollTo(0, aqua.scrollPosition)
+        $("#body > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").toggleClass("none")
+        $("#add-new-post-modal").toggleClass("none")
     },
     prepareBOSS: function () {
         var isBOSSEnabled = wiiuLocalStorage.getItem("boss_state");
