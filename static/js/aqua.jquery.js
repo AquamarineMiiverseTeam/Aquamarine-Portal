@@ -758,10 +758,11 @@ var aqua = {
             $(".feeling-selector").toggleClass("none")
         });
 
-        $(postButton).off('click', makeNewPost);
         $(postButton).on('click', makeNewPost);
 
         function makeNewPost() {
+            if (postButton.disabled == true) {return;}
+            postButton.disabled = true;
             wiiuBrowser.lockUserOperation(true);
             wiiuBrowser.lockHomeButtonMenu(true);
             var type_radios = $('input[name="_post_type"]');
