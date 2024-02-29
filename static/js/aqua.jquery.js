@@ -914,7 +914,7 @@ $(document).on("pjax:error", function () {
     wiiuErrorViewer.openByCodeAndMessage(115000, "There was an error loading content.");
 })
 
-$(document).on("pjax:beforeReplace", function () {
+$(document).on("pjax:end", function () {
     wiiuBrowser.lockUserOperation(false);
 })
 
