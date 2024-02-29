@@ -762,9 +762,12 @@ var aqua = {
 
         function makeNewPost() {
             if (postButton.disabled == true) {return;}
+            alert("Function Start")
             postButton.disabled = true;
+            alert("Functgion 1")
             wiiuBrowser.lockUserOperation(true);
             wiiuBrowser.lockHomeButtonMenu(true);
+            alert("functyion12")
             var type_radios = $('input[name="_post_type"]');
             var type_of_post;
 
@@ -774,12 +777,16 @@ var aqua = {
                 }
             });
 
+            alert("loop ended")
+
             if (type_of_post == 'body' && !$('.textarea-text').val()) {
                 wiiuDialog.alert('Please input text in your post.', 'OK');
                 wiiuBrowser.lockUserOperation(false);
                 wiiuBrowser.lockHomeButtonMenu(false);
                 return;
             }
+
+            alert("fhceck")
 
             postButton.addClass('disabled');
             postButton.off("click", makeNewPost);
