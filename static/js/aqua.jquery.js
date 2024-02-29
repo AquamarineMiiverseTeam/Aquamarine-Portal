@@ -592,6 +592,7 @@ var aqua = {
             $(".screenshot-toggle-container .screenshot-tv").attr("src", "data:image/png;base64," + wiiuMainApplication.getScreenShot(true));
         }
 
+        $(".screenshot-toggle-button").off("click")
         $(".screenshot-toggle-button").on("click", function () {
             $(".screenshot-toggle-container").toggleClass("none")
         })
@@ -600,8 +601,10 @@ var aqua = {
         var cancelScreenshot = $(".screenshot-toggle-container .cancel-toggle-button");
         var screenshotLis = $(".screenshot-toggle-container li");
 
+        screenshotLis.off("click", changeScreenshotSource)
         screenshotLis.on("click", changeScreenshotSource);
 
+        cancelScreenshot.off("click", sSelectorReset)
         cancelScreenshot.on("click", sSelectorReset);
 
         function changeScreenshotSource(event) {
@@ -652,10 +655,12 @@ var aqua = {
         var postTypeLi = $('.textarea-menu li label');
         var postButton = $('.ok-confirm-post-button');
 
+        $('.textarea-menu-text-input').off("input")
         $('.textarea-menu-text-input').on('input', function () {
             syncTextAreas($(this).val());
         });
 
+        $('.textarea-text').off("input")
         $('.textarea-text').on('input', function () {
             syncTextAreas($(this).val());
         });
@@ -735,6 +740,7 @@ var aqua = {
             changePostType(event.currentTarget);
         }
 
+        $(spoilerLabel).off("click")
         $(spoilerLabel).on('click', toggleSpoilerClass);
 
         $.each(feelingInputs, function (index, fe) {
@@ -743,6 +749,7 @@ var aqua = {
         });
 
         $.each(postTypeLi, function (index, li) {
+            $(li).off('click', liClick);
             $(li).on('click', liClick);
         });
 
@@ -751,6 +758,7 @@ var aqua = {
             $(".feeling-selector").toggleClass("none")
         });
 
+        $(postButton).off('click', makeNewPost);
         $(postButton).on('click', makeNewPost);
 
         function makeNewPost() {
@@ -826,16 +834,15 @@ var aqua = {
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
-                        postButton.removeClass('disabled');
-                        postButton.on("click", makeNewPost);
+                        $.pjax.reload("#body", {
+                            fragment: "#body",
+                            container: "#body"
+                        });
                         wiiuBrowser.lockUserOperation(false);
                         wiiuBrowser.lockHomeButtonMenu(false);
-                        window.location.reload()
                     }
                     else {
                         wiiuErrorViewer.openByCodeAndMessage(155289, 'There was an error making a new post, Please try again later.')
-                        postButton.removeClass('disabled');
-                        postButton.on("click", makeNewPost);
                         wiiuBrowser.lockUserOperation(false);
                         wiiuBrowser.lockHomeButtonMenu(false);
                     }
@@ -903,6 +910,7 @@ $(document).on("pjax:error", function () {
 
 $(document).on("pjax:end", function () {
     wiiuBrowser.lockUserOperation(false);
+    $("#menu-bar").removeClass("none")
 })
 
 $(document).on("pjax:end", function () {
