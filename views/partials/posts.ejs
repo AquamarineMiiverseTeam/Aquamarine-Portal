@@ -31,7 +31,7 @@
                 <header>
                     <span class="user-name"><%= post.mii_name %></span>
                     <span class="other-user-empathy"><span>Dummy</span> gave a "Yeah!"</span>
-                    <span class="timestamp"><%= moment(post.create_time).fromNow() %></span>
+                    <span class="timestamp"><%= (moment().diff(moment(post.create_time).subtract(1, 'days'), 'days') >= 7) ? moment(post.create_time).locale(locals.language.aqua.language).format("MM/DD/YYYY h:MM A") : moment(post.create_time).locale(locals.language.aqua.language).fromNow() %></span>
                     <span class="spoiler-status <%= (post.spoiler == 1) ? "spoiler inline-show" : "" %>"><%= (post.spoiler == 1) ? "Spoilers" : "" %></span>
                 </header>
 
