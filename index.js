@@ -57,7 +57,9 @@ app.use((req, res, next) => {
     if (req.path.includes("js") || req.path.includes("css") || req.path.includes("img") || req.path.includes("lang")) { res.send({ error: "The requested file could not be found", file: req.path }); return; }
 
     //If the page just couldn't be found altogether, return a 404 error page.
-    res.render("pages/error/error_404");
+    res.render("pages/error/error_404", {
+        account : req.account
+    });
 
     return;
 });
