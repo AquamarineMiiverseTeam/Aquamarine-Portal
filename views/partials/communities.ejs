@@ -8,7 +8,7 @@
 
     <a data-sound="SE_WAVE_OK" href="/communities/<%= community.id %>" data-pjax=".wrapper" class="scroll to-community-button">
     <% if (community.sub_communities && community.sub_communities.length != 0) { %>
-    <a data-sound="SE_WAVE_OK_SUB" href="/communities/<%= community.id %>/other" data-pjax=".wrapper" class="to-related-community-button">Other Communities</a>
+    <a data-sound="SE_WAVE_OK_SUB" href="/communities/<%= community.id %>/other" data-pjax=".wrapper" class="to-related-community-button"><%= locals.language.aqua.portal.community.other %></a>
     <% } else { %>
         <span class="community-button"></span>
     <% } %>
