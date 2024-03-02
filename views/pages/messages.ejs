@@ -10,7 +10,7 @@
             <ul class="message-list-content">
                 <div class="tutorial-window messages">
                     <p><%= locals.language.aqua.portal.messages.tutorial %></p>
-                    <a href="javascript:void(0)" data-sound="SE_OLV_OFFBUTTON" class="button tutorial-close-button"><%= locals.language.aqua.portal.messages.close %></a>
+                    <a href="javascript:void(0)" data-sound="SE_OLV_OFFBUTTON" data-tutorial="messages" onclick="aqua.setTutorialAsRead(this)" class="button tutorial-close-button"><%= locals.language.aqua.portal.messages.close %></a>
                   </div>
 
                   <div class="no-content-window">

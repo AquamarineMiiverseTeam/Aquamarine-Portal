@@ -10,7 +10,7 @@
                     
             <div class="tutorial-window news">
                 <p><%= locals.language.aqua.portal.news.tutorial %></p>
-                <a href="javascript:void(0)" data-sound="SE_OLV_OFFBUTTON" class="button tutorial-close-button"><%= locals.language.aqua.portal.news.close %></a>
+                <a href="javascript:void(0)" data-sound="SE_OLV_OFFBUTTON" data-tutorial="news" onclick="aqua.setTutorialAsRead(this)" class="button tutorial-close-button"><%= locals.language.aqua.portal.news.close %></a>
               </div>
 
             <div class="news-tab-container">

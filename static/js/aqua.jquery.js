@@ -861,45 +861,39 @@ var aqua = {
         $("#change-settings-modal").toggleClass("none")
     },
     prepareBOSS: function () {
-        var isBOSSEnabled = wiiuLocalStorage.getItem("boss_state");
-        if (isBOSSEnabled == "true") {
-            if (!wiiuBOSS.isRegisteredDirectMessageTask().isRegistered) {
-                aqua.setBOSS(true);
-            }
+        wiiuBOSS.unregisterDirectMessageTask();
+        if (!wiiuBOSS.isRegisteredDirectMessageTask().isRegistered) {
+            wiiuBOSS.registerDirectMessageTaskEx(720, 2);
         }
     },
-    setBOSS: function (set) {
-        if (set) {
-            wiiuLocalStorage.setItem("boss_state", "true");
-            console.log("boss is set")
-            wiiuBOSS.registerDirectMessageTaskEx(720, 2);
-        } else {
-            wiiuLocalStorage.removeItem("boss_state");
-            console.log("boss is unset")
-            wiiuBOSS.unregisterDirectMessageTask();
-        }
+    setTutorialAsRead: function (tutorial) {
+        var tutorialType = $(tutorial).attr("data-tutorial");
+        var tutorialReq = new XMLHttpRequest();
+        tutorialReq.open("POST", "https://api.olv.nonamegiven.xyz/v2/tutorials")
+        tutorialReq.send({
+            "tutorial_id" : tutorialType
+           });
+        $(".tutorial-window").addClass("none")
     },
 }
 
 $(document).on("DOMContentLoaded", function () {
-    wiiuBrowser.endStartUp();
-    wiiuBrowser.lockUserOperation(true);
     aqua.prepareBOSS();
     aqua.initSnd();
     aqua.initPjx();
     aqua.initTbs();
     aqua.initNav();
+    aqua.initPostModal();
     aqua.initScrl();
     aqua.initEmp();
     aqua.initSpoiler();
     aqua.initToggle();
     aqua.initButton();
-    aqua.initPostModal();
     wiiuSound.playSoundByName("BGM_OLV_MAIN", 3);
-    setTimeout(function () {
+    setInterval(function () {
         wiiuSound.playSoundByName("BGM_OLV_MAIN_LOOP_NOWAIT", 3);
     }, 90000);
-    wiiuBrowser.lockUserOperation(false);
+    wiiuBrowser.endStartUp();
 })
 
 $(document).on("pjax:click", function () {
@@ -911,10 +905,10 @@ $(document).on("pjax:end", function () {
     if ($("[data-sound]").length) aqua.initSnd();
     aqua.initNav();
     aqua.initScrl();
+    if ($("#add-new-post-modal").length && $(".add-post-button").length) aqua.initPostModal();
     if ($("button[data-post-id].miitoo-button").length) aqua.initEmp();
     if (aqua.modifed_communities.length || aqua.modifed_posts.length) aqua.initPopstate();
     if ($("a.hidden-content-button").length) aqua.initSpoiler();
     if ($("[data-toggle]").length) aqua.initToggle();
-    if ($("#add-new-post-modal").length && $(".add-post-button").length) aqua.initPostModal();
     wiiuBrowser.lockUserOperation(false);
 })
