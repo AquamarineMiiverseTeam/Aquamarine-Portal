@@ -218,6 +218,7 @@ var aqua = {
                             aqua.initSnd();
                             aqua.initEmp();
                             aqua.initPopstate();
+                            aqua.initSpoiler();
                             currently_downloading = false;
                             break;
                         case 204:
@@ -563,11 +564,14 @@ var aqua = {
     initPostModal: function () {
         if (!$("#add-new-post-modal").length && !$(".add-post-button").length) return;
 
+        var top_screenshot = wiiuMainApplication.getScreenShot(true);
+        var bottom_screenshot = wiiuMainApplication.getScreenShot(false);
+
         var screenshotToggleButton = $(".screenshot-toggle-button");
         if (wiiuMainApplication.getScreenShot(true) || wiiuMainApplication.getScreenShot(false)) {
             screenshotToggleButton.removeClass("none");
-            $(".screenshot-toggle-container .screenshot-gp").attr("src", "data:image/png;base64," + wiiuMainApplication.getScreenShot(false));
-            $(".screenshot-toggle-container .screenshot-tv").attr("src", "data:image/png;base64," + wiiuMainApplication.getScreenShot(true));
+            $(".screenshot-toggle-container .screenshot-gp").attr("src", "data:image/png;base64," + bottom_screenshot);
+            $(".screenshot-toggle-container .screenshot-tv").attr("src", "data:image/png;base64," + top_screenshot);
         }
 
         $(".screenshot-toggle-button").off("click")
@@ -592,20 +596,20 @@ var aqua = {
 
             switch (currentScreenshotLi.find("input").val()) {
                 case "top":
-                    screenshotInput.val(wiiuMainApplication.getScreenShot(true));
+                    screenshotInput.val(top_screenshot);
 
                     $(screenshotToggleButton).css({
-                             'background': 'url(data:image/png;base64,' + wiiuMainApplication.getScreenShot(true) + ')',
+                             'background': 'url(data:image/png;base64,' + top_screenshot + ')',
                              'background-size': 'cover'
                     });
 
                     console.log("Saved TV Screenshot.")
                     break;
                 case "bottom":
-                    screenshotInput.val(wiiuMainApplication.getScreenShot(false));
+                    screenshotInput.val(bottom_screenshot);
 
                     $(screenshotToggleButton).css({
-                        'background': 'url(data:image/png;base64,' + wiiuMainApplication.getScreenShot(false) + ')',
+                        'background': 'url(data:image/png;base64,' + bottom_screenshot + ')',
                         'background-size': 'cover'
                     });
 
@@ -903,15 +907,14 @@ $(document).on("pjax:click", function () {
 })
 
 $(document).on("pjax:end", function () {
-    wiiuBrowser.lockUserOperation(false);
-    aqua.initTbs();
-    aqua.initSnd();
+    if ($("[data-tab-query]").length) aqua.initTbs();
+    if ($("[data-sound]").length) aqua.initSnd();
     aqua.initNav();
     aqua.initScrl();
-    aqua.initEmp();
-    aqua.initPopstate();
-    aqua.initSpoiler();
-    aqua.initToggle();
-    aqua.initButton();
-    aqua.initPostModal();
+    if ($("button[data-post-id].miitoo-button").length) aqua.initEmp();
+    if (aqua.modifed_communities.length || aqua.modifed_posts.length) aqua.initPopstate();
+    if ($("a.hidden-content-button").length) aqua.initSpoiler();
+    if ($("[data-toggle]").length) aqua.initToggle();
+    if ($("#add-new-post-modal").length && $(".add-post-button").length) aqua.initPostModal();
+    wiiuBrowser.lockUserOperation(false);
 })
