@@ -14,53 +14,53 @@
                 <h1 class="mii-name"><%= account[0].mii_name %></h1>
 
                 <label class="spoiler-button checkbox-button"><%= locals.language.aqua.portal.community.post.spoilers %>
-                    <input type="checkbox" class="spoiler_input" name="is_spoiler" value="0">
+                    <input autocomplete="off" type="checkbox" class="spoiler_input" name="is_spoiler" value="0">
                 </label>
 
                 <a href="javascript:void(0)" data-sound="SE_OLV_TOGGLE_CHECK" class="screenshot-toggle-button none"></a>
 
                 <div class="screenshot-toggle-container none">
                 <li>
-                <input type="radio" name="_screenshot_value" value="top" data-sound="SE_OLV_TOGGLE_SELECTED_CHECK">
+                <input autocomplete="off" type="radio" name="_screenshot_value" value="top" data-sound="SE_OLV_TOGGLE_SELECTED_CHECK">
                 <img class="screenshot-tv" src=""/>
                 </li>
                 <li>
-                <input type="radio" name="_screenshot_value" value="bottom" data-sound="SE_OLV_TOGGLE_SELECTED_CHECK">
+                <input autocomplete="off" type="radio" name="_screenshot_value" value="bottom" data-sound="SE_OLV_TOGGLE_SELECTED_CHECK">
                 <img class="screenshot-gp" src=""/>
                 </li>
-                <input type="hidden" name="screenshot_value" id="screenshot_val_input" value="">
+                <input autocomplete="off" type="hidden" name="screenshot_value" id="screenshot_val_input" value="">
                 <a href="javascript:void(0)" data-sound="SE_OLV_TOGGLE_SELECTED_CHECK" class="cancel-toggle-button">No Screenshot</a>
                 </div>
 
                 <div class="feeling-selector expression none">
                     <ul class="buttons">
                         <li class="checked">
-                            <input type="radio" name="feeling_id" value="0" class="feeling-button-normal"
+                            <input autocomplete="off" type="radio" name="feeling_id" value="0" class="feeling-button-normal"
                                 data-mii-face-url="http://mii-images.account.nintendo.net/<%= account[0].mii_hash %>_normal_face.png"
                                 checked data-sound="SE_WAVE_MII_FACE_00">
                         </li>
-                        <li class>
-                            <input type="radio" name="feeling_id" value="1" class="feeling-button-happy"
+                        <li>
+                            <input autocomplete="off" type="radio" name="feeling_id" value="1" class="feeling-button-happy"
                                 data-mii-face-url="http://mii-images.account.nintendo.net/<%= account[0].mii_hash %>_happy_face.png"
                                 data-sound="SE_WAVE_MII_FACE_01">
                         </li>
-                        <li class>
-                            <input type="radio" name="feeling_id" value="2" class="feeling-button-like"
+                        <li>
+                            <input autocomplete="off" type="radio" name="feeling_id" value="2" class="feeling-button-like"
                                 data-mii-face-url="http://mii-images.account.nintendo.net/<%= account[0].mii_hash %>_like_face.png"
                                 data-sound="SE_WAVE_MII_FACE_02">
                         </li>
-                        <li class>
-                            <input type="radio" name="feeling_id" value="3" class="feeling-button-surprised"
+                        <li>
+                            <input autocomplete="off" type="radio" name="feeling_id" value="3" class="feeling-button-surprised"
                                 data-mii-face-url="http://mii-images.account.nintendo.net/<%= account[0].mii_hash %>_surprised_face.png"
                                 data-sound="SE_WAVE_MII_FACE_03">
                         </li>
-                        <li class>
-                            <input type="radio" name="feeling_id" value="4" class="feeling-button-frustrated"
+                        <li>
+                            <input autocomplete="off" type="radio" name="feeling_id" value="4" class="feeling-button-frustrated"
                                 data-mii-face-url="http://mii-images.account.nintendo.net/<%= account[0].mii_hash %>_frustrated_face.png"
                                 data-sound="SE_WAVE_MII_FACE_04">
                         </li>
-                        <li class>
-                            <input type="radio" name="feeling_id" value="5" class="feeling-button-puzzled"
+                        <li>
+                            <input autocomplete="off" type="radio" name="feeling_id" value="5" class="feeling-button-puzzled"
                                 data-mii-face-url="http://mii-images.account.nintendo.net/<%= account[0].mii_hash %>_puzzled_face.png"
                                 data-sound="SE_WAVE_MII_FACE_05">
                         </li>
@@ -71,8 +71,8 @@
                     <menu class="textarea-menu">
                         <li>
                             <label id="text" class="textarea-menu-text checked">
-                                <input type="radio" name="_post_type" value="body" checked data-sound>
-                                <textarea type="text" guidestring="<%= locals.language.aqua.portal.community.post.post_body_guide %>" name="body"
+                                <input autocomplete="off" type="radio" name="_post_type" value="body" checked data-sound>
+                                <textarea autocomplete="off" type="text" guidestring="<%= locals.language.aqua.portal.community.post.post_body_guide %>" name="body"
                                     class="textarea-menu-text-input" value="" maxlength="255"
                                     placeholder="<%= locals.language.aqua.portal.community.post.post_body_placeholder %>"></textarea>
                             </label>
@@ -80,20 +80,20 @@
 
                         <li class="test-painting-tab">
                             <label id="memo" class="textarea-menu-memo">
-                                <input type="radio" name="_post_type" value="painting" data-sound>
+                                <input autocomplete="off" type="radio" name="_post_type" value="painting" data-sound>
                             </label>
                         </li>
 
                     </menu>
-                    <textarea type="text" guidestring="<%= locals.language.aqua.portal.community.post.post_body_guide %>" data-sound name="body"
+                    <textarea autocomplete="off" type="text" guidestring="<%= locals.language.aqua.portal.community.post.post_body_guide %>" data-sound name="body"
                         class="textarea-text" value="" maxlength="255"
                         placeholder="<%= locals.language.aqua.portal.community.post.post_body_placeholder %>"></textarea>
 
                     <div class="textarea-memo none" data-sound="">
                         <a href="javascript:void(0)" class="textarea-memo-trigger"></a>
-                        <div class="textarea-memo-preview">
+                            <div class="textarea-memo-preview">
                         </div>
-                        <input type="hidden" class="textarea-memo-value" name="painting" disabled="">
+                        <input autocomplete="off" type="hidden" class="textarea-memo-value" name="painting" disabled="" autocomplete="off">
                     </div>
                 </div>
 
@@ -103,7 +103,7 @@
         <div class="window-bottom-buttons">
             <a href="javascript:void(0)" onclick="aqua.toggleCommunityPostModal()" class="button cancel-button"
                 data-sound="SE_WAVE_CANCEL"><%= locals.language.aqua.portal.community.post.cancel %></a>
-            <a href="javascript:void(0)" data-sound="SE_WAVE_OK" class="button ok-confirm-post-button"><%= locals.language.aqua.portal.community.post.post %></a>
+            <a href="javascript:void(0)" data-sound="SE_WAVE_OK" class="button ok-confirm-post-button" onclick="aqua.makePost()"><%= locals.language.aqua.portal.community.post.post %></a>
         </div>
     </div>
 </div>

@@ -743,109 +743,109 @@ var aqua = {
         $(".mii-icon-container").on('click', function () {
             $(".feeling-selector").toggleClass("none")
         });
+    },
+    makePost: function makeNewPost() {
+        var screenshotInput = $("#screenshot_val_input");
+        var postTypeLi = $('.textarea-menu li label');
+        var postButton = $('.ok-confirm-post-button');
 
-        $(postButton).off('click', makeNewPost);
-        $(postButton).on('click', makeNewPost);
+        if (postButton.disabled == true) { return; }
+        postButton.disabled = true;
+        wiiuBrowser.lockUserOperation(true);
+        wiiuBrowser.lockHomeButtonMenu(true);
 
-        function makeNewPost() {
-            if (postButton.disabled == true) { return; }
-            postButton.disabled = true;
-            wiiuBrowser.lockUserOperation(true);
-            wiiuBrowser.lockHomeButtonMenu(true);
+        var type_radios = $('input[name="_post_type"]');
+        var type_of_post;
 
-            var type_radios = $('input[name="_post_type"]');
-            var type_of_post;
-
-            type_radios.each(function () {
-                if ($(this).prop('checked')) {
-                    type_of_post = $(this).val();
-                }
-            });
-
-            if (type_of_post == 'body' && !$('.textarea-text').val()) {
-                wiiuDialog.alert('Please input text in your post.', 'OK');
-                wiiuBrowser.lockUserOperation(false);
-                wiiuBrowser.lockHomeButtonMenu(false);
-                return;
+        type_radios.each(function () {
+            if ($(this).prop('checked')) {
+                type_of_post = $(this).val();
             }
+        });
 
-            postButton.addClass('disabled');
-            postButton.off("click", makeNewPost);
-            var aquaForm = new FormData();
-            var feeling_radios = $('input[name="feeling_id"]');
-            var checked_feeling;
-
-            feeling_radios.each(function () {
-                if ($(this).prop('checked')) {
-                    checked_feeling = $(this).val();
-                }
-            });
-
-            aquaForm.append('feeling_id', checked_feeling);
-            aquaForm.append('community_id', $("header.header").data('community-id'));
-
-            var spoilerStatus = $('.spoiler_input');
-            var spoilerVal;
-            if (spoilerStatus.prop('checked')) {
-                spoilerVal = 1;
-            } else {
-                spoilerVal = 0;
-            }
-
-            if (screenshotInput.val() || screenshotInput.val() !== '') {
-                aquaForm.append('screenshot', screenshotInput.val());
-            }
-
-            var titleIDhex = $("header.header").data("community-title-id-hex");
-            var isOwnedCheck = wiiuDevice.existsTitle(titleIDhex);
-            var isOwned;
-            if (isOwnedCheck) {
-                isOwned = 1;
-            } else {
-                isOwned = 0;
-            }
-
-            aquaForm.append('owns_title', isOwned);
-            aquaForm.append('is_spoiler', spoilerVal);
-            aquaForm.append("language_id", 254);
-            aquaForm.append("is_autopost", 0);
-            aquaForm.append("is_app_jumpable", 0);
-
-            if (type_of_post == 'body') {
-                aquaForm.append('body', $('.textarea-text').val());
-            } else if (type_of_post == 'painting') {
-                aquaForm.append('painting', $('.textarea-memo-value').val());
-            }
-
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'https://api.olv.nonamegiven.xyz/v1/posts');
-            xhr.send(aquaForm);
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        $.pjax.reload("#body", {
-                            fragment: "#body",
-                            container: "#body",
-                        });
-                        wiiuBrowser.lockUserOperation(false);
-                        wiiuBrowser.lockHomeButtonMenu(false);
-                        
-                        function toggleNav() {
-                            $("#menu-bar").removeClass("none")
-                            $(document).off(toggleNav)
-                        }
-
-                        $(document).on("pjax:end", toggleNav)
-                    }
-                    else {
-                        wiiuErrorViewer.openByCodeAndMessage(155289, 'There was an error making a new post, Please try again later.')
-                        wiiuBrowser.lockUserOperation(false);
-                        wiiuBrowser.lockHomeButtonMenu(false);
-                    }
-                }
-            }
-
+        if (type_of_post == 'body' && !$('.textarea-text').val()) {
+            wiiuDialog.alert('Please input text in your post.', 'OK');
+            wiiuBrowser.lockUserOperation(false);
+            wiiuBrowser.lockHomeButtonMenu(false);
+            return;
         }
+
+        postButton.addClass('disabled');
+        postButton.off("click", makeNewPost);
+        var aquaForm = new FormData();
+        var feeling_radios = $('input[name="feeling_id"]');
+        var checked_feeling;
+
+        feeling_radios.each(function () {
+            if ($(this).prop('checked')) {
+                checked_feeling = $(this).val();
+            }
+        });
+
+        aquaForm.append('feeling_id', checked_feeling);
+        aquaForm.append('community_id', $("header.header").data('community-id'));
+
+        var spoilerStatus = $('.spoiler_input');
+        var spoilerVal;
+        if (spoilerStatus.prop('checked')) {
+            spoilerVal = 1;
+        } else {
+            spoilerVal = 0;
+        }
+
+        if (screenshotInput.val() || screenshotInput.val() !== '') {
+            aquaForm.append('screenshot', screenshotInput.val());
+        }
+
+        var titleIDhex = $("header.header").data("community-title-id-hex");
+        var isOwnedCheck = wiiuDevice.existsTitle(titleIDhex);
+        var isOwned;
+        if (isOwnedCheck) {
+            isOwned = 1;
+        } else {
+            isOwned = 0;
+        }
+
+        aquaForm.append('owns_title', isOwned);
+        aquaForm.append('is_spoiler', spoilerVal);
+        aquaForm.append("language_id", 254);
+        aquaForm.append("is_autopost", 0);
+        aquaForm.append("is_app_jumpable", 0);
+
+        if (type_of_post == 'body') {
+            aquaForm.append('body', $('.textarea-text').val());
+        } else if (type_of_post == 'painting') {
+            aquaForm.append('painting', $('.textarea-memo-value').val());
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'https://api.olv.nonamegiven.xyz/v1/posts');
+        xhr.send(aquaForm);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    $.pjax.reload("#body", {
+                        fragment: "#body",
+                        container: "#body",
+                    });
+                    wiiuBrowser.lockUserOperation(false);
+                    wiiuBrowser.lockHomeButtonMenu(false);
+                    
+                    function toggleNav() {
+                        $("#menu-bar").removeClass("none")
+                        $(document).off(toggleNav)
+                    }
+
+                    $(document).on("pjax:end", toggleNav)
+                }
+                else {
+                    wiiuErrorViewer.openByCodeAndMessage(155289, 'There was an error making a new post, Please try again later.')
+                    wiiuBrowser.lockUserOperation(false);
+                    wiiuBrowser.lockHomeButtonMenu(false);
+                }
+            }
+        }
+
     },
     toggleCommunityPostModal: function () {
         aqua.scrollPosition = window.scrollY;
