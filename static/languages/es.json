@@ -149,6 +149,9 @@
                     "profile_recent_discussions": "Discusiones Recientes",
                     "profile_recent_screenshots": "Capturas recientemente guardadas"
                 }
+            },
+            "error" : {
+                "404" : "La ventana no se pudo mostrar."
             }
         }
     }

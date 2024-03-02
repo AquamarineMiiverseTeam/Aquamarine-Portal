@@ -149,6 +149,9 @@
                     "profile_recent_discussions": "Recent Discussions",
                     "profile_recent_screenshots": "Recently Saved Screenshots"
                 }
+            },
+            "error" : {
+                "404" : "The window could not be displayed."
             }
         }
     }
