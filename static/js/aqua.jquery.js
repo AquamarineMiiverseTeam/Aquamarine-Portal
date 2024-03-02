@@ -4,7 +4,6 @@ var aqua = {
     scrollPosition: 0,
     initSnd: function () {
         var e = $("[data-sound]");
-        if (!e) { return; }
 
         function playSnd(event) {
             wiiuSound.playSoundByName($(event.currentTarget).attr("data-sound"), 3);
@@ -13,17 +12,9 @@ var aqua = {
         e.off("click").on("click", playSnd);
     },
     initButton: function () {
-        setInterval(inputButton, 0);
+        setInterval(inputButton, 50);
         function inputButton() {
             wiiu.gamepad.update();
-
-            if (wiiu.gamepad.hold == 128 || wiiu.gamepad.hold == 64) {
-                var scrollSpeed = 0;
-                var accY = wiiu.gamepad.accY;
-                scrollSpeed = Math.round(accY * 40);
-                window.scrollBy(0, scrollSpeed);
-            }
-
 
             if (wiiu.gamepad.isDataValid === 0) {
                 pressedButton = null;
@@ -222,20 +213,7 @@ var aqua = {
                 if (xhttp.readyState === 4) {
                     switch (xhttp.status) {
                         case 200:
-                            var appendedContent = $(xhttp.responseText).css('display', 'none');
-                            $(cont).append(appendedContent);
-
-                            var totalImages = appendedContent.find('img').length;
-                            var imagesLoadedCount = 0;
-
-                            function handleDisplay() {
-                                imagesLoadedCount++;
-                                if (imagesLoadedCount >= totalImages) {
-                                    appendedContent.css('display', 'block');
-                                    imagesLoadedCount = 0;
-                                }
-                            }
-                            appendedContent.find('img').on('load', handleDisplay);
+                            $(cont).append(xhttp.responseText);
 
                             aqua.initSnd();
                             aqua.initEmp();
@@ -526,7 +504,7 @@ var aqua = {
     },
     favoriteCommunity: function () {
         var favoriteBtn = $(".favorite-button.button");
-        favoriteBtn.prop("disabled", true);
+        favoriteBtn.prop("disabled", true)
         wiiuBrowser.lockUserOperation(true);
         var id = $("header.header.with-data").attr("data-community-id");
         var xml = new XMLHttpRequest();
@@ -585,8 +563,6 @@ var aqua = {
     initPostModal: function () {
         if (!$("#add-new-post-modal").length && !$(".add-post-button").length) return;
 
-        alert("init")
-
         var screenshotToggleButton = $(".screenshot-toggle-button");
         if (wiiuMainApplication.getScreenShot(true) || wiiuMainApplication.getScreenShot(false)) {
             screenshotToggleButton.removeClass("none");
@@ -594,9 +570,9 @@ var aqua = {
             $(".screenshot-toggle-container .screenshot-tv").attr("src", "data:image/png;base64," + wiiuMainApplication.getScreenShot(true));
         }
 
-        alert("rage!!!")
-
-        $(".screenshot-toggle-button").off("click")
+        $(".screenshot-toggle-button").off("click", function () {
+            $(".screenshot-toggle-container").toggleClass("none")
+        })
         $(".screenshot-toggle-button").on("click", function () {
             $(".screenshot-toggle-container").toggleClass("none")
         })
@@ -605,52 +581,51 @@ var aqua = {
         var cancelScreenshot = $(".screenshot-toggle-container .cancel-toggle-button");
         var screenshotLis = $(".screenshot-toggle-container li");
 
-        alert("rage...")
-
         screenshotLis.off("click", changeScreenshotSource)
         screenshotLis.on("click", changeScreenshotSource);
 
         cancelScreenshot.off("click", sSelectorReset)
         cancelScreenshot.on("click", sSelectorReset);
 
-        alert("what...")
-
         function changeScreenshotSource(event) {
-            var eLi = $(event.currentTarget);
-            $.each(screenshotLis, function (index, li) {
-                if (li !== eLi) {
-                    $(li).find("img").removeClass("checked");
-                }
-            });
-            eLi.find("img").addClass("checked");
-            if (eLi.find("input").val() === "top") {
-                $(screenshotToggleButton).css({
-                    'background': 'url(data:image/png;base64,' + wiiuMainApplication.getScreenShot(true) + ')',
-                    'background-size': 'cover'
-                });
-                screenshotInput.val(wiiuMainApplication.getScreenShot(true));
-            } else if (eLi.find("input").val() === "bottom") {
-                screenshotInput.val(wiiuMainApplication.getScreenShot(false));
-                $(screenshotToggleButton).css({
-                    'background': 'url(data:image/png;base64,' + wiiuMainApplication.getScreenShot(false) + ')',
-                    'background-size': 'cover'
-                });
-            } else {
-                screenshotInput.val("");
+            var currentScreenshotLi = $(event.currentTarget)
+            $(".screenshot-toggle-container li img").removeClass("checked")
+            currentScreenshotLi.find("img").addClass("checked")
+
+            switch (currentScreenshotLi.find("input").val()) {
+                case "top":
+                    screenshotInput.val(wiiuMainApplication.getScreenShot(true));
+
+                    $(screenshotToggleButton).css({
+                             'background': 'url(data:image/png;base64,' + wiiuMainApplication.getScreenShot(true) + ')',
+                             'background-size': 'cover'
+                    });
+
+                    console.log("Saved TV Screenshot.")
+                    break;
+                case "bottom":
+                    screenshotInput.val(wiiuMainApplication.getScreenShot(false));
+
+                    $(screenshotToggleButton).css({
+                        'background': 'url(data:image/png;base64,' + wiiuMainApplication.getScreenShot(false) + ')',
+                        'background-size': 'cover'
+                    });
+
+                    console.log("Saved DRC Screenshot.")
+                    break;
+                default:
+                    screenshotInput.val("");
+                    break;
             }
+
             $(".screenshot-toggle-container").toggleClass("none")
         }
 
-        alert("chicken dance")
-
         function sSelectorReset() {
-            var bgAlbum = "data:image/png;base64,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";
-            $.each(screenshotLis, function (index, li) {
-                $(li).find("img").removeClass("checked");
-            });
+            screenshotLis.find("img").removeClass("checked")
 
             screenshotToggleButton.css({
-                'background': 'url(' + bgAlbum + ') center center no-repeat, ' +
+                'background': 'url("/img/sprsheet/screenshot_selector.png") center center no-repeat, ' +
                     '-webkit-gradient(linear, left top, left bottom, from(#ffffff), color-stop(0.5, #ffffff), ' +
                     'color-stop(0.8, #f6f6f6), color-stop(0.96, #f5f5f5), to(#bbbbbb)) 0 0',
                 'background-size': 'initial'
@@ -658,8 +633,6 @@ var aqua = {
             screenshotInput.val("");
             $(".screenshot-toggle-container").toggleClass("none")
         }
-
-        alert("sSheldon")
 
         var feelingInputs = $(".feeling-selector.expression .buttons li");
         var userMii = $('.mii-icon-container');
@@ -718,7 +691,10 @@ var aqua = {
                 $('.textarea-memo-value').prop('disabled', false);
                 $('.textarea-text').addClass('none');
                 $('.textarea-memo').removeClass('none');
+
+                $('.textarea-memo-trigger').off('click', makeMemo);
                 $('.textarea-memo-trigger').on('click', makeMemo);
+
                 makeMemo();
                 function makeMemo() {
                     wiiuMemo.open(false);
@@ -770,16 +746,15 @@ var aqua = {
             $(".feeling-selector").toggleClass("none")
         });
 
+        $(postButton).off('click', makeNewPost);
         $(postButton).on('click', makeNewPost);
 
         function makeNewPost() {
-            if (postButton.disabled == true) {return;}
-            alert("Function Start")
+            if (postButton.disabled == true) { return; }
             postButton.disabled = true;
-            alert("Functgion 1")
             wiiuBrowser.lockUserOperation(true);
             wiiuBrowser.lockHomeButtonMenu(true);
-            alert("functyion12")
+
             var type_radios = $('input[name="_post_type"]');
             var type_of_post;
 
@@ -789,16 +764,12 @@ var aqua = {
                 }
             });
 
-            alert("loop ended")
-
             if (type_of_post == 'body' && !$('.textarea-text').val()) {
                 wiiuDialog.alert('Please input text in your post.', 'OK');
                 wiiuBrowser.lockUserOperation(false);
                 wiiuBrowser.lockHomeButtonMenu(false);
                 return;
             }
-
-            alert("fhceck")
 
             postButton.addClass('disabled');
             postButton.off("click", makeNewPost);
@@ -856,10 +827,17 @@ var aqua = {
                     if (xhr.status === 200) {
                         $.pjax.reload("#body", {
                             fragment: "#body",
-                            container: "#body"
+                            container: "#body",
                         });
                         wiiuBrowser.lockUserOperation(false);
                         wiiuBrowser.lockHomeButtonMenu(false);
+                        
+                        function toggleNav() {
+                            $("#menu-bar").removeClass("none")
+                            $(document).off(toggleNav)
+                        }
+
+                        $(document).on("pjax:end", toggleNav)
                     }
                     else {
                         wiiuErrorViewer.openByCodeAndMessage(155289, 'There was an error making a new post, Please try again later.')
@@ -870,7 +848,6 @@ var aqua = {
             }
 
         }
-
     },
     toggleCommunityPostModal: function () {
         aqua.scrollPosition = window.scrollY;
@@ -923,17 +900,8 @@ $(document).on("pjax:click", function () {
     wiiuBrowser.lockUserOperation(true);
 })
 
-$(document).on("pjax:error", function () {
-    wiiuBrowser.lockUserOperation(false);
-    wiiuErrorViewer.openByCodeAndMessage(115000, "There was an error loading content.");
-})
-
 $(document).on("pjax:end", function () {
     wiiuBrowser.lockUserOperation(false);
-    $("#menu-bar").removeClass("none")
-})
-
-$(document).on("pjax:end", function () {
     aqua.initTbs();
     aqua.initSnd();
     aqua.initNav();
