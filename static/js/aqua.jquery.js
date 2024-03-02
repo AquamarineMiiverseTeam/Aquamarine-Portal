@@ -493,11 +493,11 @@ var aqua = {
         var picture = $(".screenshot-viewer-screenshot div div img");
         if (viewer.hasClass("none")) {
             aqua.scrollPosition = window.scrollY;
-            $("div:not(.screenshot-viewer-screenshot, body, #body), #menu-bar, header").addClass("none");
+            $("#body > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").toggleClass("none")
             viewer.removeClass("none");
             picture.attr("src", $(capture).children(":first-child").attr("src"));
         } else {
-            $("div:not(.screenshot-viewer-screenshot, body, #body), #menu-bar, header").removeClass("none")
+            $("#body > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").toggleClass("none")
             viewer.addClass("none");
             window.scrollTo(0, aqua.scrollPosition)
         }
@@ -570,9 +570,7 @@ var aqua = {
             $(".screenshot-toggle-container .screenshot-tv").attr("src", "data:image/png;base64," + wiiuMainApplication.getScreenShot(true));
         }
 
-        $(".screenshot-toggle-button").off("click", function () {
-            $(".screenshot-toggle-container").toggleClass("none")
-        })
+        $(".screenshot-toggle-button").off("click")
         $(".screenshot-toggle-button").on("click", function () {
             $(".screenshot-toggle-container").toggleClass("none")
         })
@@ -853,6 +851,10 @@ var aqua = {
         aqua.scrollPosition = window.scrollY;
         $("#body > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").toggleClass("none")
         $("#add-new-post-modal").toggleClass("none")
+    },
+    toggleCommunityViewSettings: function() {
+        $("#body > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").toggleClass("none")
+        $("#change-settings-modal").toggleClass("none")
     },
     prepareBOSS: function () {
         var isBOSSEnabled = wiiuLocalStorage.getItem("boss_state");
