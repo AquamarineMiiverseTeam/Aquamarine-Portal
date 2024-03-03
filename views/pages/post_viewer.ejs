@@ -95,8 +95,43 @@
 
                         <div class="post-meta">
                             <a href="javascript:void(0)" class="button edit-post none"></a>
-                            <button data-empathy-count="<%= post.empathies.length %>" data-reply-count="0" <%= (post.account_id == account[0].id) ? "disabled" : "" %> class="miitoo-button post-viewer-miitoo-button<%= (post.empathies.some(empathy => empathy.account_id == account[0].id)) ? " added" : "" %>" data-post-id="<%= post.id %>" >
-                                <%= (post.empathies.some(empathy => empathy.account_id == account[0].id)) ? "Unyeah!" : "Yeah!" %>
+
+                            <% let yeahed_text, unyeahed_text; switch (post.feeling_id) {
+                                case 0:
+                                    yeahed_text = locals.language.aqua.portal.miitoo.default;
+                                    unyeahed_text = locals.language.aqua.portal.miitoo['default.delete'];
+                                    break;
+                                case 1:
+                                    yeahed_text = locals.language.aqua.portal.miitoo.happy;
+                                    unyeahed_text = locals.language.aqua.portal.miitoo['happy.delete'];
+                                    break;
+                                case 2:
+                                    yeahed_text = locals.language.aqua.portal.miitoo.like;
+                                    unyeahed_text = locals.language.aqua.portal.miitoo.like.delete;
+                                    break;
+                                case 3:
+                                    yeahed_text = locals.language.aqua.portal.miitoo.surprised;
+                                    unyeahed_text = locals.language.aqua.portal.miitoo['surprised.delete'];
+                                    break;
+                                case 4:
+                                    yeahed_text = locals.language.aqua.portal.miitoo.puzzled;
+                                    unyeahed_text = locals.language.aqua.portal.miitoo['puzzled.delete'];
+                                    break;
+                                case 5:
+                                    yeahed_text = locals.language.aqua.portal.miitoo.frustrated;
+                                    unyeahed_text = locals.language.aqua.portal.miitoo['frustrated.delete'];
+                                    break;
+                                default:
+                                    yeahed_text = locals.language.aqua.portal.miitoo.default;
+                                    unyeahed_text = locals.language.aqua.portal.miitoo.default.delete;
+                            }%>
+
+                            <button data-unyeah-text="<%= unyeahed_text %>" data-yeah-text="<%= yeahed_text %>" data-empathy-count="<%= post.empathies.length %>" data-reply-count="0" <%= (post.account_id == account[0].id) ? "disabled" : "" %> class="miitoo-button post-viewer-miitoo-button<%= (post.empathies.some(empathy => empathy.account_id == account[0].id)) ? " added" : "" %>" data-post-id="<%= post.id %>" >
+                                <% if (post.empathies.some(empathy => empathy.account_id == account[0].id)) { %>
+                                    <%= unyeahed_text %>
+                                <%} else {%>
+                                    <%= yeahed_text %>
+                                <%}%>
                             </button>
                             <a href="javascript:void(0)" class="button link-button none"></a>
                             <a href="javascript:void(0)" class="button vino-button none"></a>

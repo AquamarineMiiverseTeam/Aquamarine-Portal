@@ -855,7 +855,6 @@ var aqua = {
 
     },
     toggleCommunityPostModal: function () {
-        alert(aqua.modal_open)
         if (aqua.modal_open) {
             window.scrollTo(0, aqua.scrollPosition)
             $("#body > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").removeClass("none")

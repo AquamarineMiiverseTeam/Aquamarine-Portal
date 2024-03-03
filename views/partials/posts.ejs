@@ -32,7 +32,7 @@
                     <span class="user-name"><%= post.mii_name %></span>
                     <span class="other-user-empathy"><span>Dummy</span> gave a "Yeah!"</span>
                     <span class="timestamp"><%= (moment().diff(moment(post.create_time).subtract(1, 'days'), 'days') >= 7) ? moment(post.create_time).locale(locals.language.aqua.language).format("MM/DD/YYYY h:MM A") : moment(post.create_time).locale(locals.language.aqua.language).fromNow() %></span>
-                    <span class="spoiler-status <%= (post.spoiler == 1) ? "spoiler inline-show" : "" %>"><%= (post.spoiler == 1) ? "Spoilers" : "" %></span>
+                    <span class="spoiler-status <%= (post.spoiler == 1) ? "spoiler inline-show" : "" %>"><%= (post.spoiler == 1) ? locals.language.aqua.portal.community.post.spoilers : "" %></span>
                 </header>
 
                 <span class="post-title-icon">
@@ -54,20 +54,56 @@
                         <p class="post-content-text"><%= post.body %></p>
                     <% } else { %>
                         <p class="post-content-memo">
-                            <img class="post-memo" src="/img/paintings/<%= post.id%>.png"/>
+                            <img class="post-memo" src="/img/paintings/<%= post.id %>.png"/>
                          </p>
                     <% } %>
                 </div>
     
                 <% if (post.spoiler == 1) { %>
                     <div class="hidden-content">
-                        <p>This post contains spoilers.</p>
-                        <div><a href="javascript:void(0)" class="hidden-content-button">View Post</a></div>
+                        <p><%= locals.language.aqua.portal.community.post.has_spoilers %></p>
+                        <div><a href="javascript:void(0)" class="hidden-content-button"><%= locals.language.aqua.portal.community.post.see_spoiler %></a></div>
                     </div>
                 <% } %>
     
                 <div class="post-meta">
-                    <button data-empathy-count="<%= post.empathy_count %>" data-reply-count="0" data-post-id="<%= post.id %>" class="submit miitoo-button" <%= (post.account_id == account[0].id) ? "disabled" : "" %>><%= (post.empathied_by_user) ? "Unyeah!" : "Yeah!" %></button>
+                    <% let yeahed_text, unyeahed_text; switch (post.feeling_id) {
+                        case 0:
+                            yeahed_text = locals.language.aqua.portal.miitoo.default;
+                            unyeahed_text = locals.language.aqua.portal.miitoo['default.delete'];
+                            break;
+                        case 1:
+                            yeahed_text = locals.language.aqua.portal.miitoo.happy;
+                            unyeahed_text = locals.language.aqua.portal.miitoo['happy.delete'];
+                            break;
+                        case 2:
+                            yeahed_text = locals.language.aqua.portal.miitoo.like;
+                            unyeahed_text = locals.language.aqua.portal.miitoo.like.delete;
+                            break;
+                        case 3:
+                            yeahed_text = locals.language.aqua.portal.miitoo.surprised;
+                            unyeahed_text = locals.language.aqua.portal.miitoo['surprised.delete'];
+                            break;
+                        case 4:
+                            yeahed_text = locals.language.aqua.portal.miitoo.puzzled;
+                            unyeahed_text = locals.language.aqua.portal.miitoo['puzzled.delete'];
+                            break;
+                        case 5:
+                            yeahed_text = locals.language.aqua.portal.miitoo.frustrated;
+                            unyeahed_text = locals.language.aqua.portal.miitoo['frustrated.delete'];
+                            break;
+                        default:
+                            yeahed_text = locals.language.aqua.portal.miitoo.default;
+                            unyeahed_text = locals.language.aqua.portal.miitoo.default.delete;
+                    }%>
+
+                    <button data-unyeah-text="<%= unyeahed_text %>" data-yeah-text="<%= yeahed_text %>" data-empathy-count="<%= post.empathy_count %>" data-reply-count="0" data-post-id="<%= post.id %>" class="submit miitoo-button" <%= (post.account_id == account[0].id) ? "disabled" : "" %>>
+                        <% if (post.empathied_by_user) { %>
+                            <%= unyeahed_text %>
+                        <% } else { %>
+                            <%= yeahed_text %>
+                        <% } %>
+                    </button>
                     <a data-pjax=".wrapper" href="/posts/<%= post.id %>" data-sound="SE_WAVE_OK" class="to-permalink-button">
                         <span class="feeling <%= (post.empathied_by_user) ? "added" : "" %>"><%= post.empathy_count %></span>
                         <span class="reply">0</span>
