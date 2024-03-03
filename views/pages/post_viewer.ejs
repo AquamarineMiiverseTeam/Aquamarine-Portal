@@ -68,7 +68,7 @@
                             <span class="user-id"><%= post.nnid %></span>
                         </p>
 
-                        <p class="time-stamp"><%= moment(post.create_time).fromNow() %>
+                        <p class="time-stamp"><%= (moment().diff(moment(post.create_time).subtract(1, 'days'), 'days') >= 7) ? moment(post.create_time).locale(locals.language.aqua.language).format("MM/DD/YYYY h:MM A") : moment(post.create_time).locale(locals.language.aqua.language).fromNow() %>
                             <span class="spoiler-status <%= (post.spoiler) ? 'inline-show' : '' %> ">Spoilers</span>
                             <% if (post.title_owned) { %>
                                 <span class="played">Played</span>
