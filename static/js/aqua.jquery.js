@@ -841,6 +841,7 @@ var aqua = {
                     function toggleNav() {
                         $("#menu-bar").removeClass("none")
                         $(document).off(toggleNav)
+                        aqua.modal_open = false;
                     }
 
                     $(document).on("pjax:end", toggleNav)
