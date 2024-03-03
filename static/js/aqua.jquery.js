@@ -109,6 +109,7 @@ var aqua = {
                 $(el[i]).removeClass("selected")
             }
             message.addClass("selected");
+            $("#menu-bar-messages a .badge").css("display", "none")
         } else if (path.indexOf("/users/@me") !== -1) {
             for (var i = 0; i < el.length; i++) {
                 $(el[i]).removeClass("selected")
@@ -119,11 +120,13 @@ var aqua = {
                 $(el[i]).removeClass("selected")
             }
             news.addClass("selected");
+            $("#menu-bar-news a .badge").css("display", "none")
         } else if (path.indexOf("/notifications/friend_requests") !== -1) {
             for (var i = 0; i < el.length; i++) {
                 $(el[i]).removeClass("selected")
             }
             news.addClass("selected");
+            $("#menu-bar-news a .badge").css("display", "none")
         } else {
             for (var i = 0; i < el.length; i++) {
                 $(el[i]).removeClass("selected")
@@ -899,6 +902,45 @@ var aqua = {
         tutorialReq.send(JSON.stringify(tutorialReqObj));
         $(".tutorial-window").addClass("none")
     },
+    checkNotifications: function () {
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("GET", "https://api.olv.nonamegiven.xyz/v2/notifications")
+        xhttp.send()
+
+        xhttp.onreadystatechange = function(e) {
+            if (xhttp.readyState == xhttp.DONE) {
+                switch (xhttp.status) {
+                    case 200:
+                        var responseObj = JSON.parse(xhttp.responseText)
+                        
+                        if (responseObj.notifications.notifications_length >= 1) {
+                            if (responseObj.notifications.notifications_length > 99) {
+                                $("#menu-bar-news a .badge").text("99+")
+                            } else {
+                                $("#menu-bar-news a .badge").text(String(responseObj.notifications.notifications_length))
+                            }
+                            
+                            $("#menu-bar-news a .badge").css("display", "block")
+                        }
+
+                        if (responseObj.notifications.messages_length >= 1) {
+                            if (responseObj.notifications.messages_length > 99) {
+                                $("#menu-bar-news a .badge").text("99+")
+                            } else {
+                                $("#menu-bar-news a .badge").text(String(responseObj.notifications.messages_length))
+                            }
+
+                            $("#menu-bar-news a .badge").css("display", "block")
+                        }
+                        break;
+                    case 204:
+                    default:
+                        $("a .badge").css("display", "none")
+                        break;
+                }
+            }
+        }
+    }
 }
 
 $(document).on("DOMContentLoaded", function () {
@@ -917,6 +959,7 @@ $(document).on("DOMContentLoaded", function () {
     setInterval(function () {
         wiiuSound.playSoundByName("BGM_OLV_MAIN_LOOP_NOWAIT", 3);
     }, 90000);
+    setInterval(aqua.checkNotifications, 15000);
     wiiuBrowser.endStartUp();
 })
 
