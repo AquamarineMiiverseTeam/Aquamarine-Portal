@@ -105,7 +105,7 @@
                     "gave_yeah": "a donné un Ouais à",
                     "gave_reply": "a commenté à",
                     "your_post": "votre message",
-                    "handwritten" : "votre dessin"
+                    "handwritten" : "dessin"
                 },
                 "get_news_header" : "Vous trouverez les dernières informations ici !",
                 "get_news_content" : "Messages d'utilisateurs certifiés",
@@ -128,7 +128,7 @@
                     "user_menu": "Menu de l'utilisateur",
                     "profile_country": "Pays",
                     "profile_birthday": "Anniversaire",
-                    "profile_yeahs": "Ouais donnés",
+                    "profile_yeahs": "Ouais reçus",
                     "profile_exp": "Expérience de jeu",
                     "profile_beginner": "Débutant",
                     "profile_intermediate": "Intermédiaire",
