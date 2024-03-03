@@ -291,7 +291,7 @@ var aqua = {
                                     }
                                     wiiuBrowser.lockUserOperation(false);
                                     el.removeClass('added');
-                                    el.text("Yeah!");
+                                    el.text($(el).attr("data-yeah-text"));
                                     if (miis.length == 1) {
                                         postContent.addClass("no-empathy");
                                         miiVisitor.css("display", "none")
@@ -322,7 +322,7 @@ var aqua = {
                                     }
                                     wiiuBrowser.lockUserOperation(false);
                                     el.addClass('added');
-                                    el.text("Unyeah!");
+                                    el.text($(el).attr("data-unyeah-text"));
                                     if (miis.length == 1) {
                                         if (postContent.hasClass("no-empathy")) {
                                             postContent.removeClass("no-empathy");
@@ -385,7 +385,7 @@ var aqua = {
                                     }
                                     wiiuBrowser.lockUserOperation(false);
                                     count.removeClass('added');
-                                    el.text("Yeah!");
+                                    el.text($(el).attr("data-yeah-text"));
                                     if (count) {
                                         var countText = parseInt(count.text());
                                         count.text(countText - 1);
@@ -410,7 +410,7 @@ var aqua = {
                                     }
                                     wiiuBrowser.lockUserOperation(false);
                                     count.addClass('added');
-                                    el.text("Unyeah!");
+                                    el.text($(el).attr("data-unyeah-text"));
                                     if (count) {
                                         var countText = parseInt(count.text());
                                         count.text(++countText);
