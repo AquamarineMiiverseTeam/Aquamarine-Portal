@@ -2,6 +2,7 @@ var aqua = {
     modifed_posts: [],
     modifed_communities: [],
     scrollPosition: 0,
+    modal_open: false,
     initSnd: function () {
         var e = $("[data-sound]");
 
@@ -492,15 +493,17 @@ var aqua = {
     openCaptureModal: function (capture) {
         var viewer = $(".screenshot-viewer-screenshot, .screenshot-img-wrapper, .screenshot-img-wrapper div");
         var picture = $(".screenshot-viewer-screenshot div div img");
-        if (viewer.hasClass("none")) {
-            aqua.scrollPosition = window.scrollY;
-            $("#body > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").toggleClass("none")
-            viewer.removeClass("none");
-            picture.attr("src", $(capture).children(":first-child").attr("src"));
-        } else {
-            $("#body > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").toggleClass("none")
+        if (aqua.modal_open) {
+            aqua.modal_open = false
+            $("#body > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").removeClass("none")
             viewer.addClass("none");
             window.scrollTo(0, aqua.scrollPosition)
+        } else {
+            aqua.scrollPosition = window.scrollY;
+            $("#body > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").addClass("none")
+            viewer.removeClass("none");
+            aqua.modal_open = true
+            $(picture).attr("src", $(capture).find("img").attr("src"));
         }
     },
     favoriteCommunity: function () {
@@ -852,13 +855,31 @@ var aqua = {
 
     },
     toggleCommunityPostModal: function () {
-        aqua.scrollPosition = window.scrollY;
-        $("#body > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").toggleClass("none")
-        $("#add-new-post-modal").toggleClass("none")
+        alert(aqua.modal_open)
+        if (aqua.modal_open) {
+            window.scrollTo(0, aqua.scrollPosition)
+            $("#body > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").removeClass("none")
+            $("#add-new-post-modal").addClass("none")
+            aqua.modal_open = false
+        } else {
+            $("#body > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").addClass("none")
+            $("#add-new-post-modal").removeClass("none")
+            aqua.scrollPosition = window.scrollY;
+            aqua.modal_open = true
+        }
     },
-    toggleCommunityViewSettings: function() {
-        $("#body > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").toggleClass("none")
-        $("#change-settings-modal").toggleClass("none")
+    toggleCommunityViewSettingsModal: function() {
+        if (aqua.modal_open) {
+            window.scrollTo(0, aqua.scrollPosition)
+            $("#body > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").toggleClass("none")
+            $("#change-settings-modal").toggleClass("none")
+            aqua.modal_open = false
+        } else {
+            $("#body > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").toggleClass("none")
+            $("#change-settings-modal").toggleClass("none")
+            aqua.scrollPosition = window.scrollY;
+            aqua.modal_open = true
+        }
     },
     prepareBOSS: function () {
         wiiuBOSS.unregisterDirectMessageTask();
