@@ -756,7 +756,6 @@ var aqua = {
     },
     makePost: function makeNewPost() {
         var screenshotInput = $("#screenshot_val_input");
-        var postTypeLi = $('.textarea-menu li label');
         var postButton = $('.ok-confirm-post-button');
 
         if (postButton.disabled == true) { return; }
@@ -764,14 +763,7 @@ var aqua = {
         wiiuBrowser.lockUserOperation(true);
         wiiuBrowser.lockHomeButtonMenu(true);
 
-        var type_radios = $('input[name="_post_type"]');
-        var type_of_post;
-
-        type_radios.each(function () {
-            if ($(this).prop('checked')) {
-                type_of_post = $(this).val();
-            }
-        });
+        var type_of_post = $('label.checked input[name="_post_type"]').attr("value")
 
         if (type_of_post == 'body' && !$('.textarea-text').val()) {
             wiiuDialog.alert('Please input text in your post.', 'OK');
@@ -781,16 +773,9 @@ var aqua = {
         }
 
         postButton.addClass('disabled');
-        postButton.off("click", makeNewPost);
+        postButton.off("click");
         var aquaForm = new FormData();
-        var feeling_radios = $('input[name="feeling_id"]');
-        var checked_feeling;
-
-        feeling_radios.each(function () {
-            if ($(this).prop('checked')) {
-                checked_feeling = $(this).val();
-            }
-        });
+        var checked_feeling = $('.buttons li.checked input[name="feeling_id"]').attr("value")
 
         aquaForm.append('feeling_id', checked_feeling);
         aquaForm.append('community_id', $("header.header").data('community-id'));
@@ -808,6 +793,7 @@ var aqua = {
         }
 
         var titleIDhex = $("header.header").data("community-title-id-hex");
+
         var isOwnedCheck = wiiuDevice.existsTitle(titleIDhex);
         var isOwned;
         if (isOwnedCheck) {
@@ -840,14 +826,8 @@ var aqua = {
                     });
                     wiiuBrowser.lockUserOperation(false);
                     wiiuBrowser.lockHomeButtonMenu(false);
-                    
-                    function toggleNav() {
-                        $("#menu-bar").removeClass("none")
-                        $(document).off(toggleNav)
-                        aqua.modal_open = false;
-                    }
 
-                    $(document).on("pjax:end", toggleNav)
+                    aqua.modal_open = false;
                 }
                 else {
                     wiiuErrorViewer.openByCodeAndMessage(155289, 'There was an error making a new post, Please try again later.')
