@@ -868,11 +868,14 @@ var aqua = {
     },
     setTutorialAsRead: function (tutorial) {
         var tutorialType = $(tutorial).attr("data-tutorial");
+        var tutorialReqObj = {
+            tutorial_id : tutorialType
+        }
+
         var tutorialReq = new XMLHttpRequest();
         tutorialReq.open("POST", "https://api.olv.nonamegiven.xyz/v2/tutorials")
-        tutorialReq.send({
-            "tutorial_id" : tutorialType
-           });
+        tutorialReq.setRequestHeader("Content-Type", "application/json")
+        tutorialReq.send(JSON.stringify(tutorialReqObj));
         $(".tutorial-window").addClass("none")
     },
 }
