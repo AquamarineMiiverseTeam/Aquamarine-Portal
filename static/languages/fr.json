@@ -1,0 +1,158 @@
+{
+    "aqua": {
+        "language": "fr",
+        "portal": {
+            "community": {
+                "communities": "Communautés",
+                "filter": {
+                    "filter": "Filtrer",
+                    "all_software": "Tous les logiciels",
+                    "wiiu_games": "Jeux Wii U",
+                    "n3ds_games": "Jeux Nintendo 3DS",
+                    "vc_games": "Console virtuelle",
+                    "other": "Autre"
+                },
+                "new_communities": "Nouvelles communautés",
+                "popular_communities": "Communautés populaires",
+                "special_communities": "Communautés spéciales",
+                "see_all_communities": "Voir toutes les communautés",
+                "all_communities" : "Toutes les communautés",
+                "community": "Communauté %s",
+                "other_sub_communities": "Autres communautés pour %s",
+                "other": "Autres communautés",
+                "no_posts": "Aucun message n'a été fait sur cette communauté. Pourquoi vous n'essayerez pas d'en faire un ?",
+                "settings": {
+                    "header": "Paramète de visibilité des messages de communautés",
+                    "show": "Tout montrer",
+                    "spoiler": "Cacher les révélations",
+                    "screenshot": "Cacher les captures d'écran",
+                    "both": "Cacher les deux",
+                    "cancel": "Annuler"
+                },
+                "types": {
+                    "main_community": "Communauté principale",
+                    "sub_community": "Sous-communauté",
+                    "announcements_community": "Communauté d'annonces",
+                    "user_community": "Communauté créé par un utilisateur"
+                },
+                "platforms": {
+                    "topic": "Topic",
+                    "general_topic": "Topic général",
+                    "virtual_console": "Jeux Console Virtuelle",
+                    "wii": "Jeux Wii",
+                    "wiiu": "Jeux Wii U",
+                    "wiiu/n3ds": "Jeux Wii U/Nintendo 3DS",
+                    "n3ds": "Jeux Nintendo 3DS",
+                    "n_switch": "Jeux Nintendo Switch"
+                },
+                "tabs": {
+                    "popular": "Messages populaires",
+                    "player": "Messages de joueurs possédant le jeu",
+                    "new": "Messages récents"
+                },
+                "post": {
+                    "post": "Envoyer",
+                    "window_post": "Envoyer sur la communauté %s",
+                    "cancel": "Annuler",
+                    "post_body_guide": "Écrivez un message.",
+                    "post_body_placeholder": "Écrivez vos pensées vers un message sur cette communauté !",
+                    "spoilers": "Révélations",
+                    "has_spoilers": "Ce message contient des révélations.",
+                    "see_spoiler": "Voir le message"
+                }
+            },
+            "miitoo": {
+                "default": "Ouais !",
+                "default.delete": "Retirer",
+                "happy": "Ah Ouais !",
+                "happy.delete": "Retirer",
+                "like": "Ouais\u2665",
+                "like.delete": "Retirer",
+                "surprised": "Oh Ouais ?!",
+                "surprised.delete": "Retirer",
+                "puzzled": "Ouais...!",
+                "puzzled.delete": "Retirer",
+                "frustrated": "Mouais...",
+                "frustrated.delete": "Retirer",
+                "special": "Ouais\u2605",
+                "special.delete": "Retirer",
+                "viewer": {
+                    "added_people": "Vous et %s autres personnes avez donné un Ouais.",
+                    "default_people": "%s personnes ont donné un Ouais.",
+                    "added_person": "Vous et %s autre personne avez donné un Ouais.",
+                    "default_person": "%s personne a donné un Ouais.",
+                    "added": "Vous avez donné un Ouais.",
+                    "default": ""
+                }
+            },
+            "messages": {
+                "header": "Messages privés",
+                "tutorial": "Dans Messages privés, vous pouvez envoyer des messages privés à vos amis et voir les anciens messages. Si vous voulez jouer à un jeu avec un ami ou avoir des conseils lorsque vous êtes bloqué, essayez d'envoyer un message privé !",
+                "close": "Fermer",
+                "no_messages": "Il n'y a aucun message privé pour l'instant."
+            },
+            "news": {
+                "header": "Notifications",
+                "tutorial": "Dans Notifications, vous pouvez savoir comment les personnes ont réagi à vos messages ou commentaires, et voir si vous avez des demandes d'amis en attente. Si vous avez de nouvelles notifications, une icône orange apparaîtra pour vous en informer.",
+                "close": "Fermer",
+                "no_news": "Vous n'avez aucune notification.",
+                "no_friend_request": "Il n'y a aucune demande d'ami en attente.",
+                "tab": {
+                    "update_tab": "Notifications",
+                    "friend_req_tab": "Demandes d'ami"
+                },
+                "content": {
+                    "gave_yeah": "a donné un Ouais à",
+                    "gave_reply": "a commenté à",
+                    "your_post": "votre message",
+                    "handwritten" : "votre dessin"
+                },
+                "get_news_header" : "Vous trouverez les dernières informations ici !",
+                "get_news_content" : "Messages d'utilisateurs certifiés",
+                "announcement" : "Il y a une nouvelle annonce d'Aquamarine.  Tapez ici pour plus d'informations."
+            },
+            "menu": {
+                "my_menu": "Page de l'utilisateur",
+                "activity_feed": "Suivi des actualités",
+                "communities": "Communautés",
+                "messages": "Messages privés",
+                "notifications": "Notifications",
+                "close": "Fermer",
+                "back": "Retour",
+                "profile": {
+                    "visitor_user_page": "Profil de %s",
+                    "me_user_page": "Page de l'utilisateur",
+                    "visitor_favorite_communities": "Communautés favorites de %s'",
+                    "me_favorite_communities": "Vos communautés favorites",
+                    "no_favorite_communities": "Il n'y a aucune communauté favorite.",
+                    "user_menu": "Menu de l'utilisateur",
+                    "profile_country": "Pays",
+                    "profile_birthday": "Anniversaire",
+                    "profile_yeahs": "Ouais donnés",
+                    "profile_exp": "Expérience de jeu",
+                    "profile_beginner": "Débutant",
+                    "profile_intermediate": "Intermédiaire",
+                    "profile_expert": "Expert",
+                    "profile_settings": "Paramètres du profil",
+                    "no_favorite_post": "Votre message favori peut être affiché ici.",
+                    "profile_posts": "Messages",
+                    "profile_friends": "Amis",
+                    "profile_following": "Abonnements",
+                    "profile_followers": "Abonnés",
+                    "profile_view_journal": "Journal de jeu",
+                    "profile_view_album": "Album de captures d'écran",
+                    "profile_favorite_communities": "Communautés favorites",
+                    "profile_recent_journal": "Entrées récentes du journal de jeu",
+                    "profile_no_journal": "Aucune entrée du journal de jeu n'a été écrite.",
+                    "profile_no_discussions": "Aucune discussion récente.",
+                    "profile_no_screenshots": "Aucune capture d'écran.",
+                    "profile_recent_discussions": "Discussions récentes",
+                    "profile_recent_screenshots": "Captures d'écrans récemment sauvegardées"
+                }
+            },
+            "error" : {
+                "404" : "La page n'a pas pu s'afficher."
+            }
+        }
+    }
+}

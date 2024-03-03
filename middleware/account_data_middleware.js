@@ -6,7 +6,8 @@ const db_con = require("../../Aquamarine-Utils/database_con")
 
 const language = {
     "en" : require("../static/languages/en.json"),
-    "es" : require("../static/languages/es.json")
+    "es" : require("../static/languages/es.json"),
+    "fr" : require("../static/languages/fr.json")
 }
 
 function local(args, string) {

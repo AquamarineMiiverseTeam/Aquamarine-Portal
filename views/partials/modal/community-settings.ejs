@@ -1,12 +1,12 @@
 <div id="change-settings-modal" class="window-page none">
     <div class="window">
-        <h1 class="window-title">Community Post Display Setting</h1>
+        <h1 class="window-title"><%= locals.language.aqua.portal.community.settings.header %></h1>
         <div class="window-body">
 
             <div class="window-body-inner">
                 <div class="title-container">
                     <img src="../../../img/icons/<%= community.id %>.jpg" class="title-icon">
-                    <p class="title-name"><%= ((community.name).toString().includes("Community")) ? community.name : community.name + " Community"  %></p>
+                    <p class="title-name"><%= locals.local([{str : community.name, rpl : "%s"}], locals.language.aqua.portal.community.community) %></p>
                 </div>
                 <ul class="settings-list">
                     <li data-name="viewable_post" class="scroll">
@@ -14,10 +14,10 @@
                         <div class="community-settings-dropdown-wrapper">
                             <select name="community-settings" class="community-settings-drop"
                                 id="community-settings-input">
-                                <option value="1" <%= (JSON.parse(account[0].community_settings)[community.id] == "1") ? "selected" : "" %>>Show All</option>
-                                <option value="2" <%= (JSON.parse(account[0].community_settings)[community.id] == "2") ? "selected" : "" %>>Hide Spoilers</option>
-                                <option value="3" <%= (JSON.parse(account[0].community_settings)[community.id] == "3") ? "selected" : "" %>>Hide Screenshots</option>
-                                <option value="4" <%= (JSON.parse(account[0].community_settings)[community.id] == "4") ? "selected" : "" %>>Hide Both</option>
+                                <option value="1" <%= (JSON.parse(account[0].community_settings)[community.id] == "1") ? "selected" : "" %>><%= locals.language.aqua.portal.community.settings.show %></option>
+                                <option value="2" <%= (JSON.parse(account[0].community_settings)[community.id] == "2") ? "selected" : "" %>><%= locals.language.aqua.portal.community.settings.spoiler %></option>
+                                <option value="3" <%= (JSON.parse(account[0].community_settings)[community.id] == "3") ? "selected" : "" %>><%= locals.language.aqua.portal.community.settings.screenshot %></option>
+                                <option value="4" <%= (JSON.parse(account[0].community_settings)[community.id] == "4") ? "selected" : "" %>><%= locals.language.aqua.portal.community.settings.both %></option>
                             </select>
                         </div>
                     </li>
@@ -27,7 +27,7 @@
         </div>
         <div class="window-bottom-buttons single-button">
             <a href="javascript:void(0)" class="button cancel-button"
-                onclick="aqua.toggleCommunityViewSettingsModal()" data-sound="SE_WAVE_CANCEL">Cancel</a>
+                onclick="aqua.toggleCommunityViewSettingsModal()" data-sound="SE_WAVE_CANCEL"><%= locals.language.aqua.portal.community.settings.cancel %></a>
         </div>
     </div>
 </div>
