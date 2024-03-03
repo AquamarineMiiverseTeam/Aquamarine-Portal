@@ -107,7 +107,7 @@
                                     break;
                                 case 2:
                                     yeahed_text = locals.language.aqua.portal.miitoo.like;
-                                    unyeahed_text = locals.language.aqua.portal.miitoo.like.delete;
+                                    unyeahed_text = locals.language.aqua.portal.miitoo['like.delete'];
                                     break;
                                 case 3:
                                     yeahed_text = locals.language.aqua.portal.miitoo.surprised;
@@ -123,7 +123,7 @@
                                     break;
                                 default:
                                     yeahed_text = locals.language.aqua.portal.miitoo.default;
-                                    unyeahed_text = locals.language.aqua.portal.miitoo.default.delete;
+                                    unyeahed_text = locals.language.aqua.portal.miitoo['default.delete'];
                             }%>
 
                             <button data-unyeah-text="<%= unyeahed_text %>" data-yeah-text="<%= yeahed_text %>" data-empathy-count="<%= post.empathies.length %>" data-reply-count="0" <%= (post.account_id == account[0].id) ? "disabled" : "" %> class="miitoo-button post-viewer-miitoo-button<%= (post.empathies.some(empathy => empathy.account_id == account[0].id)) ? " added" : "" %>" data-post-id="<%= post.id %>" >
