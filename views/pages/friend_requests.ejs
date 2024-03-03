@@ -8,10 +8,12 @@
             <div class="news-list">
                 <ul class="news-list-content">
 
-            <div class="tutorial-window news">
-                <p><%= locals.language.aqua.portal.news.tutorial %></p>
-                <a href="javascript:void(0)" data-sound="SE_OLV_OFFBUTTON" data-tutorial="friend_requests" onclick="aqua.setTutorialAsRead(this)" class="button tutorial-close-button"><%= locals.language.aqua.portal.news.close %></a>
-              </div>
+            <% if (!account[0].tutorial_news) { %>
+                <div class="tutorial-window news">
+                    <p><%= locals.language.aqua.portal.news.tutorial %></p>
+                    <a href="javascript:void(0)" data-sound="SE_OLV_OFFBUTTON" data-tutorial="friend_requests" onclick="aqua.setTutorialAsRead(this)" class="button tutorial-close-button"><%= locals.language.aqua.portal.news.close %></a>
+                </div>
+            <% } %>
 
               <div class="news-tab-container">
                 <li class="tab-updates"><a class="updates" data-news href="/notifications" data-sound="SE_WAVE_SELECT_TAB"><span><%= locals.language.aqua.portal.news.tab.update_tab %></span></a></li>
