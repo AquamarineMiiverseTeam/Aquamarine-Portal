@@ -498,12 +498,12 @@ var aqua = {
         var picture = $(".screenshot-viewer-screenshot div div img");
         if (aqua.modal_open) {
             aqua.modal_open = false
-            $("#body > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").removeClass("none")
+            $("body div > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").removeClass("none")
             viewer.addClass("none");
             window.scrollTo(0, aqua.scrollPosition)
         } else {
             aqua.scrollPosition = window.scrollY;
-            $("#body > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").addClass("none")
+            $("body div > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").addClass("none")
             viewer.removeClass("none");
             aqua.modal_open = true
             $(picture).attr("src", $(capture).find("img").attr("src"));
@@ -580,22 +580,23 @@ var aqua = {
             $(".screenshot-toggle-container .screenshot-tv").attr("src", "data:image/png;base64," + top_screenshot);
         }
 
-        $(".screenshot-toggle-button").off("click")
-        $(".screenshot-toggle-button").on("click", function () {
+        console.log($(".screenshot-toggle-button"))
+
+        $(".screenshot-toggle-button").off("click").on("click", function () {
             $(".screenshot-toggle-container").toggleClass("none")
+            console.log("Opening Screenshot Selection")
         })
 
         var screenshotInput = $("#screenshot_val_input");
         var cancelScreenshot = $(".screenshot-toggle-container .cancel-toggle-button");
         var screenshotLis = $(".screenshot-toggle-container li");
 
-        screenshotLis.off("click", changeScreenshotSource)
-        screenshotLis.on("click", changeScreenshotSource);
-
-        cancelScreenshot.off("click", sSelectorReset)
-        cancelScreenshot.on("click", sSelectorReset);
+        screenshotLis.off("click").on("click", changeScreenshotSource);
+        cancelScreenshot.off("click").on("click", sSelectorReset);
 
         function changeScreenshotSource(event) {
+            console.log("Changing Screenshot Source")
+
             var currentScreenshotLi = $(event.currentTarget)
             $(".screenshot-toggle-container li img").removeClass("checked")
             currentScreenshotLi.find("img").addClass("checked")
@@ -861,11 +862,11 @@ var aqua = {
     toggleCommunityPostModal: function () {
         if (aqua.modal_open) {
             window.scrollTo(0, aqua.scrollPosition)
-            $("#body > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").removeClass("none")
+            $("body div > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").removeClass("none")
             $("#add-new-post-modal").addClass("none")
             aqua.modal_open = false
         } else {
-            $("#body > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").addClass("none")
+            $("body div > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").addClass("none")
             $("#add-new-post-modal").removeClass("none")
             aqua.scrollPosition = window.scrollY;
             aqua.modal_open = true
@@ -874,11 +875,11 @@ var aqua = {
     toggleCommunityViewSettingsModal: function() {
         if (aqua.modal_open) {
             window.scrollTo(0, aqua.scrollPosition)
-            $("#body > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").toggleClass("none")
+            $("body div > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").toggleClass("none")
             $("#change-settings-modal").toggleClass("none")
             aqua.modal_open = false
         } else {
-            $("#body > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").toggleClass("none")
+            $("body div > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").toggleClass("none")
             $("#change-settings-modal").toggleClass("none")
             aqua.scrollPosition = window.scrollY;
             aqua.modal_open = true
