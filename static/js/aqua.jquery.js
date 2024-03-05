@@ -248,14 +248,17 @@ var aqua = {
         els.off('click').on("click", yeah);
 
         function yeah(e) {
-            wiiuSound.playSoundByName('', 1);
-            wiiuBrowser.lockUserOperation(true);
             var el = $(e.currentTarget);
             var id = el.attr("data-post-id");
             var emc = +el.attr("data-empathy-count");
             var rec = +el.attr("data-reply-count");
             //post viewer miitoo
             if (el.hasClass("post-viewer-miitoo-button")) {
+                if (el.hasClass('added')) {
+                    wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
+                } else {
+                    wiiuSound.playSoundByName('SE_OLV_MII_ADD', 1);
+                }
                 var miisContainer = $(".post-content-miis");
                 var postContent = $(".post-content:not(.memo)");
                 var userCount = miisContainer.find(".user-count");
@@ -277,7 +280,6 @@ var aqua = {
                                 if (el.hasClass('added') && response == "deleted") {
                                     emc -= 1;
                                     el.attr("data-empathy-count", emc);
-                                    wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
                                     var existingIndex = -1;
                                     for (var i = 0; i < aqua.modifed_posts.length; i++) {
                                         if (aqua.modifed_posts[i].id === id) {
@@ -292,7 +294,6 @@ var aqua = {
                                     } else {
                                         aqua.modifed_posts.push({ id: id, count: emc, state: response, changed: true });
                                     }
-                                    wiiuBrowser.lockUserOperation(false);
                                     el.removeClass('added');
                                     el.text($(el).attr("data-yeah-text"));
                                     if (miis.length == 1) {
@@ -308,7 +309,6 @@ var aqua = {
                                     emc += 1;
                                     el.attr("data-empathy-count", emc);
                                     console.log(emc)
-                                    wiiuSound.playSoundByName('SE_OLV_MII_ADD', 1);
                                     var existingIndex = -1;
                                     for (var i = 0; i < aqua.modifed_posts.length; i++) {
                                         if (aqua.modifed_posts[i].id === id) {
@@ -323,7 +323,6 @@ var aqua = {
                                     } else {
                                         aqua.modifed_posts.push({ id: id, count: emc, state: response, changed: true });
                                     }
-                                    wiiuBrowser.lockUserOperation(false);
                                     el.addClass('added');
                                     el.text($(el).attr("data-unyeah-text"));
                                     if (miis.length == 1) {
@@ -341,7 +340,6 @@ var aqua = {
                                     }
                                 }
                             } else {
-                                wiiuBrowser.lockUserOperation(false);
                                 wiiuErrorViewer.openByCode(1155927);
                             }
 
@@ -355,6 +353,11 @@ var aqua = {
             else {
                 var parent = $("#post-" + id);
                 var count = parent.find(".feeling");
+                if (count.hasClass('added')) {
+                    wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
+                } else {
+                    wiiuSound.playSoundByName('SE_OLV_MII_ADD', 1);
+                }
                 el.prop('disabled', true);
 
                 if (!el.attr('data-in-progress')) {
@@ -371,7 +374,6 @@ var aqua = {
                                 if (count.hasClass('added') && response == "deleted") {
                                     emc -= 1;
                                     el.attr("data-empathy-count", emc);
-                                    wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
                                     var existingIndex = -1;
                                     for (var i = 0; i < aqua.modifed_posts.length; i++) {
                                         if (aqua.modifed_posts[i].id === id) {
@@ -386,7 +388,6 @@ var aqua = {
                                     } else {
                                         aqua.modifed_posts.push({ id: id, count: emc, state: response, changed: true });
                                     }
-                                    wiiuBrowser.lockUserOperation(false);
                                     count.removeClass('added');
                                     el.text($(el).attr("data-yeah-text"));
                                     if (count) {
@@ -396,7 +397,6 @@ var aqua = {
                                 } else if (!count.hasClass('added') && response == "created") {
                                     emc += 1;
                                     el.attr("data-empathy-count", emc);
-                                    wiiuSound.playSoundByName('SE_OLV_MII_ADD', 1);
                                     var existingIndex = -1;
                                     for (var i = 0; i < aqua.modifed_posts.length; i++) {
                                         if (aqua.modifed_posts[i].id === id) {
@@ -411,7 +411,6 @@ var aqua = {
                                     } else {
                                         aqua.modifed_posts.push({ id: id, count: emc, state: response, changed: true });
                                     }
-                                    wiiuBrowser.lockUserOperation(false);
                                     count.addClass('added');
                                     el.text($(el).attr("data-unyeah-text"));
                                     if (count) {
@@ -420,7 +419,6 @@ var aqua = {
                                     }
                                 }
                             } else {
-                                wiiuBrowser.lockUserOperation(false);
                                 wiiuErrorViewer.openByCode(1155927);
                             }
 
@@ -511,8 +509,12 @@ var aqua = {
     },
     favoriteCommunity: function () {
         var favoriteBtn = $(".favorite-button.button");
+        if (favoriteBtn.hasClass("checked")){
+            wiiuSound.playSoundByName("SE_OLV_MII_CANCEL", 3);
+        } else {
+            wiiuSound.playSoundByName("SE_OLV_MII_ADD", 3);
+        }
         favoriteBtn.prop("disabled", true)
-        wiiuBrowser.lockUserOperation(true);
         var id = $("header.header.with-data").attr("data-community-id");
         var xml = new XMLHttpRequest();
         xml.open("POST", "https://api.olv.nonamegiven.xyz/v1/communities/" + id + "/favorite");
@@ -535,8 +537,6 @@ var aqua = {
                         } else {
                             aqua.modifed_communities.push({ id: id, state: response, changed: true });
                         }
-                        wiiuBrowser.lockUserOperation(false);
-                        wiiuSound.playSoundByName("SE_OLV_MII_CANCEL", 3);
                         favoriteBtn.prop("disabled", false);
                         favoriteBtn.removeClass("checked");
                     } else {
@@ -553,14 +553,11 @@ var aqua = {
                         } else {
                             aqua.modifed_communities.push({ id: id, state: response, changed: true });
                         }
-                        wiiuBrowser.lockUserOperation(false);
-                        wiiuSound.playSoundByName("SE_OLV_MII_ADD", 3);
                         favoriteBtn.prop("disabled", false);
                         favoriteBtn.addClass("checked");
                     }
                 }
                 else {
-                    wiiuBrowser.lockUserOperation(false);
                     wiiuErrorViewer.openByCodeAndMessage(155299, 'There was an error favoriting this community.')
                     favoriteBtn.prop("disabled", false);
                 }
@@ -606,8 +603,8 @@ var aqua = {
                     screenshotInput.val(top_screenshot);
 
                     $(screenshotToggleButton).css({
-                             'background': 'url(data:image/png;base64,' + top_screenshot + ')',
-                             'background-size': 'cover'
+                        'background': 'url(data:image/png;base64,' + top_screenshot + ')',
+                        'background-size': 'cover'
                     });
 
                     console.log("Saved TV Screenshot.")
@@ -852,7 +849,7 @@ var aqua = {
             aqua.modal_open = true
         }
     },
-    toggleCommunityViewSettingsModal: function() {
+    toggleCommunityViewSettingsModal: function () {
         if (aqua.modal_open) {
             window.scrollTo(0, aqua.scrollPosition)
             $("body div > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").toggleClass("none")
@@ -874,7 +871,7 @@ var aqua = {
     setTutorialAsRead: function (tutorial) {
         var tutorialType = $(tutorial).attr("data-tutorial");
         var tutorialReqObj = {
-            tutorial_id : tutorialType
+            tutorial_id: tutorialType
         }
 
         var tutorialReq = new XMLHttpRequest();
@@ -888,19 +885,19 @@ var aqua = {
         xhttp.open("GET", "https://api.olv.nonamegiven.xyz/v2/notifications")
         xhttp.send()
 
-        xhttp.onreadystatechange = function(e) {
+        xhttp.onreadystatechange = function (e) {
             if (xhttp.readyState == xhttp.DONE) {
                 switch (xhttp.status) {
                     case 200:
                         var responseObj = JSON.parse(xhttp.responseText)
-                        
+
                         if (responseObj.notifications.notifications_length >= 1) {
                             if (responseObj.notifications.notifications_length > 99) {
                                 $("#menu-bar-news a .badge").text("99+")
                             } else {
                                 $("#menu-bar-news a .badge").text(String(responseObj.notifications.notifications_length))
                             }
-                            
+
                             $("#menu-bar-news a .badge").css("display", "block")
                         }
 
