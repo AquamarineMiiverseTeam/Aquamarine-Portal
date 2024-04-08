@@ -46,7 +46,7 @@
     
                     <% if (post.screenshot) { %>
                         <a href="javascript:void(0)" class="screenshot-permalink" onclick='aqua.openCaptureModal(this)' data-sound="SE_WAVE_OK">
-                            <img onerror="this.src='../../../img/banners-wup/placeholder-wup.jpg'" class="post-content-screenshot" src="/img/screenshots/<%= post.id %>.jpg">
+                            <img onerror="this.src='../../../img/banners-wup/placeholder-wup.jpg'" class="post-content-screenshot" src="<%= post.screenshot_cdn_url %>">
                         </a>
                     <% } %>
                     
@@ -54,7 +54,7 @@
                         <p class="post-content-text"><%= post.body %></p>
                     <% } else { %>
                         <p class="post-content-memo">
-                            <img class="post-memo" src="/img/paintings/<%= post.id %>.png"/>
+                            <img class="post-memo" src="<%= post.painting_cdn_url %>"/>
                          </p>
                     <% } %>
                 </div>

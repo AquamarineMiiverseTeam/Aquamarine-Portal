@@ -1,8 +1,7 @@
-const colors = require(process.cwd() + '/node_modules/colors');
-const moment = require(process.cwd() + '/node_modules/moment');
+const colors = require('colors');
 
-const common = require("../../Aquamarine-Utils/common")
-const db_con = require("../../Aquamarine-Utils/database_con")
+const common = require("../../shared_config/common")
+const db_con = require("../../shared_config/database_con")
 
 const language = {
     "en" : require("../static/languages/en.json"),
@@ -26,8 +25,7 @@ async function getAccountData(req, res, next) {
 
     req.account.all_notifications = await common.notification.getAccountAllNotifications(req.account);
     req.account.unread_notifications = await common.notification.getAccountUnreadNotifications(req.account);
-    req.account.empathies_given = await common.empathy.getAccountEmpathiesGiven(req.account);
-    req.account.favorites = await db_con("favorites").where({account_id : req.account[0].id});
+    req.account.favorites = await db_con.env_db("favorites").where({account_id : req.account[0].id});
 
     //localization
     if (language[req.account[0].language]) {
