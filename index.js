@@ -21,6 +21,10 @@ app.use(logger.http_log);
 
 app.use(auth);
 app.use(adm);
+app.use(function(req, res, next) {
+    res.setHeader("X-Nintendo-WhiteList", "1|https,res.cloudinary.com,,2|1|https,res.cloudinary.com,/dpkpng0q9/image/upload/v1712519157/paintings/,6")
+    next()
+})
 app.use(function pjax(req, res, next) {
     if (req.header('X-PJAX')) {
         req.pjax = true;

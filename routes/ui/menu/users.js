@@ -9,7 +9,7 @@ route.get("/:nnid", async (req, res, next) => {
     try {
         const nnid = (req.params.nnid === "@me") ? req.account[0].nnid : req.params.nnid
 
-        const account = (await db_con.env_db("accounts").where({nnid : nnid}))[0]
+        const account = (await db_con.account_db("accounts").where({nnid : nnid}))[0]
         //If the account doesn't exist, render a 404.
         if (!account) { res.render("pages/error/error_404"); return;}
 

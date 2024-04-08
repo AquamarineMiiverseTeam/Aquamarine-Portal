@@ -11,9 +11,10 @@ route.get('/show', async (req, res, next) => {
         //If the user opens the Miiverse applet on HBM when they're in a game with a community, we can redirect them to the community page
         if (req.query['src'] == "menu") {
             const game_community = (await db_con.env_db("communities")
-                .whereLike("title_ids", `%${Number(tid)}%`)
+                .whereLike("title_ids", `%${Number(req.param_pack.title_id)}%`)
                 .where({ type: "main" })
                 .limit(1))[0];
+
             if (game_community) { res.redirect(`/communities/${game_community.id}`); return; }
         }
 
