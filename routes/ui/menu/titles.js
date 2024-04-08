@@ -3,8 +3,8 @@ const route = express.Router();
 const xmlbuilder = require('xmlbuilder');
 const moment = require('moment');
 
-const db_con = require("../../../../Aquamarine-Utils/database_con")
-const common = require('../../../../Aquamarine-Utils/common')
+const db_con = require("../../../../shared_config/database_con")
+const common = require('../../../../shared_config/common')
 
 route.get('/show', async (req, res, next) => {
     try {
@@ -59,7 +59,7 @@ route.get('/communities', async (req, res, next) => {
 route.get('/favorites', async (req, res, next) => {
     try {
         const offset = req.query['offset'];
-        const communities = await db_con("communities").select("communities.*", "favorites.community_id as fav_community_id")
+        const communities = await db_con.env_db("communities").select("communities.*", "favorites.community_id as fav_community_id")
         .innerJoin("favorites", "favorites.community_id", "=", "communities.id")
         .where({"favorites.account_id" : req.account[0].id})
         .offset(Number(offset))
@@ -67,7 +67,7 @@ route.get('/favorites', async (req, res, next) => {
         .orderBy("favorites.create_time", "desc")
 
         for (let i = 0; i < communities.length; i++) {
-            communities[i].favorites = await db_con("favorites").where({community_id : communities[i].id})
+            communities[i].favorites = await db_con.env_db("favorites").where({community_id : communities[i].id})
         }
     
         if (req.get("x-embedded-dom")) {

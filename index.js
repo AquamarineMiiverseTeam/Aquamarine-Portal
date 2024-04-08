@@ -1,9 +1,8 @@
 const express = require('express');
 const path = require('path');
 
-const auth = require('../Aquamarine-Utils/middleware/auth_middleware');
+const auth = require('../shared_config/middleware/auth_middleware');
 const adm = require('./middleware/account_data_middleware')
-const pjax = require("express-pjax")
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -65,6 +64,6 @@ app.use((req, res, next) => {
 });
 
 //Set our app to listen on the config port
-app.listen(config_http.port, () => {
-    console.log("[INFO] Listening on port %d".green, config_http.port);
+app.listen(process.env.PORT, () => {
+    console.log("[INFO] Current Environment: %s. Listening on port %d".green, JSON.parse(process.env.ENVIRONMENT)['ENV_NAME'], process.env.PORT);
 })

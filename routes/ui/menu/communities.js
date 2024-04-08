@@ -2,8 +2,8 @@ const express = require('express');
 const route = express.Router();
 const moment = require('moment');
 
-const common = require('../../../../Aquamarine-Utils/common')
-const db_con = require("../../../../Aquamarine-Utils/database_con")
+const common = require('../../../../shared_config/common')
+const db_con = require("../../../../shared_config/database_con")
 
 route.get('/:community_id', async (req, res, next) => {
     try {
@@ -16,14 +16,14 @@ route.get('/:community_id', async (req, res, next) => {
         //Grabbing all querys for specific types of posts
         const offset = (req.query['offset']) ? req.query['offset'] : 0;
 
-        const posts_query = db_con("posts")
+        const posts_query = db_con.env_db("posts")
         .select("posts.*", 
         "accounts.mii_hash", 
         "accounts.mii_name", 
         "accounts.admin", 
         "accounts.nnid",
-        db_con.raw("COUNT(empathies.post_id) as empathy_count"),
-        db_con.raw(`CASE WHEN empathies.account_id = ${req.account[0].id} THEN TRUE ELSE FALSE END AS empathied_by_user`))
+        db_con.env_db.raw("COUNT(empathies.post_id) as empathy_count"),
+        db_con.env_db.raw(`CASE WHEN empathies.account_id = ${req.account[0].id} THEN TRUE ELSE FALSE END AS empathied_by_user`))
         
         .where({community_id : community_id}).whereNot({moderated : 1}).where(function() {
             switch (req.query['type']) {
@@ -84,12 +84,12 @@ route.get('/:community_id', async (req, res, next) => {
 route.get("/:community_id/other", async (req, res, next) => {
     try {
         const community_id = req.params.community_id;
-        const community = (await db_con("communities").where({id : community_id}))[0]
-        community.sub_communities = await db_con("communities").where({parent_community_id : community_id})
+        const community = (await db_con.env_db("communities").where({id : community_id}))[0]
+        community.sub_communities = await db_con.env_db("communities").where({parent_community_id : community_id})
         
-        community.favorites = await db_con("favorites").where({community_id : community.id})
+        community.favorites = await db_con.env_db("favorites").where({community_id : community.id})
         for (let i = 0; i < community.sub_communities.length; i++) {
-            community.sub_communities[i].favorites = await db_con("favorites").where({community_id : community.sub_communities[i].id})
+            community.sub_communities[i].favorites = await db_con.env_db("favorites").where({community_id : community.sub_communities[i].id})
         }
 
         //If no community is found, then let error.js handle the error
