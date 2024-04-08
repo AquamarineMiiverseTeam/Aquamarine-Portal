@@ -25,7 +25,6 @@ async function getAccountData(req, res, next) {
 
     req.account.all_notifications = await common.notification.getAccountAllNotifications(req.account);
     req.account.unread_notifications = await common.notification.getAccountUnreadNotifications(req.account);
-    req.account.empathies_given = await common.empathy.getAccountEmpathiesGiven(req.account);
     req.account.favorites = await db_con.env_db("favorites").where({account_id : req.account[0].id});
 
     //localization

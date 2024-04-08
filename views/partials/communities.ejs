@@ -22,7 +22,7 @@
             <span class="community-name name">
                 <%= (community.app_name) ? community.app_name : community.name %>
             </span>
-            <span class="empathy-count"><span><%= community.favorites.length.toLocaleString() %></span></span>
+            <span class="empathy-count"><span><%= community.favorite_count %></span></span>
             <span class="text">
                 <% if (community.user_community == 1) { %>
                     <%= locals.language.aqua.portal.community.types.user_community %>
@@ -56,7 +56,7 @@
                     }
                 }  %>
             </span>
-            <span class="favorited <%= (community.favorites.some(favorite => favorite.account_id == account[0].id)) ? "" : "none" %>"></span>
+            <span class="favorited <%= (community.is_favorited) ? "" : "none" %>"></span>
 
         </div>
     </div>
