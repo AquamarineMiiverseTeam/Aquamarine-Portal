@@ -36,7 +36,7 @@ route.get('/show', async (req, res, next) => {
                 db_con.env_db.raw("COUNT(favorites.community_id) as favorite_count"))
             .groupBy("communities.id")
             .leftJoin("favorites", "favorites.community_id", "=", "communities.id")
-            .where({ type: "main", special_community: 1 })
+            .where({ special_community: 1 })
             .orderBy("create_time", "desc")
             .limit(4)
 
