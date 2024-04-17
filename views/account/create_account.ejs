@@ -37,14 +37,14 @@
         logUser.append("password", l_passwordInput.value);
 
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", "https://api.olv.nonamegiven.xyz/v1/people/login");
+        xhr.open("POST", "https://api.olv.aquamarine.lol/v1/people/login");
         xhr.send(logUser);
         xhr.onreadystatechange = function () {
           if (xhr.readyState === 4) {
             if (xhr.status === 200) {
               wiiuDialog.hideLoading();
               wiiuBrowser.lockUserOperation(false);
-              window.location.replace("https://portal.olv.nonamegiven.xyz/titles/show");
+              window.location.replace("https://portal.olv.aquamarine.lol/titles/show");
             }
             else {
               wiiuDialog.hideLoading();
@@ -76,7 +76,7 @@
           newUser.append("password", c_passwordInput.value);
 
           var xhr = new XMLHttpRequest();
-          xhr.open("POST", "https://api.olv.nonamegiven.xyz/v1/people");
+          xhr.open("POST", "https://api.olv.aquamarine.lol/v1/people");
           xhr.send(newUser);
           xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
@@ -345,7 +345,7 @@
             </div>
           </div>
           <a class="next-setup-modal-button" data-sound="SE_WAVE_OK"
-            href="javascript:window.location.replace('https://portal.olv.nonamegiven.xyz/titles/show');">Start</a>
+            href="javascript:window.location.replace('https://portal.olv.aquamarine.lol/titles/show');">Start</a>
         </div>
       </div>
     </div>
