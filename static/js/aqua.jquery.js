@@ -3,6 +3,9 @@ var aqua = {
     modifed_communities: [],
     scrollPosition: 0,
     modal_open: false,
+
+    api_domain: "",
+
     initSnd: function () {
         var e = $("[data-sound]");
 
@@ -270,7 +273,7 @@ var aqua = {
                     el.attr('data-in-progress', 'true');
 
                     var xhr = new XMLHttpRequest();
-                    xhr.open("POST", "https://api.olv.nonamegiven.xyz/v1/posts/" + id + "/empathies");
+                    xhr.open("POST", aqua.api_domain + "/v1/posts/" + id + "/empathies");
                     xhr.onreadystatechange = function () {
                         if (xhr.readyState === 4) {
                             el.removeAttr('data-in-progress');
@@ -364,7 +367,7 @@ var aqua = {
                     el.attr('data-in-progress', 'true');
 
                     var xhr = new XMLHttpRequest();
-                    xhr.open("POST", "https://api.olv.nonamegiven.xyz/v1/posts/" + id + "/empathies");
+                    xhr.open("POST", aqua.api_domain + "/v1/posts/" + id + "/empathies");
                     xhr.onreadystatechange = function () {
                         if (xhr.readyState === 4) {
                             el.removeAttr('data-in-progress');
@@ -517,7 +520,7 @@ var aqua = {
         favoriteBtn.prop("disabled", true)
         var id = $("header.header.with-data").attr("data-community-id");
         var xml = new XMLHttpRequest();
-        xml.open("POST", "https://api.olv.nonamegiven.xyz/v1/communities/" + id + "/favorite");
+        xml.open("POST", aqua.api_domain + "/v1/communities/" + id + "/favorite");
         xml.send();
         xml.onreadystatechange = function () {
             if (xml.readyState === 4) {
@@ -813,7 +816,7 @@ var aqua = {
         }
 
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'https://api.olv.nonamegiven.xyz/v1/posts');
+        xhr.open('POST', aqua.api_domain + "/v1/posts");
         xhr.send(aquaForm);
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
@@ -875,14 +878,14 @@ var aqua = {
         }
 
         var tutorialReq = new XMLHttpRequest();
-        tutorialReq.open("POST", "https://api.olv.nonamegiven.xyz/v2/tutorials")
+        tutorialReq.open("POST", aqua.api_domain + "/v2/tutorials")
         tutorialReq.setRequestHeader("Content-Type", "application/json")
         tutorialReq.send(JSON.stringify(tutorialReqObj));
         $(".tutorial-window").addClass("none")
     },
     checkNotifications: function () {
         var xhttp = new XMLHttpRequest();
-        xhttp.open("GET", "https://api.olv.nonamegiven.xyz/v2/notifications")
+        xhttp.open("GET", aqua.api_domain + "/v2/notifications")
         xhttp.send()
 
         xhttp.onreadystatechange = function (e) {
@@ -939,6 +942,16 @@ $(document).on("DOMContentLoaded", function () {
     }, 90000);
     setInterval(aqua.checkNotifications, 15000);
     wiiuBrowser.endStartUp();
+
+    var xhttp = new XMLHttpRequest()
+    xhttp.open("GET", "https://disc.olv.aquamarine.lol/v1/endpoint")
+    xhttp.send()
+
+    xhttp.onreadystatechange = function(e) {
+        if (xhttp.readyState == xhttp.DONE) {
+            aqua.api_domain = "https://" + xhttp.responseXML.children[0].children[2].children[1].innerHTML
+        }
+    }
 })
 
 $(document).on("pjax:click", function () {
