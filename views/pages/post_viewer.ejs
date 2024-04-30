@@ -59,8 +59,14 @@
                         </a>
 
                         <% if (post.screenshot) {%>
-                                <a href="javascript:void(0)" class="screenshot-permalink" onclick="aqua.openCaptureModal(this)" data-sound="SE_WAVE_OK">
+                                <a href="javascript:void(0)" class="screenshot-permalink" data-sound="SE_WAVE_OK">
                                     <img onerror="this.src='../../../img/banners-wup/placeholder-wup.jpg'" class="post-content-screenshot" src="<%= post.screenshot_cdn_url %>">
+                                </a>
+                        <%} %>
+
+                        <% if (post.yt) {%>
+                                <a href="javascript:void(0)" class="screenshot-permalink yt-video" data-sound="SE_WAVE_OK">
+                                    <img onerror="this.src='../../../img/banners-wup/placeholder-wup.jpg'" class="post-content-screenshot" src="https://i3.ytimg.com/vi/<%= post.yt %>/hqdefault.jpg">
                                 </a>
                         <%} %>
 
@@ -69,7 +75,7 @@
                         </p>
 
                         <p class="time-stamp"><%= (moment().diff(moment(post.create_time).subtract(1, 'days'), 'days') >= 7) ? moment(post.create_time).locale(locals.language.aqua.language).format("MM/DD/YYYY h:MM A") : moment(post.create_time).locale(locals.language.aqua.language).fromNow() %>
-                            <span class="spoiler-status <%= (post.spoiler) ? 'inline-show' : '' %> ">Spoilers</span>
+                            <span class="spoiler-status <%= (post.spoiler) ? 'inline-show' : '' %> "><%= locals.language.aqua.portal.community.post.spoilers %></span>
                             <% if (post.title_owned) { %>
                                 <span class="played">Played</span>
                             <% } %>
@@ -94,7 +100,7 @@
                         </div>
 
                         <div class="post-meta">
-                            <a href="javascript:void(0)" class="button edit-post none"></a>
+                            <a href="javascript:void(0)" data-sound="SE_OLV_OK" class="button edit-post"></a>
 
                             <% let yeahed_text, unyeahed_text; switch (post.feeling_id) {
                                 case 0:
@@ -133,9 +139,14 @@
                                     <%= yeahed_text %>
                                 <%}%>
                             </button>
-                            <a href="javascript:void(0)" class="button link-button none"></a>
-                            <a href="javascript:void(0)" class="button vino-button none"></a>
-                            <a href="javascript:void(0)" class="button yt-button none"></a>
+
+                            <% if (post.url) {%>
+                            <a href="javascript:void(0)" data-sound="SE_OLV_OK" class="button link-button"></a>
+                            <%}%>
+
+                            <% if (post.yt) {%>
+                            <a href="javascript:void(0)" data-sound="SE_OLV_OK" class="button yt-button"></a>
+                            <%}%>
                         </div>
 
                     </div>
@@ -220,5 +231,12 @@
             </div>
 
             <%- include('../partials/modal/screenshot-viewer.ejs') %>
+            <% if (post.yt) {%>
+            <%- include('../partials/modal/app-jump-yt.ejs') %>
+            <% } %>
+
+            <% if (post.url) {%>
+            <%- include('../partials/modal/app-jump-url.ejs') %>
+            <% } %>
 
     </div>

@@ -22,7 +22,7 @@ app.use(logger.http_log);
 app.use(auth);
 app.use(adm);
 app.use(function(req, res, next) {
-    res.setHeader("X-Nintendo-WhiteList", "1|https,res.cloudinary.com,,2|1|https,res.cloudinary.com,/dpkpng0q9/image/upload/v1712519157/paintings/,6")
+    res.setHeader("X-Nintendo-WhiteList", "1|http,.aquamarine.lol,,2|1|https,.aquamarine.lol,,2|1|http,.cloudinary.com,,2|1|https,.cloudinary.com,,2|1|https,kaeru.b-cdn.net,,2|1|https,cdn.jsdelivr.net,,2|1|http,kt-imogen.b-cdn.net,,2|1|http,youtube.com,,2|http,portal.cdn.pretendo.cc,,2|https,portal.cdn.pretendo.cc,,2|http,pretendo-cdn.b-cdn.net,,2|https,pretendo-cdn.b-cdn.net,,2|https,youtube.com,,2|http,.youtube.com,,2|https,.youtube.com,,2|http,.ytimg.com,,2|https,.ytimg.com,,2|http,.googlevideo.com,,2|https,.googlevideo.com,,2|https,youtube.com,/embed/,6|https,youtube.com,/e/,6|https,youtube.com,/v/,6|https,www.youtube.com,/embed/,6|https,www.youtube.com,/e/,6|https,www.youtube.com,/v/,6|https,youtube.googleapis.com,/e/,6|https,youtube.googleapis.com,/v/,6|http,maps.googleapis.com,/maps/api/streetview,2|https,maps.googleapis.com,/maps/api/streetview,2|http,cbk0.google.com,/cbk,2|https,cbk0.google.com,/cbk,2|http,cbk1.google.com,/cbk,2|https,cbk1.google.com,/cbk,2|http,cbk2.google.com,/cbk,2|https,cbk2.google.com,/cbk,2|http,cbk3.google.com,/cbk,2|https,cbk3.google.com,/cbk,2|https,.cloudfront.net,,2|https,www.google-analytics.com,/,2|https,stats.g.doubleclick.net,,2|https,www.google.com,/ads/,2|https,ssl.google-analytics.com,,2|http,fonts.googleapis.com,,2|fonts.googleapis.com,,2|https,www.googletagmanager.com,,2|http,miiverse.cc,,2|https,miiverse.cc,,2")
     next()
 })
 app.use(function pjax(req, res, next) {

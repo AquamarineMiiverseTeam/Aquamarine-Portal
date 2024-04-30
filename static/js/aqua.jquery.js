@@ -2,188 +2,154 @@ var aqua = {
     modifed_posts: [],
     modifed_communities: [],
     scrollPosition: 0,
-    modal_open: false,
-
-    api_domain: "",
-
-    initSnd: function () {
+    api_domain: "https://d1-api.olv.aquamarine.lol",
+    open_modal : null,
+    open_toggle : null,
+    bg_music_interval: null,
+    pageType: {
+        NONE: 0,
+        TITLES_SHOW: 1,
+        TITLES_COMMUNITIES: 2,
+        COMMUNITIES: 3,
+        POSTS: 4,
+        USERS_ME: 5,
+        MESSAGES_LIST: 6,
+        NEWS_LIST: 7,
+        FRIEND_REQUEST_LIST: 8,
+        ACTIVITY_FEED: 9
+    },
+    buttonType: {
+        13: "A",
+        27: "B",
+        88: "X",
+        89: "Y",
+        76: "L",
+        82: "R",
+        80: "plus",
+        77: "minus"
+    },
+    isEmpathyBeingAdded: false,
+    isPostBeingSent: false,
+    menuBarSoundAdded : false,
+    currentPage: null,
+    isLoadingMoreContent : false,
+    router: {
+        routes: [],
+        connect: function(regex, handler) {
+            this.routes.push({ regex: new RegExp(regex), handler: handler });
+        },
+        checkRoutes: function(url) {
+            var matchFound = false;
+            for (var i = 0; i < this.routes.length; i++) {
+                var route = this.routes[i];
+                var match = url.match(route.regex);
+                if (match) {
+                    matchFound = true;
+                    route.handler.apply(null, match.slice(1));
+                    break;
+                }
+            }
+        }
+    },    
+    initSound: function () {
         var e = $("[data-sound]");
-
+    
         function playSnd(event) {
+            if (aqua.open_toggle) {
+                aqua.open_toggle.toggle.addClass("none");
+                aqua.open_toggle = null;
+            }
+
             wiiuSound.playSoundByName($(event.currentTarget).attr("data-sound"), 3);
         }
 
-        e.off("click").on("click", playSnd);
-    },
+        e.each(function() {
+            var $this = $(this);
+            if (!$this.data("playSndAdded")) {
+                $this.on("click", playSnd);
+                $this.data("playSndAdded", true);
+            }
+        });
+    },    
     initButton: function () {
-        setInterval(inputButton, 50);
-        function inputButton() {
-            wiiu.gamepad.update();
+        var lockedKey = null;
 
-            if (wiiu.gamepad.isDataValid === 0) {
-                pressedButton = null;
-                return;
-            }
-
-            switch (wiiu.gamepad.hold) {
-                case 16384:
-                    if (pressedButton !== 16384) {
-                        pressedButton = 16384;
-                        wiiuSound.playSoundByName("SE_WAVE_BACK", 3);
-                        var path = location.pathname;
-                        var viewer = $(".screenshot-viewer-screenshot");
-                        if (viewer && viewer.length != 0 && !viewer.hasClass("none")) {
-                            viewer.addClass("none");
-                            $("#menu-bar").removeClass("none");
-                            $(".header").removeClass("none");
-                            $(".header-banner-container").removeClass("none");
-                            $(".community-info").removeClass("none");
-                            $(".community-type").removeClass("none");
-                            $(".community-post-list").removeClass("none");
-                            $(".post-permalink").removeClass("none");
-                            window.scrollTo(0, aqua.scrollPosition)
-                            return;
-                        }
-
-                        if (wiiuBrowser.canHistoryBack() && path.indexOf("/titles/show") === -1 && path.indexOf("/messages") === -1 && path.indexOf("/notifications") === -1 && path.indexOf("/notifications/friend_requests") === -1 && path.indexOf("/users/@me") === -1) {
-                            history.back();
-                        }
+        function doButtonAction(r) {
+            switch (r) {
+                case 27:
+                    if (aqua.open_modal) {
+                    wiiuSound.playSoundByName("SE_WAVE_BACK", 3);
+                    aqua.open_modal.close();
+                    } else if (wiiuBrowser.canHistoryBack() && !$("#menu-bar-back").hasClass("none")){
+                    wiiuSound.playSoundByName("SE_WAVE_BACK", 3);
+                    history.back();
                     }
                     break;
-                case 262144:
-                    if (pressedButton !== 262144) {
-                        pressedButton = 262144;
-                        window.scrollTo(0, 0);
-                    }
-                    break;
-                case 131072:
-                    if (pressedButton !== 131072) {
-                        pressedButton = 131072;
-                        window.scrollTo(0, 0);
-                    }
-                    break;
-                case 4096:
-                    if (pressedButton !== 4096) {
-                        pressedButton = 4096;
-                        wiiuSound.playSoundByName("SE_WAVE_BALLOON_OPEN", 3);
-                        window.location.reload();
-                    }
-                    break;
+            
                 default:
-                    pressedButton = null;
                     break;
             }
         }
-    },
-    initNav: function () {
-        var el = $("#menu-bar > li")
-        var menu = $("#menu-bar")
-        var back = $("#menu-bar-back")
-        var fin = $("#menu-bar-exit")
-        var community = $("#menu-bar #menu-bar-community")
-        var message = $("#menu-bar #menu-bar-message")
-        var mymenu = $("#menu-bar #menu-bar-mymenu")
-        var news = $("#menu-bar #menu-bar-news")
 
-        var path = location.pathname;
+        $(document).on("keypress", function(event) {
+            if (lockedKey === null) {
+                var f = event.which;
+                lockedKey = f;
+                doButtonAction(f);
+            }
+        });
 
-        for (var i = 0; i < el.length; i++) {
-            $(el[i]).on("click", function (e) {
-                var elm = e.currentTarget
-                var isExcluded = elm.id === "menu-bar-back" || elm.id === "menu-bar-exit";
-
-                for (var i = 0; i < el.length; i++) {
-                    if (!isExcluded && el[i].classList.contains('selected')) {
-                        $(el[i]).removeClass("selected")
-                    }
-                }
-                $(elm).addClass("selected")
-            })
-        }
-
-        if (path.indexOf("/communities") !== -1 || path.indexOf("/titles/show") !== -1) {
-
-            for (var i = 0; i < el.length; i++) {
-                $(el[i]).removeClass("selected")
+        $(document).on("keyup", function(event) {
+            if (lockedKey === event.which) {
+                lockedKey = null;
             }
-            community.addClass("selected");
-        } else if (path.indexOf("/messages") !== -1) {
-            for (var i = 0; i < el.length; i++) {
-                $(el[i]).removeClass("selected")
-            }
-            message.addClass("selected");
-            $("#menu-bar-messages a .badge").css("display", "none")
-        } else if (path.indexOf("/users/@me") !== -1) {
-            for (var i = 0; i < el.length; i++) {
-                $(el[i]).removeClass("selected")
-            }
-            mymenu.addClass("selected");
-        } else if (path.indexOf("/notifications") !== -1) {
-            for (var i = 0; i < el.length; i++) {
-                $(el[i]).removeClass("selected")
-            }
-            news.addClass("selected");
-            $("#menu-bar-news a .badge").css("display", "none")
-        } else if (path.indexOf("/notifications/friend_requests") !== -1) {
-            for (var i = 0; i < el.length; i++) {
-                $(el[i]).removeClass("selected")
-            }
-            news.addClass("selected");
-            $("#menu-bar-news a .badge").css("display", "none")
-        } else {
-            for (var i = 0; i < el.length; i++) {
-                $(el[i]).removeClass("selected")
-            }
-        }
-
-        if (wiiuBrowser.canHistoryBack() &&
-            path.indexOf("/titles/show") === -1 &&
-            path.indexOf("/messages") === -1 &&
-            path.indexOf("/notifications") === -1 &&
-            path.indexOf("/notifications/friend_requests") === -1 &&
-            path.indexOf("/users/@me") === -1) {
-            back.removeClass('none');
-            fin.addClass('none');
-        } else {
-            back.addClass('none');
-            fin.removeClass('none');
-        }
+        });
 
     },
-    initPjx: function () {
+    setNavBarSelected: function (tab) {
+        $("#menu-bar li").removeClass("selected")
+        if (tab) {
+            tab.addClass("selected")
+        }
+        var canShowBackButton = 
+        aqua.currentPage === aqua.pageType.TITLES_SHOW ||
+        aqua.currentPage === aqua.pageType.USERS_ME ||
+        aqua.currentPage === aqua.pageType.NEWS_LIST ||
+        aqua.currentPage === aqua.pageType.FRIEND_REQUEST_LIST ||
+        aqua.currentPage === aqua.pageType.MESSAGES_LIST ||
+        aqua.currentPage === aqua.pageType.ACTIVITY_FEED;
+
+        if (wiiuBrowser.canHistoryBack() && !canShowBackButton) {
+            $("#menu-bar #menu-bar-exit").addClass("none")
+            $("#menu-bar #menu-bar-back").removeClass("none")
+        } else {
+            $("#menu-bar #menu-bar-exit").removeClass("none")
+            $("#menu-bar #menu-bar-back").addClass("none")
+        }
+    },
+    initPjax: function () {
         $.pjax.defaults.timeout = 10000
 
         $(document).pjax("a[data-pjax]", {
-            container: ".wrapper", // Specify the container for PJAX response
-            fragment: ".wrapper" // Specify the fragment inside the response to replace
+            container: ".wrapper",
+            fragment: ".wrapper"
         });
 
         $(document).pjax("a[data-tab-query]", {
-            container: ".community-post-list", // Specify the container for PJAX response
-            fragment: ".community-post-list", // Specify the fragment inside the response to replace
+            container: ".wrapper",
+            fragment: ".wrapper",
             push: false
         });
 
         $(document).pjax("a[data-news]", {
-            container: ".wrapper", // Specify the container for PJAX response
-            fragment: ".wrapper", // Specify the fragment inside the response to replace
+            container: ".wrapper",
+            fragment: ".wrapper",
             push: false
         });
     },
-    initTbs: function () {
-        $("a[data-tab-query]").off("click")
-        $("a[data-tab-query]").on("click", changeTbs)
-
-        function changeTbs(a) {
-            $("a[data-tab-query]").removeClass("selected")
-            $(a.currentTarget).addClass("selected")
-
-            wiiuSound.playSoundByName("SE_WAVE_SELECT_TAB", 3)
-        }
-    },
-    initScrl: function () {
-        $(document).off("scroll");
-        $(document).off("aqua:scroll-end")
+    initScroll: function () {
+        $(document).off("scroll", checkScroll);
+        $(document).off("aqua:scroll-end", checkScroll);
 
         function checkScroll() {
             if (window.scrollY + window.innerHeight >= document.body.scrollHeight) {
@@ -192,18 +158,16 @@ var aqua = {
         }
 
         if (!$("[data-scroll-event]").length >= 1) {
-            $(document).off("scroll");
-            $(document).off("aqua:scroll-end")
+            $(document).off("scroll", checkScroll);
+            $(document).off("aqua:scroll-end", download);
             return;
         } else {
-            $(document).on("aqua:scroll-end", download)
+            $(document).on("aqua:scroll-end", download);
             $(document).on("scroll", checkScroll);
         }
 
-        var currently_downloading = false;
         function download() {
-            var viewer = $(".screenshot-viewer-screenshot")
-            if (currently_downloading || viewer.length && !viewer.hasClass("none")) { return; }
+            if (aqua.isLoadingMoreContent) { return; }
             var url = $("[data-scroll-url]").attr("data-scroll-url")
             var cont = $("[data-scroll-container]").attr("data-scroll-container")
             var query = "";
@@ -214,7 +178,7 @@ var aqua = {
             xhttp.open("GET", url += ("?offset=" + $(cont)[0].children.length) + query)
             xhttp.setRequestHeader("x-embedded-dom", true)
             xhttp.send()
-            currently_downloading = true;
+            aqua.isLoadingMoreContent = true;
 
             xhttp.onreadystatechange = function () {
                 if (xhttp.readyState === 4) {
@@ -222,37 +186,45 @@ var aqua = {
                         case 200:
                             $(cont).append(xhttp.responseText);
 
-                            aqua.initSnd();
-                            aqua.initEmp();
-                            aqua.initPopstate();
+                            aqua.initSound();
+                            aqua.setUpEmpathy();
                             aqua.initSpoiler();
-                            currently_downloading = false;
+                            aqua.isLoadingMoreContent = false;
                             break;
                         case 204:
-                            $("#loading").css("visibility", "hidden")
-                            currently_downloading = false;
+                            $(".loading").addClass("none")
+                            aqua.isLoadingMoreContent = false;
+                            $(document).off("scroll", checkScroll);
+                            $(document).off("aqua:scroll-end", download);
                             break;
                         default:
-                            $("#loading").css("visibility", "hidden")
-                            currently_downloading = false;
+                            $(".loading").addClass("none")
+                            aqua.isLoadingMoreContent = false;
                             break;
                     }
-                } else {
-                    $("#loading").css("visibility", "visible")
                 }
             }
         }
     },
-    initEmp: function () {
+    setUpEmpathy: function () {
         var els = $("button[data-post-id].miitoo-button");
 
         if (!els.length) return;
 
-        els.off('click').on("click", yeah);
+        els.each(function() {
+            var $this = $(this);
+            if (!$this.data("empathyListAdded")) {
+                $this.on("click", yeah);
+                $this.data("empathyListAdded", true);
+            }
+        });
 
         function yeah(e) {
             var el = $(e.currentTarget);
+
             var id = el.attr("data-post-id");
+            var ematext = el.attr("data-yeah-text");
+            var emdtext = el.attr("data-unyeah-text");
             var emc = +el.attr("data-empathy-count");
             var rec = +el.attr("data-reply-count");
             //post viewer miitoo
@@ -267,6 +239,7 @@ var aqua = {
                 var userCount = miisContainer.find(".user-count");
                 var miis = miisContainer.find(".user-icon-container");
                 var miiVisitor = miisContainer.find(".user-icon-container.visitor");
+                aqua.isEmpathyBeingAdded = true;
                 el.prop('disabled', true);
 
                 if (!el.attr('data-in-progress')) {
@@ -295,7 +268,7 @@ var aqua = {
                                         aqua.modifed_posts[existingIndex].state = response;
                                         aqua.modifed_posts[existingIndex].changed = true;
                                     } else {
-                                        aqua.modifed_posts.push({ id: id, count: emc, state: response, changed: true });
+                                        aqua.modifed_posts.push({ id: id, count: emc, state: response, changed: true, yeah_text: ematext, unyeah_text: emdtext  });
                                     }
                                     el.removeClass('added');
                                     el.text($(el).attr("data-yeah-text"));
@@ -311,7 +284,6 @@ var aqua = {
                                 } else if (!el.hasClass('added') && response == "created") {
                                     emc += 1;
                                     el.attr("data-empathy-count", emc);
-                                    console.log(emc)
                                     var existingIndex = -1;
                                     for (var i = 0; i < aqua.modifed_posts.length; i++) {
                                         if (aqua.modifed_posts[i].id === id) {
@@ -324,7 +296,7 @@ var aqua = {
                                         aqua.modifed_posts[existingIndex].state = response;
                                         aqua.modifed_posts[existingIndex].changed = true;
                                     } else {
-                                        aqua.modifed_posts.push({ id: id, count: emc, state: response, changed: true });
+                                        aqua.modifed_posts.push({ id: id, count: emc, state: response, changed: true, yeah_text: ematext, unyeah_text: emdtext  });
                                     }
                                     el.addClass('added');
                                     el.text($(el).attr("data-unyeah-text"));
@@ -347,6 +319,7 @@ var aqua = {
                             }
 
                             el.prop('disabled', false);
+                            aqua.isEmpathyBeingAdded = false;
                         }
                     };
                     xhr.send();
@@ -362,6 +335,7 @@ var aqua = {
                     wiiuSound.playSoundByName('SE_OLV_MII_ADD', 1);
                 }
                 el.prop('disabled', true);
+                aqua.isEmpathyBeingAdded = true;
 
                 if (!el.attr('data-in-progress')) {
                     el.attr('data-in-progress', 'true');
@@ -375,22 +349,6 @@ var aqua = {
                             if (xhr.status === 200) {
                                 var response = JSON.parse(xhr.responseText).result;
                                 if (count.hasClass('added') && response == "deleted") {
-                                    emc -= 1;
-                                    el.attr("data-empathy-count", emc);
-                                    var existingIndex = -1;
-                                    for (var i = 0; i < aqua.modifed_posts.length; i++) {
-                                        if (aqua.modifed_posts[i].id === id) {
-                                            existingIndex = i;
-                                            break;
-                                        }
-                                    }
-                                    if (existingIndex !== -1) {
-                                        aqua.modifed_posts[existingIndex].count = emc;
-                                        aqua.modifed_posts[existingIndex].state = response;
-                                        aqua.modifed_posts[existingIndex].changed = true;
-                                    } else {
-                                        aqua.modifed_posts.push({ id: id, count: emc, state: response, changed: true });
-                                    }
                                     count.removeClass('added');
                                     el.text($(el).attr("data-yeah-text"));
                                     if (count) {
@@ -398,22 +356,6 @@ var aqua = {
                                         count.text(countText - 1);
                                     }
                                 } else if (!count.hasClass('added') && response == "created") {
-                                    emc += 1;
-                                    el.attr("data-empathy-count", emc);
-                                    var existingIndex = -1;
-                                    for (var i = 0; i < aqua.modifed_posts.length; i++) {
-                                        if (aqua.modifed_posts[i].id === id) {
-                                            existingIndex = i;
-                                            break;
-                                        }
-                                    }
-                                    if (existingIndex !== -1) {
-                                        aqua.modifed_posts[existingIndex].count = emc;
-                                        aqua.modifed_posts[existingIndex].state = response;
-                                        aqua.modifed_posts[existingIndex].changed = true;
-                                    } else {
-                                        aqua.modifed_posts.push({ id: id, count: emc, state: response, changed: true });
-                                    }
                                     count.addClass('added');
                                     el.text($(el).attr("data-unyeah-text"));
                                     if (count) {
@@ -426,6 +368,7 @@ var aqua = {
                             }
 
                             el.prop('disabled', false);
+                            aqua.isEmpathyBeingAdded = false;
                         }
                     };
                     xhr.send();
@@ -437,224 +380,368 @@ var aqua = {
     initPopstate: function () {
         if ($("#post_list").length != 0) {
             for (var i = 0; i < aqua.modifed_posts.length; i++) {
-                if (aqua.modifed_posts[i].state == "created" && aqua.modifed_posts[i].changed) {
-                    $("#post-" + aqua.modifed_posts[i].id + " .post-body-content .post-body .post-meta button").text("Unyeah!")
-                    $("#post-" + aqua.modifed_posts[i].id + " .post-body-content .post-body .post-meta a .feeling").addClass("added")
-                    $("#post-" + aqua.modifed_posts[i].id + " .post-body-content .post-body .post-meta a .feeling").text(aqua.modifed_posts[i].count);
-                    aqua.modifed_posts[i].changed = false;
-                    aqua.modifed_posts.splice(i, 1);
-                } else if (aqua.modifed_posts[i].state == "deleted" && aqua.modifed_posts[i].changed) {
-                    $("#post-" + aqua.modifed_posts[i].id + " .post-body-content .post-body .post-meta button").text("Yeah!")
-                    $("#post-" + aqua.modifed_posts[i].id + " .post-body-content .post-body .post-meta a .feeling").removeClass("added")
-                    $("#post-" + aqua.modifed_posts[i].id + " .post-body-content .post-body .post-meta a .feeling").text(aqua.modifed_posts[i].count);
-                    aqua.modifed_posts[i].changed = false;
-                    aqua.modifed_posts.splice(i, 1);
+                var emp = aqua.modifed_posts[i]
+                if (emp.state == "created" && emp.changed) {
+                    $("#post-" + emp.id + " .post-body-content .post-body .post-meta button").text(emp.unyeah_text);
+                    $("#post-" + emp.id + " .post-body-content .post-body .post-meta a .feeling").addClass("added");
+                } else if (emp.state == "deleted" && emp.changed) {
+                    $("#post-" + emp.id + " .post-body-content .post-body .post-meta button").text(emp.yeah_text);
+                    $("#post-" + emp.id + " .post-body-content .post-body .post-meta a .feeling").removeClass("added");
                 }
+                $("#post-" + emp.id + " .post-body-content .post-body .post-meta a .feeling").text(emp.count);
+                emp.changed = false;
+                aqua.modifed_posts.splice(i, 1);
             }
         } else if ($(".communities-listing").length != 0) {
-            for (var i = 0; i < aqua.modifed_communities.length; i++) {
-                if (aqua.modifed_communities[i].state == "created" && aqua.modifed_communities[i].changed) {
-                    $("li#community-" + aqua.modifed_communities[i].id + " .favorited").removeClass("none")
-                    aqua.modifed_communities[i].changed = false;
-                    aqua.modifed_communities.splice(i, 1);
-                } else if (aqua.modifed_communities[i].state == "deleted" && aqua.modifed_communities[i].changed) {
-                    $("li#community-" + aqua.modifed_communities[i].id + " .favorited").addClass("none")
-                    aqua.modifed_communities[i].changed = false;
-                    aqua.modifed_communities.splice(i, 1);
+            for (var y = 0; y < aqua.modifed_communities.length; y++) {
+                var com = aqua.modifed_communities[y];
+                if (com.state == "created" && com.changed) {
+                    $("li#community-" + com.id + " .favorited").addClass("show")
+                } else if (com.state == "deleted" && com.changed) {
+                    $("li#community-" + com.id + " .favorited").removeClass("show")
                 }
+                $("li#community-" + com.id + " .empathy-count span").text(com.count);                    
+                com.changed = false;
+                aqua.modifed_communities.splice(y, 1);
             }
         }
     },
     initToggle: function () {
         var elt = $("[data-toggle]");
-        if (!elt.length) return;
-        elt.off("click").on("click", function () {
-            var target = $(elt.attr("data-toggle"));
+        if (!elt) return;
+        elt.on("click", function () {
+            var target = $($(this).attr("data-toggle"));
+            if (aqua.open_toggle && aqua.open_toggle.toggler != $(this).attr("data-toggle")) {
+                aqua.open_toggle.toggle.addClass("none");
+                aqua.open_toggle = null;
+            }
             if (target.hasClass("none")) {
-                wiiuSound.playSoundByName('', 3);
+                aqua.open_toggle = {toggle : target, toggler: $(this).attr("data-toggle")};
                 wiiuSound.playSoundByName('SE_OLV_BALLOON_OPEN', 3);
                 target.removeClass("none");
             } else {
-                wiiuSound.playSoundByName('', 3);
                 wiiuSound.playSoundByName('SE_OLV_BALLOON_CLOSE', 3);
                 target.addClass("none");
+                aqua.open_toggle = null;
             }
         })
     },
     initSpoiler: function () {
         var els = $("a.hidden-content-button");
         if (!els) return;
-        els.off("click").on("click", function (e) {
-            e.preventDefault();
-            wiiuSound.playSoundByName("SE_WAVE_OK_SUB", 3)
-            var el = $(e.currentTarget);
+
+        els.off("click", removeSpoiler);
+        els.on("click", removeSpoiler);
+
+        function removeSpoiler(evt) {
+            evt.preventDefault();
+            var el = $(evt.currentTarget);
             var postToShow = el.parent().parent().parent().parent().parent();
             postToShow.removeClass("hidden");
             el.html("");
             el.parent().parent().html("");
-        });
-    },
-    openCaptureModal: function (capture) {
-        var viewer = $(".screenshot-viewer-screenshot, .screenshot-img-wrapper, .screenshot-img-wrapper div");
-        var picture = $(".screenshot-viewer-screenshot div div img");
-        if (aqua.modal_open) {
-            aqua.modal_open = false
-            $("body div > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").removeClass("none")
-            viewer.addClass("none");
-            window.scrollTo(0, aqua.scrollPosition)
-        } else {
-            aqua.scrollPosition = window.scrollY;
-            $("body div > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").addClass("none")
-            viewer.removeClass("none");
-            aqua.modal_open = true
-            $(picture).attr("src", $(capture).find("img").attr("src"));
         }
     },
-    favoriteCommunity: function () {
+    setCommunityBtns: function () {
         var favoriteBtn = $(".favorite-button.button");
-        if (favoriteBtn.hasClass("checked")){
-            wiiuSound.playSoundByName("SE_OLV_MII_CANCEL", 3);
-        } else {
-            wiiuSound.playSoundByName("SE_OLV_MII_ADD", 3);
-        }
-        favoriteBtn.prop("disabled", true)
-        var id = $("header.header.with-data").attr("data-community-id");
-        var xml = new XMLHttpRequest();
-        xml.open("POST", aqua.api_domain + "/v1/communities/" + id + "/favorite");
-        xml.send();
-        xml.onreadystatechange = function () {
-            if (xml.readyState === 4) {
-                if (xml.status === 200) {
-                    var response = JSON.parse(xml.responseText).result;
-                    if (favoriteBtn.hasClass("checked")) {
-                        var existingIndex = -1;
-                        for (var i = 0; i < aqua.modifed_communities.length; i++) {
-                            if (aqua.modifed_communities[i].id === id) {
-                                existingIndex = i;
-                                break;
+        favoriteBtn.on("click", function(){
+            if (favoriteBtn.hasClass("checked")){
+                wiiuSound.playSoundByName("SE_OLV_MII_CANCEL", 3);
+            } else {
+                wiiuSound.playSoundByName("SE_OLV_MII_ADD", 3);
+            }
+
+            favoriteBtn.prop("disabled", true);
+            var id = $("header.header.with-data").attr("data-community-id");
+            var count = +favoriteBtn.attr("data-favorite-count");
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", aqua.api_domain + "/v1/communities/" + id + "/favorite");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText).result;
+                        if (favoriteBtn.hasClass("checked") && response == "deleted") {
+                            count -= 1;
+                            favoriteBtn.attr("data-favorite-count", count);
+                            var existingIndex = -1;
+                            for (var i = 0; i < aqua.modifed_communities.length; i++) {
+                                if (aqua.modifed_communities[i].id === id) {
+                                    existingIndex = i;
+                                    break;
+                                }
                             }
-                        }
-                        if (existingIndex !== -1) {
-                            aqua.modifed_communities[existingIndex].state = response;
-                            aqua.modifed_communities[existingIndex].changed = true;
-                        } else {
-                            aqua.modifed_communities.push({ id: id, state: response, changed: true });
-                        }
-                        favoriteBtn.prop("disabled", false);
-                        favoriteBtn.removeClass("checked");
-                    } else {
-                        var existingIndex = -1;
-                        for (var i = 0; i < aqua.modifed_communities.length; i++) {
-                            if (aqua.modifed_communities[i].id === id) {
-                                existingIndex = i;
-                                break;
+                            if (existingIndex !== -1) {
+                                aqua.modifed_communities[existingIndex].state = response;
+                                aqua.modifed_communities[existingIndex].changed = true;
+                                aqua.modifed_communities[existingIndex].count = count;
+                            } else {
+                                aqua.modifed_communities.push({ id: id, state: response, count : count, changed: true });
                             }
+                            favoriteBtn.prop("disabled", false);
+                            favoriteBtn.removeClass("checked");
+                        } else if (!favoriteBtn.hasClass("checked") && response == "created") {
+                            count += 1;
+                            favoriteBtn.attr("data-favorite-count", count);
+                            var existingIndex = -1;
+                            for (var i = 0; i < aqua.modifed_communities.length; i++) {
+                                if (aqua.modifed_communities[i].id === id) {
+                                    existingIndex = i;
+                                    break;
+                                }
+                            }
+                            if (existingIndex !== -1) {
+                                aqua.modifed_communities[existingIndex].state = response;
+                                aqua.modifed_communities[existingIndex].changed = true;
+                                aqua.modifed_communities[existingIndex].count = count;
+                            } else {
+                                aqua.modifed_communities.push({ id: id, state: response, count : count, changed: true });
+                            }
+                            favoriteBtn.prop("disabled", false);
+                            favoriteBtn.addClass("checked");
                         }
-                        if (existingIndex !== -1) {
-                            aqua.modifed_communities[existingIndex].state = response;
-                            aqua.modifed_communities[existingIndex].changed = true;
-                        } else {
-                            aqua.modifed_communities.push({ id: id, state: response, changed: true });
-                        }
+                    }
+                    else {
+                        wiiuErrorViewer.openByCodeAndMessage(155299, 'There was an error favoriting this community.')
                         favoriteBtn.prop("disabled", false);
-                        favoriteBtn.addClass("checked");
                     }
                 }
-                else {
-                    wiiuErrorViewer.openByCodeAndMessage(155299, 'There was an error favoriting this community.')
-                    favoriteBtn.prop("disabled", false);
-                }
             }
-        }
-    },
-    initPostModal: function () {
-        if (!$("#add-new-post-modal").length && !$(".add-post-button").length) return;
-
-        var top_screenshot = wiiuMainApplication.getScreenShot(true);
-        var bottom_screenshot = wiiuMainApplication.getScreenShot(false);
-
-        var screenshotToggleButton = $(".screenshot-toggle-button");
-        if (wiiuMainApplication.getScreenShot(true) || wiiuMainApplication.getScreenShot(false)) {
-            screenshotToggleButton.removeClass("none");
-            $(".screenshot-toggle-container .screenshot-gp").attr("src", "data:image/png;base64," + bottom_screenshot);
-            $(".screenshot-toggle-container .screenshot-tv").attr("src", "data:image/png;base64," + top_screenshot);
-        }
-
-        console.log($(".screenshot-toggle-button"))
-
-        $(".screenshot-toggle-button").off("click").on("click", function () {
-            $(".screenshot-toggle-container").toggleClass("none")
-            console.log("Opening Screenshot Selection")
+            xhr.send();
         })
 
-        var screenshotInput = $("#screenshot_val_input");
-        var cancelScreenshot = $(".screenshot-toggle-container .cancel-toggle-button");
-        var screenshotLis = $(".screenshot-toggle-container li");
+        var communitySetBtn = $(".settings-button.button");
+        var settingsModal = new aqua.modalManager($("#change-settings-modal"));
 
-        screenshotLis.off("click").on("click", changeScreenshotSource);
-        cancelScreenshot.off("click").on("click", sSelectorReset);
+        var appJumpBtn = $(".app-jump-button.button");
+        var appJumpModal = new aqua.modalManager($("#app-jump-modal"), jumpToAppTitle);
 
-        function changeScreenshotSource(event) {
-            console.log("Changing Screenshot Source")
+        appJumpModal.modal.find(".eshop-button").on("click", function() {
+            var titleId = $("header.header.with-data").attr("data-community-title-id-hex").split(",")[0];
+            wiiuBrowser.jumpToEshop('version=1.0.0&scene=detail&dst_title_id=' + titleId + '&src_title_id=0005003010016100');
+        })
 
-            var currentScreenshotLi = $(event.currentTarget)
-            $(".screenshot-toggle-container li img").removeClass("checked")
-            currentScreenshotLi.find("img").addClass("checked")
+        var appJumpTIDs = $("header.header.with-data").attr("data-community-title-id-hex").split(",").map(function(tid) {
+            return tid.replace(/^0{3}/, '');
+        });
 
-            switch (currentScreenshotLi.find("input").val()) {
-                case "top":
-                    screenshotInput.val(top_screenshot);
+        var g;
+        var isVino = false;
 
-                    $(screenshotToggleButton).css({
-                        'background': 'url(data:image/png;base64,' + top_screenshot + ')',
-                        'background-size': 'cover'
-                    });
+        for (var h = 0; h < appJumpTIDs.length; h++) {
+            if (wiiuDevice.existsTitle(appJumpTIDs[h])) {
+                if (appJumpTIDs[h] == '5000010013000' || appJumpTIDs[h] == '500301001310a' || appJumpTIDs[h] == '500301001320a')  {
+                    isVino = true;
+                }
+                g = appJumpTIDs[h];
+                break;
+            }
+        }
 
-                    console.log("Saved TV Screenshot.")
-                    break;
-                case "bottom":
-                    screenshotInput.val(bottom_screenshot);
+        function jumpToAppTitle() {
+            if (g && !isVino) {
+            wiiuBrowser.jumpToApplication(g, 1, 0, '', '')
+            } else if (g && isVino) {
+            wiiuBrowser.jumpToTvii();
+            } else {
+            wiiuDialog.alert($("#app-jump-modal").attr('data-app-jump-error-text'), $("#app-jump-modal").attr('data-app-jump-ok-text')), appJumpModal.close();
+            }
+        }
+        
 
-                    $(screenshotToggleButton).css({
-                        'background': 'url(data:image/png;base64,' + bottom_screenshot + ')',
-                        'background-size': 'cover'
-                    });
+        $(".community-settings-dropdown .community-settings-drop").on("change", function() {
+            var newT = $(this).children('option:selected').text();
+            $(".community-settings-dropdown span").text(newT);
+        })
 
-                    console.log("Saved DRC Screenshot.")
-                    break;
-                default:
-                    screenshotInput.val("");
-                    break;
+        communitySetBtn.on("click", function() {
+        settingsModal.open();
+        })
+
+        if (appJumpBtn.length) {
+          appJumpBtn.on("click", function() {
+          appJumpModal.open();
+          })
+        }
+    },
+    setUpPostJumpButtons: function () {
+
+        var urlBtn = $(".button.link-button");
+        var urlModal = new aqua.modalManager($("#url-jump-modal"), jumpToUrl);
+
+        var ytBtn = $(".button.yt-button");
+        var ytModal = new aqua.modalManager($("#yt-jump-modal"), jumpToUrl);
+
+        function jumpToUrl() {
+            wiiuBrowser.jumpToBrowser(aqua.open_modal.modal.attr("data-url"));
+        }
+
+        urlBtn.on("click", function() {
+            urlModal.open();
+        })
+
+        ytBtn.on("click", function() {
+            ytModal.open();
+        })
+
+    },
+    setUpPosting: function () {
+        var postTog = $(".add-post-button");
+        var scrSel = $(".screenshot-toggle-button");
+        var scrTV;
+        var scrDRC;
+        var postModal = new aqua.modalManager($("#add-new-post-modal"), sendPost)
+
+        function sendPost() {
+            if (aqua.isPostBeingSent){ return; }
+
+            aqua.isPostBeingSent = true;
+            $('.button.ok-confirm-post-button').addClass('disabled').removeAttr('href');
+            wiiuBrowser.lockHomeButtonMenu(true);
+
+            var type_of_post = $('label.checked input[name="_post_type"]').val();
+            var owns_title;
+            var titleIDTest = $("header.header.with-data").attr("data-community-title-id-hex").split(",");
+    
+            if (type_of_post == 'body' && !$('.textarea-text').val()) {
+                wiiuDialog.alert(postModal.modal.attr('data-no-text-error'), postModal.modal.attr('data-no-text-ok-text'));
+                wiiuBrowser.lockHomeButtonMenu(false);
+                wiiuBrowser.showLoadingIcon(false);
+                $('.button.ok-confirm-post-button').removeClass('disabled').attr('href', 'javascript:void(0)');
+                aqua.isPostBeingSent = false;
+                return;
             }
 
-            $(".screenshot-toggle-container").toggleClass("none")
+            wiiuDialog.showLoading(postModal.modal.attr('data-loading-text'));
+
+            for (var q = 0; q < titleIDTest.length; q++) {
+                if (wiiuDevice.existsTitle(titleIDTest[q])) {
+                    owns_title = titleIDTest[q];
+                    break;
+                }
+            }
+
+            var postObj = new FormData();
+            if (type_of_post === 'body') {
+                postObj.append("body", $('.textarea-text').val());
+            } else {
+                postObj.append("painting", $('.textarea-memo-value').val());
+            }
+            
+            postObj.append("owns_title", owns_title ? 1 : 0);
+            if ($("#screenshot_val_input").val().length !== 0) {
+                postObj.append("screenshot", $("#screenshot_val_input").val().replace(/^data:image\/\w+;base64,/, ''));
+            }
+
+            postObj.append("community_id", +$("header.with-data").attr("data-community-id")) 
+            postObj.append("feeling_id", +$(".feeling-selector .buttons li.checked input").val()) 
+
+            $('.spoiler-button').find('input[type="checkbox"]').is(':checked') ? postObj.append("spoiler", 1) : postObj.append("spoiler", 0);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', aqua.api_domain + "/v2/posts");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 201) {
+                        wiiuMemo.reset();
+                        wiiuDialog.hideLoading();
+                        aqua.open_modal.close();
+                        $.pjax.reload(".wrapper", {
+                            fragment: ".wrapper",
+                            container: ".wrapper",
+                        });
+                        wiiuBrowser.lockHomeButtonMenu(false);
+                        $('.button.ok-confirm-post-button').removeClass('disabled').attr('href', 'javascript:void(0)');
+                        aqua.isPostBeingSent = false;
+                    }
+                    else {
+                        wiiuMemo.reset();
+                        wiiuDialog.hideLoading();
+                        wiiuErrorViewer.openByCodeAndMessage(155289, 'There was an error making a new post, Please try again later.')
+                        wiiuBrowser.lockHomeButtonMenu(false);
+                        $('.button.ok-confirm-post-button').removeClass('disabled').attr('href', 'javascript:void(0)');
+                        aqua.isPostBeingSent = false;
+                    }
+                }
+            }
+            xhr.send(postObj);
+
         }
 
-        function sSelectorReset() {
-            screenshotLis.find("img").removeClass("checked")
-
-            screenshotToggleButton.css({
-                'background': 'url("/img/sprsheet/screenshot_selector.png") center center no-repeat, ' +
-                    '-webkit-gradient(linear, left top, left bottom, from(#ffffff), color-stop(0.5, #ffffff), ' +
-                    'color-stop(0.8, #f6f6f6), color-stop(0.96, #f5f5f5), to(#bbbbbb)) 0 0',
-                'background-size': 'initial'
-            });
-            screenshotInput.val("");
-            $(".screenshot-toggle-container").toggleClass("none")
+      function openMemo() {
+         wiiuMemo.open(false);
+         var intervalId = setInterval(function() {
+            if (wiiuMemo.isFinish()) {
+                clearInterval(intervalId);
+                $('.textarea-memo-value').val(wiiuMemo.getImage(true));
+                $(".textarea-container .textarea-memo-preview").attr('src', 'data:image/png;base64,' + wiiuMemo.getImage(false));
+            }
+          }, 100);
         }
 
-        var feelingInputs = $(".feeling-selector.expression .buttons li");
-        var userMii = $('.mii-icon-container');
-        var spoilerLabel = $('.spoiler-button');
-        var postTypeLi = $('.textarea-menu li label');
-        var postButton = $('.ok-confirm-post-button');
+        wiiuMainApplication.getScreenShot(true) ? scrSel.removeClass("none") : "";
 
-        $('.textarea-menu-text-input').off("input")
+        if (wiiuMainApplication.getScreenShot(true)) {
+            srcTV = "data:image/jpeg;base64," + wiiuMainApplication.getScreenShot(true);
+            srcDRC = "data:image/jpeg;base64," + wiiuMainApplication.getScreenShot(false);
+
+            $(".screenshot-toggle-container img.screenshot-tv").attr("src", srcTV);
+            $(".screenshot-toggle-container img.screenshot-drc").attr("src", srcDRC);
+        }
+
+        $(".screenshot-toggle-container li input").on("click", function() {
+            $(".screenshot-toggle-container li img").removeClass("checked")
+            $(this).siblings('img').addClass("checked")
+            $(this).val() == "top" ? scrSel.find("img").attr("src", srcTV) : scrSel.find("img").attr("src", srcDRC);
+            $(this).val() == "top" ? $("#screenshot_val_input").val(srcTV) : $("#screenshot_val_input").val(srcDRC)
+            $(".screenshot-toggle-container").addClass("none");
+        })
+
+        $(".screenshot-toggle-container .cancel-toggle-button").on("click", function() {
+            $(".screenshot-toggle-container li img").removeClass("checked")
+            scrSel.find("img").attr("src", "/img/sprsheet/screenshot_selector.png")
+            $("#screenshot_val_input").val("");
+            $(".screenshot-toggle-container").addClass("none");
+        })
+
+        $(".spoiler-button").on("click", function() {
+            if (aqua.open_toggle) {
+                aqua.open_toggle.toggle.addClass("none");
+                aqua.open_toggle = null;
+            }
+
+            $(this).find('input').prop('checked') ? wiiuSound.playSoundByName('SE_OLV_CHECKBOX_CHECK', 3) : wiiuSound.playSoundByName('SE_OLV_CHECKBOX_UNCHECK', 3);
+            $(this).toggleClass('checked')
+        })
+
+        $(".textarea-with-menu .textarea-menu label").on("click", function() {
+            $(".textarea-with-menu .textarea-menu label").removeClass('checked');
+
+            if ($(this).find('input').val() == "body") {
+                $(".textarea-memo").addClass('none');
+                $(".textarea-text").removeClass('none');
+            } else {
+                $(".textarea-text").addClass('none');
+                $(".textarea-memo").removeClass('none');
+                openMemo();
+            }
+
+            $(this).addClass('checked');
+        })
+
+        $(".textarea-container .textarea-memo-trigger").on("click", function() {
+            openMemo();
+        })
+
+        $(".feeling-selector .buttons li").on("click", function() {
+            $(".feeling-selector .buttons li").removeClass("checked");
+            $(".mii-icon-container .icon").attr("src", $(this).find("input").attr("data-mii-face-url"));
+            $(this).addClass("checked");
+        })
+
         $('.textarea-menu-text-input').on('input', function () {
             syncTextAreas($(this).val());
         });
 
-        $('.textarea-text').off("input")
         $('.textarea-text').on('input', function () {
             syncTextAreas($(this).val());
         });
@@ -664,211 +751,83 @@ var aqua = {
             $('.textarea-menu-text-input').val(value);
         }
 
-        function addClassType(label) {
-            $(postTypeLi).each(function (index, ty) {
-                if (!$(ty).is(label)) {
-                    $(ty).removeClass("checked");
-                }
-            });
-            $(label).addClass("checked");
-        }
+        postTog.on("click", function() {
+            postModal.open();
+        })
 
-        function addClassFeeling(li) {
-            $.each(feelingInputs, function (index, feelingLi) {
-                if (!$(feelingLi).is(li)) {
-                    $(feelingLi).removeClass("checked");
-                }
-            });
-            $(li).addClass("checked");
-            var feelingUrl = $(li).find('input[type="radio"]').data("mii-face-url");
-            changeImageSource(feelingUrl);
-        }
-
-        function changeImageSource(feelingUrl) {
-            var userMiiImg = userMii.find('.icon');
-            $(userMiiImg).attr("src", feelingUrl);
-        }
-
-        function changePostType(li) {
-            if (li.id == 'text') {
-                $('.textarea-text').prop('disabled', false);
-                $('.textarea-memo-value').prop('disabled', true);
-                $('.textarea-memo').addClass('none');
-                $('.textarea-text').removeClass('none');
-            } else if (li.id == 'memo') {
-                $('.textarea-text').prop('disabled', true);
-                $('.textarea-memo-value').prop('disabled', false);
-                $('.textarea-text').addClass('none');
-                $('.textarea-memo').removeClass('none');
-
-                $('.textarea-memo-trigger').off('click', makeMemo);
-                $('.textarea-memo-trigger').on('click', makeMemo);
-
-                makeMemo();
-                function makeMemo() {
-                    wiiuMemo.open(false);
-                    $('.textarea-memo-preview').css('background-image', 'url(data:image/png;base64,' + wiiuMemo.getImage(false) + ')');
-                    $('.textarea-memo-value').val(wiiuMemo.getImage(true));
-                }
-            }
-        }
-
-        function toggleSpoilerClass(event) {
-            var label = $(event.currentTarget);
-            var input = label.find('input[type="checkbox"]');
-            if (input.prop('checked')) {
-                wiiuSound.playSoundByName('SE_OLV_CHECKBOX_CHECK', 3);
-                label.addClass('checked');
-            } else {
-                wiiuSound.playSoundByName('SE_OLV_CHECKBOX_UNCHECK', 3);
-                label.removeClass('checked');
-            }
-        }
-
-        function feelingClick() {
-            console.log("feeling")
-            addClassFeeling(this);
-            $('.feeling-selector.expression').toggleClass('none');
-            wiiuSound.playSoundByName('SE_OLV_BALLOON_CLOSE', 3);
-        }
-
-        function liClick(event) {
-            addClassType(event.currentTarget);
-            changePostType(event.currentTarget);
-        }
-
-        $(spoilerLabel).off("click")
-        $(spoilerLabel).on('click', toggleSpoilerClass);
-
-        $.each(feelingInputs, function (index, fe) {
-            $(fe).off("click", feelingClick)
-            $(fe).on('click', feelingClick);
-        });
-
-        $.each(postTypeLi, function (index, li) {
-            $(li).off('click', liClick);
-            $(li).on('click', liClick);
-        });
-
-        $(".mii-icon-container").off("click")
-        $(".mii-icon-container").on('click', function () {
-            $(".feeling-selector").toggleClass("none")
-        });
-    },
-    makePost: function makeNewPost() {
-        var screenshotInput = $("#screenshot_val_input");
-        var postButton = $('.ok-confirm-post-button');
-
-        if (postButton.disabled == true) { return; }
-        postButton.disabled = true;
-        wiiuBrowser.lockUserOperation(true);
-        wiiuBrowser.lockHomeButtonMenu(true);
-
-        var type_of_post = $('label.checked input[name="_post_type"]').attr("value")
-
-        if (type_of_post == 'body' && !$('.textarea-text').val()) {
-            wiiuDialog.alert('Please input text in your post.', 'OK');
-            wiiuBrowser.lockUserOperation(false);
-            wiiuBrowser.lockHomeButtonMenu(false);
-            return;
-        }
-
-        postButton.addClass('disabled');
-        postButton.off("click");
-        var aquaForm = new FormData();
-        var checked_feeling = $('.buttons li.checked input[name="feeling_id"]').attr("value")
-
-        aquaForm.append('feeling_id', checked_feeling);
-        aquaForm.append('community_id', $("header.header").data('community-id'));
-
-        var spoilerStatus = $('.spoiler_input');
-        var spoilerVal;
-        if (spoilerStatus.prop('checked')) {
-            spoilerVal = 1;
-        } else {
-            spoilerVal = 0;
-        }
-
-        if (screenshotInput.val() || screenshotInput.val() !== '') {
-            aquaForm.append('screenshot', screenshotInput.val());
-        }
-
-        var titleIDhex = $("header.header").data("community-title-id-hex");
-
-        var isOwnedCheck = wiiuDevice.existsTitle(titleIDhex);
-        var isOwned;
-        if (isOwnedCheck) {
-            isOwned = 1;
-        } else {
-            isOwned = 0;
-        }
-
-        aquaForm.append('owns_title', isOwned);
-        aquaForm.append('is_spoiler', spoilerVal);
-        aquaForm.append("language_id", 254);
-        aquaForm.append("is_autopost", 0);
-        aquaForm.append("is_app_jumpable", 0);
-
-        if (type_of_post == 'body') {
-            aquaForm.append('body', $('.textarea-text').val());
-        } else if (type_of_post == 'painting') {
-            aquaForm.append('painting', $('.textarea-memo-value').val());
-        }
-
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', aqua.api_domain + "/v1/posts");
-        xhr.send(aquaForm);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    $.pjax.reload("#body", {
-                        fragment: "#body",
-                        container: "#body",
-                    });
-                    wiiuBrowser.lockUserOperation(false);
-                    wiiuBrowser.lockHomeButtonMenu(false);
-
-                    aqua.modal_open = false;
-                }
-                else {
-                    wiiuErrorViewer.openByCodeAndMessage(155289, 'There was an error making a new post, Please try again later.')
-                    wiiuBrowser.lockUserOperation(false);
-                    wiiuBrowser.lockHomeButtonMenu(false);
-                }
-            }
-        }
 
     },
-    toggleCommunityPostModal: function () {
-        if (aqua.modal_open) {
-            window.scrollTo(0, aqua.scrollPosition)
-            $("body div > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").removeClass("none")
-            $("#add-new-post-modal").addClass("none")
-            aqua.modal_open = false
-        } else {
-            $("body div > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").addClass("none")
-            $("#add-new-post-modal").removeClass("none")
-            aqua.scrollPosition = window.scrollY;
-            aqua.modal_open = true
-        }
-    },
-    toggleCommunityViewSettingsModal: function () {
-        if (aqua.modal_open) {
-            window.scrollTo(0, aqua.scrollPosition)
-            $("body div > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").toggleClass("none")
-            $("#change-settings-modal").toggleClass("none")
-            aqua.modal_open = false
-        } else {
-            $("body div > div:not(.window-page, .window-page *, .screenshot-viewer-screenshot), header, #menu-bar").toggleClass("none")
-            $("#change-settings-modal").toggleClass("none")
-            aqua.scrollPosition = window.scrollY;
-            aqua.modal_open = true
-        }
+    setUpScreenshots: function () {
+        var screenshotModal = new aqua.modalManager($(".screenshot-viewer-screenshot"));
+        $("a.screenshot-permalink").on("click", function() {
+            var img = $(this).find(".post-content-screenshot").attr("src");
+            screenshotModal.modal.find("img").attr("src", img);
+            screenshotModal.open();
+        })
     },
     prepareBOSS: function () {
         wiiuBOSS.unregisterDirectMessageTask();
         if (!wiiuBOSS.isRegisteredDirectMessageTask().isRegistered) {
             wiiuBOSS.registerDirectMessageTaskEx(720, 2);
+        }
+    },
+    modalManager: function (modal, acceptCallback) {
+        var that = this;
+
+        this.modal = modal;
+    
+        this.open = function() {
+            aqua.scrollPosition = window.scrollY;
+            aqua.open_modal = that;
+            if ($("#menu-bar").length) {
+                $("#menu-bar").addClass("none");
+            }
+            if (aqua.currentPage === aqua.pageType.COMMUNITIES) {
+                $("header.header").addClass("none");
+                $(".header-banner-container").addClass("none");
+                $(".community-info").addClass("none");
+                $(".community-type").addClass("none");
+                $(".community-post-list").addClass("none");
+            } else if (aqua.currentPage === aqua.pageType.POSTS) {
+                $("header.header").addClass("none");
+                $(".post-permalink").addClass("none");
+            }
+            that.modal.removeClass("none");
+        };
+    
+        this.close = function() {
+            aqua.open_modal = null;
+            if ($("#menu-bar").length) {
+                $("#menu-bar").removeClass("none");
+            }
+            if (aqua.currentPage === aqua.pageType.COMMUNITIES) {
+                $("header.header").removeClass("none");
+                $(".header-banner-container").removeClass("none");
+                $(".community-info").removeClass("none");
+                $(".community-type").removeClass("none");
+                $(".community-post-list").removeClass("none");
+            } else if (aqua.currentPage === aqua.pageType.POSTS) {
+                $("header.header").removeClass("none");
+                $(".post-permalink").removeClass("none");
+            }
+            that.modal.addClass("none");
+            window.scrollTo(0, aqua.scrollPosition);
+        };
+    
+        this.isOpen = function() {
+            return !that.modal.hasClass("none");
+        };
+    
+        if (typeof acceptCallback == "function" && modal.hasClass("window-page") && modal.find(".window-bottom-buttons .button:not(.cancel-button)").length) {
+            modal.find(".window-bottom-buttons .button:not(.cancel-button)").on("click", acceptCallback)
+        }
+    
+        if (modal.hasClass("window-page") && modal.find(".window-bottom-buttons .cancel-button").length) {
+            modal.find(".window-bottom-buttons .cancel-button").on("click", this.close)
+        }
+
+        if (modal.find(".back-button").length) {
+            modal.find(".back-button").on("click", this.close)
         }
     },
     setTutorialAsRead: function (tutorial) {
@@ -883,90 +842,200 @@ var aqua = {
         tutorialReq.send(JSON.stringify(tutorialReqObj));
         $(".tutorial-window").addClass("none")
     },
-    checkNotifications: function () {
-        var xhttp = new XMLHttpRequest();
-        xhttp.open("GET", aqua.api_domain + "/v2/notifications")
-        xhttp.send()
+    prepareBGMusicByPath: function(path) {
+        clearInterval(aqua.bg_music_interval);
 
-        xhttp.onreadystatechange = function (e) {
-            if (xhttp.readyState == xhttp.DONE) {
-                switch (xhttp.status) {
-                    case 200:
-                        var responseObj = JSON.parse(xhttp.responseText)
+        var pathRegexes = [
+            /^\/settings\/profile$/,
+            /^\/account\/create_account$/
+        ];
 
-                        if (responseObj.notifications.notifications_length >= 1) {
-                            if (responseObj.notifications.notifications_length > 99) {
-                                $("#menu-bar-news a .badge").text("99+")
-                            } else {
-                                $("#menu-bar-news a .badge").text(String(responseObj.notifications.notifications_length))
-                            }
-
-                            $("#menu-bar-news a .badge").css("display", "block")
-                        }
-
-                        if (responseObj.notifications.messages_length >= 1) {
-                            if (responseObj.notifications.messages_length > 99) {
-                                $("#menu-bar-news a .badge").text("99+")
-                            } else {
-                                $("#menu-bar-news a .badge").text(String(responseObj.notifications.messages_length))
-                            }
-
-                            $("#menu-bar-news a .badge").css("display", "block")
-                        }
+        function playB(s){
+            wiiuSound.playSoundByName(s, 3);
+        }
+        
+        for (var i = 0; i < pathRegexes.length; i++) {
+            var match = path.match(pathRegexes[i]);
+        
+            if (match !== null) {
+                switch (i) {
+                    case 0:
+                        playB("BGM_OLV_SETTING");
                         break;
-                    case 204:
-                    default:
-                        $("a .badge").css("display", "none")
+                    case 1:
+                        playB("BGM_OLV_INIT");
                         break;
+                }
+                break;
+            }
+        }
+        
+        if (match === null) {
+            playB("BGM_OLV_MAIN");
+            aqua.bg_music_interval = setInterval(function () {
+                wiiuSound.playSoundByName("BGM_OLV_MAIN_LOOP_NOWAIT", 3);
+            }, 90000);
+        }
+    },
+    setNotificationInterval: function() {
+        function checkNews() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", aqua.api_domain + "/v2/notifications")
+            xhttp.send()
+    
+            xhttp.onreadystatechange = function (e) {
+                if (xhttp.readyState == xhttp.DONE) {
+                    switch (xhttp.status) {
+                        case 200:
+                            var responseObj = JSON.parse(xhttp.responseText)
+    
+                            if (responseObj.notifications.notifications_length >= 1) {
+                                if (responseObj.notifications.notifications_length > 99) {
+                                    $("#menu-bar-news a .badge").text("99+")
+                                } else {
+                                    $("#menu-bar-news a .badge").text(String(responseObj.notifications.notifications_length))
+                                }
+    
+                                $("#menu-bar-news a .badge").css("display", "block")
+                            }
+    
+                            if (responseObj.notifications.messages_length >= 1) {
+                                if (responseObj.notifications.messages_length > 99) {
+                                    $("#menu-bar-news a .badge").text("99+")
+                                } else {
+                                    $("#menu-bar-news a .badge").text(String(responseObj.notifications.messages_length))
+                                }
+    
+                                $("#menu-bar-news a .badge").css("display", "block")
+                            }
+                            break;
+                        case 204:
+                        default:
+                            $("a .badge").css("display", "none")
+                            break;
+                    }
                 }
             }
         }
+        setInterval(checkNews, 15000);
+        checkNews();
     }
 }
 
-$(document).on("DOMContentLoaded", function () {
-    aqua.prepareBOSS();
-    aqua.initSnd();
-    aqua.initPjx();
-    aqua.initTbs();
-    aqua.initNav();
-    aqua.initPostModal();
-    aqua.initScrl();
-    aqua.initEmp();
-    aqua.initSpoiler();
+aqua.router.connect("^/titles/show$", function() {
+    aqua.currentPage = aqua.pageType.TITLES_SHOW;
+    aqua.initSound();
+    aqua.setNavBarSelected($("#menu-bar #menu-bar-community"))
     aqua.initToggle();
-    aqua.initButton();
-    wiiuSound.playSoundByName("BGM_OLV_MAIN", 3);
-    setInterval(function () {
-        wiiuSound.playSoundByName("BGM_OLV_MAIN_LOOP_NOWAIT", 3);
-    }, 90000);
-    setInterval(aqua.checkNotifications, 15000);
-    wiiuBrowser.endStartUp();
+});
+  
+aqua.router.connect("^/communities/(\\d+)$", function(communityId) {
+  console.log("Viewing community:", communityId);
+  aqua.currentPage = aqua.pageType.COMMUNITIES;
+  aqua.initSound();
+  aqua.setNavBarSelected($("#menu-bar #menu-bar-community"))
+  aqua.setUpEmpathy();
+  aqua.setCommunityBtns();
+  aqua.setUpPosting();
+  aqua.initSpoiler();
+  aqua.initToggle();
+  aqua.initScroll();
+  aqua.setUpScreenshots();
+});
 
-    var xhttp = new XMLHttpRequest()
-    xhttp.open("GET", "https://disc.olv.aquamarine.lol/v1/endpoint")
-    xhttp.send()
+aqua.router.connect("^/titles/communities$", function() {
+    console.log("Viewing titles communities");
+    aqua.currentPage = aqua.pageType.TITLES_COMMUNITIES;
+    aqua.initSound();
+    aqua.setNavBarSelected($("#menu-bar #menu-bar-community"));
+    aqua.initScroll();
+});
 
-    xhttp.onreadystatechange = function(e) {
-        if (xhttp.readyState == xhttp.DONE) {
-            aqua.api_domain = "https://" + xhttp.responseXML.children[0].children[2].children[1].innerHTML
-        }
+aqua.router.connect("^/messages$", function() {
+    console.log("Viewing messages");
+    aqua.currentPage = aqua.pageType.MESSAGES_LIST;
+    aqua.initSound();
+    aqua.setNavBarSelected($("#menu-bar #menu-bar-message"));
+});
+
+aqua.router.connect("^/notifications$", function() {
+    if ($(".tab-requests .friend_requests").hasClass("selected")) {
+        aqua.router.checkRoutes("/notifications/friend_requests");
+        return;
     }
+    console.log("Viewing news");
+    aqua.currentPage = aqua.pageType.NEWS_LIST;
+    aqua.initSound();
+    aqua.setNavBarSelected($("#menu-bar #menu-bar-news"));
+});
+
+aqua.router.connect("^/notifications/friend_requests$", function() {
+    console.log("Viewing friend requests");
+    aqua.currentPage = aqua.pageType.FRIEND_REQUEST_LIST;
+    aqua.initSound();
+    aqua.setNavBarSelected($("#menu-bar #menu-bar-news"));
+});
+
+aqua.router.connect("^/posts/(\\d+)$", function(postId) {
+    console.log("Viewing post with ID:", postId);
+    aqua.currentPage = aqua.pageType.POSTS;
+    aqua.initSound();
+    aqua.setNavBarSelected();
+    aqua.setUpEmpathy();
+    aqua.setUpPostJumpButtons();
+    aqua.setUpScreenshots();
+});
+
+aqua.router.connect("^/users/@me$", function() {
+    console.log("Viewing current user profile");
+    aqua.currentPage = aqua.pageType.USERS_ME;
+    aqua.initSound();
+    aqua.setNavBarSelected($("#menu-bar #menu-bar-mymenu"));
+});
+
+aqua.router.connect("^/activity_feed$", function() {
+    console.log("Viewing activity feed");
+    aqua.currentPage = aqua.pageType.ACTIVITY_FEED;
+    aqua.initSound();
+    aqua.initToggle();
+    aqua.setNavBarSelected($("#menu-bar #menu-bar-feed"));
+});
+
+aqua.router.connect(".*", function() {
+    console.log("Not detected page");
+    aqua.currentPage = aqua.pageType.NONE;
+    aqua.initSound();
+    aqua.setNavBarSelected();
+});
+
+$(document).on("DOMContentLoaded", function () {
+    console.log("Aqua - Initializing")
+    aqua.initPjax();
+    aqua.setNotificationInterval();
+    aqua.initButton();
+    aqua.router.checkRoutes(window.location.pathname);
+    aqua.prepareBGMusicByPath(window.location.pathname);
+    wiiuBrowser.endStartUp();
 })
 
 $(document).on("pjax:click", function () {
     wiiuBrowser.lockUserOperation(true);
 })
 
-$(document).on("pjax:end", function () {
-    if ($("[data-tab-query]").length) aqua.initTbs();
-    if ($("[data-sound]").length) aqua.initSnd();
-    aqua.initNav();
-    aqua.initScrl();
-    if ($("#add-new-post-modal").length && $(".add-post-button").length) aqua.initPostModal();
-    if ($("button[data-post-id].miitoo-button").length) aqua.initEmp();
-    if (aqua.modifed_communities.length || aqua.modifed_posts.length) aqua.initPopstate();
-    if ($("a.hidden-content-button").length) aqua.initSpoiler();
-    if ($("[data-toggle]").length) aqua.initToggle();
+$(document).on("pjax:end", function (event) {
+    aqua.router.checkRoutes(window.location.pathname);
+    aqua.prepareBGMusicByPath(window.location.pathname);
     wiiuBrowser.lockUserOperation(false);
+})
+
+$(window).on("popstate", function(event) {
+    aqua.initPopstate();
+})
+
+$(window).on("scroll", function() {
+    if (aqua.open_toggle) {
+        wiiuSound.playSoundByName('SE_OLV_BALLOON_CLOSE', 3);
+        aqua.open_toggle.toggle.addClass("none");
+        aqua.open_toggle = null;
+    }
 })

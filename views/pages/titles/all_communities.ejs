@@ -9,7 +9,8 @@
             <div class="commnities-new-added" id="community_wrapper">
                 <%- include("../../partials/communities.ejs", { communities : communities }) %>
             </div>
-
-            <a class="loading" id="loading"></a>
+            <% if (communities.length > 14) { %>
+            <a class="loading"></a>
+            <% } %>
         </div>
     </div>

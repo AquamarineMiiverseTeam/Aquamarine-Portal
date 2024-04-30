@@ -27,7 +27,12 @@
                     "spoiler": "Hide Spoilers",
                     "screenshot": "Hide Screenshots",
                     "both": "Hide Both",
-                    "cancel": "Cancel"
+                    "cancel": "Cancel",
+                    "ok": "OK",
+                    "app_jump_title": "Open App",
+                    "app_jump_geisha_button": "See information about this title on Nintendo eShop",
+                    "app_jump_confirm": "Do you want to close Aquamarine and start this app?",
+                    "app_jump_no_soft": "The software was not detected, or you don't own it."
                 },
                 "types": {
                     "main_community": "Main Community",
@@ -58,7 +63,9 @@
                     "post_body_placeholder": "Share your thoughts to this community!",
                     "spoilers": "Spoilers",
                     "has_spoilers": "This post contains spoilers.",
-                    "see_spoiler": "View Post"
+                    "see_spoiler": "View Post",
+                    "error_no_text": "Please input text in your post.",
+                    "post_sending_wait": "Please wait a moment..."
                 }
             },
             "miitoo": {
@@ -119,6 +126,7 @@
                 "notifications": "Notifications",
                 "close": "Close",
                 "back": "Back",
+                "search": "Search",
                 "profile": {
                     "visitor_user_page": "%s's Profile",
                     "me_user_page": "User Page",

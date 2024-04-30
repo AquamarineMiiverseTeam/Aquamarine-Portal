@@ -1,0 +1,16 @@
+<div id="app-jump-modal" data-app-jump-ok-text="<%= locals.language.aqua.portal.community.settings.ok %>" data-app-jump-error-text="<%= locals.language.aqua.portal.community.settings.app_jump_no_soft %>" class="window-page none">
+    <div class="window">
+        <h1 class="window-title"><%= locals.language.aqua.portal.community.settings.app_jump_title %></h1>
+        <div class="window-body">
+            <div class="window-body-inner">
+            <p><%= locals.language.aqua.portal.community.settings.app_jump_confirm %></p>
+            <p class="app-name"><%= (community.app_name) ? community.app_name : community.name %></p>
+            <a href="javascript:void(0)" class="eshop-button" data-sound="SE_WAVE_OK"><%= locals.language.aqua.portal.community.settings.app_jump_geisha_button %></a>
+          </div>
+        </div>
+        <div class="window-bottom-buttons">
+            <a href="javascript:void(0)" class="button cancel-button" data-sound="SE_WAVE_CANCEL"><%= locals.language.aqua.portal.community.settings.cancel %></a>
+            <a href="javascript:void(0)" data-sound="SE_WAVE_OK" class="button ok-confirm-app-jump"><%= locals.language.aqua.portal.community.settings.ok %></a>
+        </div>
+    </div>
+</div>

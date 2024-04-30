@@ -8,43 +8,69 @@ const common = require('../../../../shared_config/common')
 
 route.get('/show', async (req, res, next) => {
     try {
-        //If the user opens the Miiverse applet on HBM when they're in a game with a community, we can redirect them to the community page
+        // If the user opens the Miiverse applet on HBM when they're in a game with a community, we can redirect them to the community page
         if (req.query['src'] == "menu") {
             const game_community = (await db_con.env_db("communities")
                 .whereLike("title_ids", `%${Number(req.param_pack.title_id)}%`)
                 .where({ type: "main" })
                 .limit(1))[0];
 
-            if (game_community) { res.redirect(`/communities/${game_community.id}`); return; }
+            if (game_community) { 
+                res.redirect(`/communities/${game_community.id}`); 
+                return; 
+            }
         }
 
         const newest_communities = await db_con.env_db("communities")
             .select(
                 "communities.*",
-                db_con.env_db.raw(`CASE WHEN favorites.account_id = ${req.account[0].id} THEN TRUE ELSE FALSE END AS is_favorited`),
-                db_con.env_db.raw("COUNT(favorites.community_id) as favorite_count"))
+                db_con.env_db.raw("(SELECT COUNT(*) FROM favorites WHERE favorites.community_id = communities.id) as favorite_count"),
+                db_con.env_db.raw(`
+            EXISTS (
+                SELECT 1
+                FROM favorites
+                WHERE favorites.account_id = ?
+                AND favorites.community_id = communities.id
+            ) AS is_favorited
+        `, [req.account[0].id])
+            )
             .groupBy("communities.id")
             .leftJoin("favorites", "favorites.community_id", "=", "communities.id")
             .where({ type: "main" })
             .orderBy("create_time", "desc")
-            .limit(4)
+            .limit(4);
 
         const special_communities = await db_con.env_db("communities")
             .select(
                 "communities.*",
-                db_con.env_db.raw(`CASE WHEN favorites.account_id = ${req.account[0].id} THEN TRUE ELSE FALSE END AS is_favorited`),
-                db_con.env_db.raw("COUNT(favorites.community_id) as favorite_count"))
+                db_con.env_db.raw("(SELECT COUNT(*) FROM favorites WHERE favorites.community_id = communities.id) as favorite_count"),
+                db_con.env_db.raw(`
+            EXISTS (
+                SELECT 1
+                FROM favorites
+                WHERE favorites.account_id = ?
+                AND favorites.community_id = communities.id
+            ) AS is_favorited
+        `, [req.account[0].id])
+            )
             .groupBy("communities.id")
             .leftJoin("favorites", "favorites.community_id", "=", "communities.id")
             .where({ type: "main", special_community: 1 })
             .orderBy("create_time", "desc")
-            .limit(4)
+            .limit(4);
 
         const popular_communities = await db_con.env_db("communities")
             .select(
-                db_con.env_db.raw("communities.*"),
-                db_con.env_db.raw(`CASE WHEN favorites.account_id = ${req.account[0].id} THEN TRUE ELSE FALSE END AS is_favorited`),
-                db_con.env_db.raw("COUNT(favorites.community_id) as favorite_count")
+                "communities.*",
+                db_con.env_db.raw("(SELECT COUNT(*) FROM favorites WHERE favorites.community_id = communities.id) as favorite_count"),
+                db_con.env_db.raw(`
+            EXISTS (
+                SELECT 1
+                FROM favorites
+                WHERE favorites.account_id = ?
+                AND favorites.community_id = communities.id
+            ) AS is_favorited
+        `, [req.account[0].id])
             )
             .where({ platform: "wiiu", type: "main" })
             .orderBy(function () {
@@ -60,42 +86,49 @@ route.get('/show', async (req, res, next) => {
             .leftJoin("favorites", "favorites.community_id", "=", "communities.id")
             .limit(4);
 
-
-
         res.render('pages/titles/show', {
             account: req.account,
             newest_communities: newest_communities,
             special_communities: special_communities,
             popular_communities: popular_communities,
-        })
+        });
     } catch (err) {
         next(err)
     }
-
-})
+});
 
 route.get('/communities', async (req, res, next) => {
     try {
         const offset = req.query['offset'];
         const communities = await db_con.env_db("communities")
-        .select(
-            "communities.*",
-            db_con.env_db.raw(`CASE WHEN favorites.account_id = ${req.account[0].id} THEN TRUE ELSE FALSE END AS is_favorited`),
-            db_con.env_db.raw("COUNT(favorites.community_id) as favorite_count"))
-        .groupBy("communities.id")
-        .leftJoin("favorites", "favorites.community_id", "=", "communities.id")
-        .where({ type: "main" })
-        .orderBy("create_time", "desc")
-        .offset(offset)
-        .limit(15)
+            .select(
+                "communities.*",
+                db_con.env_db.raw(`
+            EXISTS (
+                SELECT 1
+                FROM favorites
+                WHERE favorites.account_id = ?
+                AND favorites.community_id = communities.id
+            ) AS is_favorited
+        `, [req.account[0].id]),
+                db_con.env_db.raw("COUNT(favorites.community_id) as favorite_count"))
+            .groupBy("communities.id")
+            .leftJoin("favorites", "favorites.community_id", "=", "communities.id")
+            .where({ type: "main" })
+            .orderBy("create_time", "desc")
+            .offset(offset)
+            .limit(15);
 
         if (req.get("x-embedded-dom")) {
-            if (communities.length == 0) { res.sendStatus(204); return; }
+            if (communities.length == 0) { 
+                res.sendStatus(204); 
+                return; 
+            }
 
             res.render('partials/communities', {
                 communities: communities,
                 account: req.account
-            })
+            });
 
             return;
         }
@@ -103,34 +136,46 @@ route.get('/communities', async (req, res, next) => {
         res.render('pages/titles/all_communities', {
             account: req.account,
             communities: communities
-        })
+        });
     } catch (err) {
         next(err)
     }
-
-})
+});
 
 route.get('/favorites', async (req, res, next) => {
     try {
         const offset = req.query['offset'];
-        const communities = await db_con.env_db("communities").select("communities.*", "favorites.community_id as fav_community_id")
+        const communities = await db_con.env_db("communities")
+            .select(
+                "communities.*",
+                db_con.env_db.raw("(SELECT COUNT(*) FROM favorites WHERE favorites.community_id = communities.id) as favorite_count"),
+                db_con.env_db.raw(`
+            EXISTS (
+                SELECT 1
+                FROM favorites
+                WHERE favorites.account_id = ?
+                AND favorites.community_id = communities.id
+            ) AS is_favorited
+        `, [req.account[0].id])
+            )
             .innerJoin("favorites", "favorites.community_id", "=", "communities.id")
-            .where({ "favorites.account_id": req.account[0].id })
-            .offset(Number(offset))
-            .limit(15)
-            .orderBy("favorites.create_time", "desc")
+            .where("favorites.account_id", "=", req.account[0].id)
+            .groupBy("communities.id");
 
         for (let i = 0; i < communities.length; i++) {
             communities[i].favorites = await db_con.env_db("favorites").where({ community_id: communities[i].id })
         }
 
         if (req.get("x-embedded-dom")) {
-            if (communities.length == 0) { res.sendStatus(204); return; }
+            if (communities.length == 0) { 
+                res.sendStatus(204); 
+                return; 
+            }
 
             res.render('partials/communities', {
                 communities: communities,
                 account: req.account
-            })
+            });
 
             return;
         }
@@ -138,10 +183,10 @@ route.get('/favorites', async (req, res, next) => {
         res.render('pages/titles/favorited_communities', {
             account: req.account,
             communities: communities
-        })
+        });
     } catch (err) {
         next(err)
     }
-})
+});
 
 module.exports = route;

@@ -16,6 +16,10 @@ module.exports = [
         route: require("./ui/menu/notifications.js")
     },
     {
+        path: "/activity_feed",
+        route: require("./ui/menu/activity.js")
+    },
+    {
         path: "/posts",
         route: require("./ui/menu/posts.js")
     },

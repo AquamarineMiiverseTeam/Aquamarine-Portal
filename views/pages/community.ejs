@@ -5,10 +5,9 @@
                     <a data-pjax class="header-other-button" data-sound="SE_WAVE_OK_SUB" href="/communities/<%= community.id %>/other"><%= locals.language.aqua.portal.community.other %></a>
                 <% } %>
                 <h1 class="content-title title-label"><%= (community.app_name) ? community.app_name : community.name %></h1>
-                <% if (!community.ingame_only) { %><a href="javascript:void(0)" class="add-post-button" onclick="wiiuSound.playSoundByName('SE_WAVE_OK', 3); aqua.toggleCommunityPostModal()"><%= locals.language.aqua.portal.community.post.post %></a><% } %>
+                <% if (!community.ingame_only) { %><a href="javascript:void(0)" data-sound="SE_WAVE_OK" class="add-post-button"><%= locals.language.aqua.portal.community.post.post %></a><% } %>
             </header>
-
-            <div class="header-banner-container">
+            <div class="header-banner-container <% if (community.sub_communities.length != 0) { %>with-top-bar<% } %>">
                 <img src="../../../img/banners-wup/<%= community.id %>.jpg" class="banner-image">
             </div>
 
@@ -16,8 +15,13 @@
                 <span class="icon-container">
                     <img src="../../../img/icons/<%= community.id %>.jpg" class="icon">
                 </span>
-                <button data-sound="SE_WAVE_OK" class="settings-button button" onclick="aqua.toggleCommunityViewSettingsModal()"></button>
-                <button data-sound="" class="favorite-button button <%= (community.is_favorites) ? "checked" : "" %>" onclick="aqua.favoriteCommunity()"></button>
+                <button data-sound="SE_WAVE_OK" class="settings-button button"></button>
+                <% if (community.type=="main" ) {%>
+                <button data-sound="SE_WAVE_OK" class="app-jump-button button">
+                    <img src="../../../img/icons/<%= community.id %>.jpg" class="app-icon">
+                </button>
+                <%}%>
+                <button data-favorite-count="<%= community.favorite_count %>" class="favorite-button button <%= (community.is_favorited) ? "checked" : "" %>"></button>
                 <% if (community.type=="main" ) {%>
                     <span class="news-community-badge"><%= locals.language.aqua.portal.community.types.main_community %></span>
                 <%} else if (community.type=="sub" ) {%>
@@ -35,16 +39,16 @@
                 data-scroll-container=".post-list" 
                 data-scroll-url="/communities/<%= community.id %>" 
                 data-scroll-tab>
-                <a href="?type=topictag" data-tab-query="topictag" data-tab-context="community" class="tag_posts <%= (posts.query == "topictag") ? "selected" : "" %>">
+                <a href="?type=topictag" data-sound="SE_WAVE_SELECT_TAB" data-tab-query="topictag" data-tab-context="community" class="tag_posts <%= (posts.query == "topictag") ? "selected" : "" %>">
 
                 </a>
-                <a href="?type=played" data-tab-query="played" data-tab-context="community" class="player_posts  <%= (posts.query == "played") ? "selected" : "" %>" <%= (community.platform == "topic" || community.platform == "wii") ? "disabled" : "" %>>
+                <a href="?type=played" data-sound="SE_WAVE_SELECT_TAB" data-tab-query="played" data-tab-context="community" class="player_posts  <%= (posts.query == "played") ? "selected" : "" %>" <%= (community.platform == "topic" || community.platform == "wii") ? "disabled" : "" %>>
                     <span><%= locals.language.aqua.portal.community.tabs.player %></span>
                 </a>
-                <a href="?type=newest" data-tab-query="newest" data-tab-context="community" class="new_posts <%= (posts.query == "newest" || !posts.query) ? "selected" : "" %>">
+                <a href="?type=newest" data-sound="SE_WAVE_SELECT_TAB" data-tab-query="newest" data-tab-context="community" class="new_posts <%= (posts.query == "newest" || !posts.query) ? "selected" : "" %>">
                     <span><%= locals.language.aqua.portal.community.tabs.new %></span>
                 </a>
-                <a href="?type=popular" data-tab-query="popular" data-tab-context="community" class="popular_posts  <%= (posts.query == "popular") ? "selected" : "" %>">
+                <a href="?type=popular" data-sound="SE_WAVE_SELECT_TAB" data-tab-query="popular" data-tab-context="community" class="popular_posts  <%= (posts.query == "popular") ? "selected" : "" %>">
                     <span><%= locals.language.aqua.portal.community.tabs.popular %></span>
                 </a>
             </div>
@@ -57,16 +61,14 @@
                     }) %>
 
                     <% if (posts.length == 0) { %>
-                        <div class="no-content-window" style="margin-top: 0;">
+                        <div class="no-content-window">
                             <p><%= locals.language.aqua.portal.community.no_posts %></p>
                         </div>
                     <%} %>
                 </div>
-                <% if (posts.length >= 8) {%>
-                    <a class="loading" id="loading"></a>
-                <%} else {%>
-                    <a class="loading none" id="loading"></a>
-                <%} %>
+            <% if (posts.length > 7) { %>
+              <a class="loading"></a>
+              <% } %>
             </div>
 
                 
@@ -75,4 +77,6 @@
     <%- include("../partials/modal/create_post.ejs") %>
 
     <%- include("../partials/modal/community-settings.ejs") %>
+
+    <%- include("../partials/modal/app-jump.ejs") %>
     </div>

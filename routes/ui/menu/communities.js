@@ -8,11 +8,18 @@ const db_con = require("../../../../shared_config/database_con")
 route.get('/:community_id', async (req, res, next) => {
     try {
         const community_id = req.params.community_id;
-        const community = (await db_con.env_db("communities").select("communities.*",
-            db_con.env_db.raw(`CASE WHEN favorites.account_id = ${req.account[0].id} THEN TRUE ELSE FALSE END AS is_favorited`),
-        ).where({ "communities.id": community_id })
-        .leftJoin("favorites", "favorites.community_id", "=", "communities.id")
-        .groupBy("communities.id"))[0]
+        const community = (await db_con.env_db("communities")
+        .select("communities.*")
+        .select(db_con.env_db.raw(`
+            EXISTS (
+                SELECT 1
+                FROM favorites
+                WHERE favorites.account_id = ?
+                AND favorites.community_id = communities.id
+            ) AS is_favorited
+        `, [req.account[0].id]))
+        .select(db_con.env_db.raw("(SELECT COUNT(*) FROM favorites WHERE favorites.community_id = communities.id) as favorite_count"))
+        .where({id : community_id}))[0];
 
         community.sub_communities = await db_con.env_db("communities").where({ parent_community_id: community.id, type: "sub" })
 
@@ -89,7 +96,10 @@ route.get("/:community_id/other", async (req, res, next) => {
     try {
         const community_id = req.params.community_id;
         const community = (await db_con.env_db("communities").where({ id: community_id }))[0]
-        community.sub_communities = await db_con.env_db("communities").where({ parent_community_id: community_id })
+        community.sub_communities = await db_con.env_db("communities").select("communities.*",
+        db_con.env_db.raw(`CASE WHEN favorites.account_id = ${req.account[0].id} THEN TRUE ELSE FALSE END AS is_favorited`),
+        db_con.env_db.raw("COUNT(favorites.community_id) AS favorite_count")).where({ parent_community_id: community_id })
+        .leftJoin("favorites", "favorites.community_id", "=", "communities.id")
 
         community.favorites = await db_con.env_db("favorites").where({ community_id: community.id })
         for (let i = 0; i < community.sub_communities.length; i++) {

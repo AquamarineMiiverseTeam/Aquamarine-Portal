@@ -11,7 +11,7 @@
                 <ul class="settings-list">
                     <li data-name="viewable_post" class="scroll">
                         <p class="settings-label">Which posts do you want to see for this community?</p>
-                        <div class="community-settings-dropdown-wrapper">
+                        <a class="community-settings-dropdown">
                             <select name="community-settings" class="community-settings-drop"
                                 id="community-settings-input">
                                 <option value="1" <%= (JSON.parse(account[0].community_settings)[community.id] == "1") ? "selected" : "" %>><%= locals.language.aqua.portal.community.settings.show %></option>
@@ -19,7 +19,23 @@
                                 <option value="3" <%= (JSON.parse(account[0].community_settings)[community.id] == "3") ? "selected" : "" %>><%= locals.language.aqua.portal.community.settings.screenshot %></option>
                                 <option value="4" <%= (JSON.parse(account[0].community_settings)[community.id] == "4") ? "selected" : "" %>><%= locals.language.aqua.portal.community.settings.both %></option>
                             </select>
-                        </div>
+                            <span><% switch (JSON.parse(account[0].community_settings)[community.id]) {
+                                case "1": %>
+                                <%= locals.language.aqua.portal.community.settings.show %>
+                                <% break;
+                                case "2": %>
+                                <%= locals.language.aqua.portal.community.settings.spoiler %>
+                                <% break;
+                                case "3": %>
+                                <%= locals.language.aqua.portal.community.settings.screenshot %>
+                                <% break;
+                                case "4": %>
+                                <%= locals.language.aqua.portal.community.settings.both %>
+                                <% break;
+                                default: %>
+                                <%= locals.language.aqua.portal.community.settings.show %>
+                                <% } %></span>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -27,7 +43,7 @@
         </div>
         <div class="window-bottom-buttons single-button">
             <a href="javascript:void(0)" class="button cancel-button"
-                onclick="aqua.toggleCommunityViewSettingsModal()" data-sound="SE_WAVE_CANCEL"><%= locals.language.aqua.portal.community.settings.cancel %></a>
+                data-sound="SE_WAVE_CANCEL"><%= locals.language.aqua.portal.community.settings.cancel %></a>
         </div>
     </div>
 </div>

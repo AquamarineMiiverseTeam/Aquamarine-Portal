@@ -41,14 +41,20 @@
     
                 <div class="post-content">
                     <% if (post.topic_tag) { %>
-                        <a data-sound="SE_WAVE_OK" href="javascript:void(0)" onclick="aquamarine.getPostsByTopicTag(this)" class="post-tag"><%= post.topic_tag %></a>
+                        <a data-sound="SE_WAVE_OK" href="javascript:void(0)" class="post-tag"><%= post.topic_tag %></a>
                     <% } %>
     
-                    <% if (post.screenshot) { %>
-                        <a href="javascript:void(0)" class="screenshot-permalink" onclick='aqua.openCaptureModal(this)' data-sound="SE_WAVE_OK">
+                    <% if (post.screenshot_cdn_url) { %>
+                        <a href="javascript:void(0)" class="screenshot-permalink" data-sound="SE_WAVE_OK">
                             <img onerror="this.src='../../../img/banners-wup/placeholder-wup.jpg'" class="post-content-screenshot" src="<%= post.screenshot_cdn_url %>">
                         </a>
                     <% } %>
+
+                    <% if (post.yt) {%>
+                        <a href="javascript:void(0)" class="screenshot-permalink yt-video" data-sound="SE_WAVE_OK">
+                            <img onerror="this.src='../../../img/banners-wup/placeholder-wup.jpg'" class="post-content-screenshot" src="https://i3.ytimg.com/vi/<%= post.yt %>/hqdefault.jpg">
+                        </a>
+                    <%} %>
                     
                     <% if (post.body) { %>
                         <p class="post-content-text"><%= post.body %></p>
@@ -62,7 +68,7 @@
                 <% if (post.spoiler == 1) { %>
                     <div class="hidden-content">
                         <p><%= locals.language.aqua.portal.community.post.has_spoilers %></p>
-                        <div><a href="javascript:void(0)" class="hidden-content-button"><%= locals.language.aqua.portal.community.post.see_spoiler %></a></div>
+                        <div><a href="javascript:void(0)" data-sound="SE_WAVE_OK_SUB" class="hidden-content-button"><%= locals.language.aqua.portal.community.post.see_spoiler %></a></div>
                     </div>
                 <% } %>
     
@@ -97,7 +103,7 @@
                             unyeahed_text = locals.language.aqua.portal.miitoo['default.delete'];
                     }%>
 
-                    <button data-unyeah-text="<%= unyeahed_text %>" data-yeah-text="<%= yeahed_text %>" data-empathy-count="<%= post.empathy_count %>" data-reply-count="0" data-post-id="<%= post.id %>" class="submit miitoo-button" <%= (post.account_id == account[0].id) ? "disabled" : "" %>>
+                    <button data-unyeah-text="<%= unyeahed_text %>" data-yeah-text="<%= yeahed_text %>" data-post-id="<%= post.id %>" class="submit miitoo-button" <%= (post.account_id == account[0].id) ? "disabled" : "" %>>
                         <% if (post.empathied_by_user) { %>
                             <%= unyeahed_text %>
                         <% } else { %>
@@ -114,5 +120,35 @@
                 </div>
             </div>
         </div>
+
+<div class="recent-reply-to-post none">
+  <a href="https://portal-us.olv.nintendo.net/users/dragons_claws" class="user-icon-container scroll-focus" data-pjax="#body">
+    <img src="http://mii-images.account.nintendo.net/l7nesmcevej9_surprised_face.png" class="user-icon">
+  </a>
+
+  <div class="recent-reply-body-content">
+    <div class="recent-reply-body">
+      <header>
+        <span class="user-name">David Joaq</span>
+        <span class="timestamp">1 minute ago</span>
+      </header>
+
+      <div class="recent-reply-content">
+
+        <p class="recent-reply-content-memo">
+            <img src="https://res.cloudinary.com/dpkpng0q9/image/upload/v1714009232/paintings/twmtaltrvqaagaxc7xb5.png" class="recent-reply-memo">
+            </p>
+
+      </div>
+      <a href="https://d1-portal.olv.aquamarine.lol/communities/1" class="to-permalink-link" data-pjax=".wrapper"></a>
+    </div>
+
+    
+    <a href="https://d1-portal.olv.aquamarine.lol/communities/1" class="button" data-pjax=".wrapper">
+      View Other Comment (1)
+    </a>
+    
+  </div>
+</div>
     </div>
 <% } %>

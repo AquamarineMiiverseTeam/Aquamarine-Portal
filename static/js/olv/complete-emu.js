@@ -36,7 +36,7 @@ if (typeof wiiuBrowser === 'undefined') {
         },
         canHistoryBack: function () {
             // if the pathname isnt /titles/show or /, then you can history.back()
-            return location.pathname !== '/titles/show' || location.pathname !== '/';
+            return location.pathname !== '/titles/show' || location.pathname !== '/' || history.length > 1;
         },
         setSwkbdDictionary: function (jsonString) {
             console.log('Set SWKBD dictionary', JSON.parse(jsonString));
@@ -66,6 +66,12 @@ if (typeof wiiuDialog === 'undefined') {
         },
         confirm: function (msg, lBtnStr, rBtnStr) {
             return confirm(msg + "\n\n[ " + lBtnStr + " (Cancel) ]  [ " + rBtnStr + " (OK) ]");
+        },
+        showLoading: function (msg) {
+            console.log("Loading dialog: " + msg)
+        },
+        hideLoading: function () {
+            console.log("Hide loading")
         }
     };
 }

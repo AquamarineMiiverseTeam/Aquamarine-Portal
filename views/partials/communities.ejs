@@ -3,7 +3,7 @@
     
     <li id="community-<%= community.id %>" class="">
     <span class="icon-content">
-        <img class="icon" src="../../img/icons/<%= community.id %>.jpg"></img>
+        <img class="icon" src="<%= community.cdn_icon_url %>"></img>
     </span>
 
     <a data-sound="SE_WAVE_OK" href="/communities/<%= community.id %>" data-pjax=".wrapper" class="scroll to-community-button">
@@ -56,7 +56,12 @@
                     }
                 }  %>
             </span>
-            <span class="favorited <%= (community.is_favorited) ? "" : "none" %>"></span>
+            <span class="
+            favorited
+            <% if (community.is_favorited) { %>
+                show
+            <%} %>
+            "></span>
 
         </div>
     </div>

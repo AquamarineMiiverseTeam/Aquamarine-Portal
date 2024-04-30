@@ -27,7 +27,12 @@
                     "spoiler": "Ocultar Revelaciones",
                     "screenshot": "Ocultar Capturas",
                     "both": "Ocultar Ambos",
-                    "cancel": "Cancelar"
+                    "cancel": "Cancelar",
+                    "ok": "OK",
+                    "app_jump_title": "Abrir Aplicación",
+                    "app_jump_geisha_button": "Ver más informacion sobre este programa en Nintendo eShop",
+                    "app_jump_confirm": "Quieres cerrar Aquamarine y abrir esta aplicación?",
+                    "app_jump_no_soft": "El programa no fue detectado o no lo tienes."
                 },
                 "types": {
                     "main_community": "Comunidad Principal",
@@ -58,7 +63,9 @@
                     "post_body_placeholder": "Comparte tus pensamientos con una publicación a esta comunidad.",
                     "spoilers": "Revelaciones",
                     "has_spoilers": "Esta publicación contiene revelaciones.",
-                    "see_spoiler": "Ver publicación"
+                    "see_spoiler": "Ver publicación",
+                    "error_no_text": "Por favor ingresa texto en tu publicación.",
+                    "post_sending_wait": "Por favor espera..."
                 }
             },
             "miitoo": {
@@ -119,6 +126,7 @@
                 "notifications": "Notificaciones",
                 "close": "Cerrar",
                 "back": "Volver",
+                "search": "Buscar",
                 "profile": {
                     "visitor_user_page": "Perfil de %s",
                     "me_user_page": "Perfil de Usuario",

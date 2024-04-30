@@ -2,9 +2,10 @@
 
 <div id="body" class="wrapper">
   <header class="header">
+    <a href="/titles/favorites" data-sound="SE_WAVE_OK" data-pjax="#body" class="mymenu-button favorite-communities"><%= locals.language.aqua.portal.menu.profile.profile_favorite_communities %></a>
     <h1 class="content-title left"><%= locals.language.aqua.portal.community.communities %></h1>
     <div class="filter-dropdown">
-      <a class="dropdown-toggle" data-toggle=".dropdown-menu" data-sound="SE_WAVE_BALLOON_OPEN" href="javascript:void(0)"><%= locals.language.aqua.portal.community.filter.filter %></a>
+      <a class="dropdown-toggle" data-toggle=".dropdown-menu" href="javascript:void(0)"><%= locals.language.aqua.portal.community.filter.filter %></a>
       <ul class="dropdown-menu none">
         <li>
           <a href="javascript:void(0)" class="button checkbox-button selected" data-sound="SE_WAVE_TOGGLE_CHECK"><%= locals.language.aqua.portal.community.filter.all_software %></a>
@@ -25,7 +26,7 @@
     </div>
   </header>
 
-  <div id="important-header-marquee" class="info-content-important-marquee">
+  <div id="important-header-marquee" class="info-content-important-marquee none">
     <marquee>WARNING: Aquamarine is currently going under major revisions. Please stay clear of any unwanted behavior.</marquee>
   </div>
 
@@ -75,4 +76,8 @@
 
     <a data-pjax href="/titles/communities" class="more-button scroll" data-sound="SE_WAVE_OK"><%= locals.language.aqua.portal.community.see_all_communities %></a>
   </div>
+
+  <span class="search-button"><%= locals.language.aqua.portal.menu.search %>
+    <input type="text" data-sound="SE_WAVE_OK" name="query" class="title-search-query" minlength="2" maxlength="20" inputform="monospace" guidestring="Search Communities">
+  </span>
 </div>
