@@ -30,8 +30,13 @@
                     "cancel": "Annuler",
                     "ok": "OK",
                     "app_jump_title": "Ouvrir application",
+                    "url_jump_title": "Ouvrir le lien",
+                    "app_jump_yt_screenshot_button": "Regarder sur YouTube",
                     "app_jump_geisha_button": "Voir plus d'informations sur ce programme dans le Nintendo eShop",
                     "app_jump_confirm": "Voulez-vous fermer Aquamarine et ouvrir cette application?",
+                    "app_jump_specific_post": "Voulez-vous fermer Aquamarine et ouvrir cette application?, Cette application démarrera avec les données de cette publication spécifique.",
+                    "url_jump_confirm": "Aquamarine va maintenant se fermer et le navigateur Internet démarrera avec le site suivant:",
+                    "yt_jump_confirm": "Aquamarine va maintenant se fermer et le navigateur Internet démarrera avec la vidéo YouTube suivante:",
                     "app_jump_no_soft": "Le logiciel n'a pas été détecté ou vous n'en êtes pas propriétaire."
                 },
                 "types": {

@@ -30,8 +30,13 @@
                     "cancel": "Cancel",
                     "ok": "OK",
                     "app_jump_title": "Open App",
+                    "url_jump_title": "Open Link",
+                    "app_jump_yt_screenshot_button": "Watch in YouTube",
                     "app_jump_geisha_button": "See information about this title on Nintendo eShop",
                     "app_jump_confirm": "Do you want to close Aquamarine and start this app?",
+                    "app_jump_specific_post": "Do you want to close Aquamarine and start this app?, This app will start with data of this specific post.",
+                    "url_jump_confirm": "Aquamarine will now close and the Internet Browser will start with the following site:",
+                    "yt_jump_confirm": "Aquamarine will now close and the Internet Browser will start with the following YouTube video:",
                     "app_jump_no_soft": "The software was not detected, or you don't own it."
                 },
                 "types": {

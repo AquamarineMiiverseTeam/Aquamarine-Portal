@@ -7,118 +7,12 @@
   <title>Aquamarine</title>
   <link rel="stylesheet" href="/css/aqua.css">
   <script type="text/javascript" src="/js/olv/complete-emu.js"></script>
-  <script>
-    var aquamarine = {
-      changeSetupModal: function (modal1, modal2) {
-        document.getElementById(modal1).classList.add("none");
-        document.getElementById(modal2).classList.remove("none");
-        window.scrollTo(0, 0);
-      },
-      prepareSetupPage: function () {
-        wiiuBrowser.endStartUp();
-        wiiuSound.playSoundByName("BGM_OLV_INIT", 3);
-      },
-      initSounds: function () {
-        var els = document.querySelectorAll("[data-sound]");
-        if (!els) return;
-        for (var i = 0; i < els.length; i++) {
-          els[i].addEventListener("click", function (e) {
-            wiiuSound.playSoundByName(e.currentTarget.getAttribute('data-sound'), 3);
-          });
-        }
-      },
-      logAccount: function () {
-        wiiuDialog.showLoading("Logging in...");
-        wiiuBrowser.lockUserOperation(true);
-        var l_nnidInput = document.getElementById("l_nnid");
-        var l_passwordInput = document.getElementById("l_password");
-        var logUser = new FormData();
-        logUser.append("nnid", l_nnidInput.value);
-        logUser.append("password", l_passwordInput.value);
-
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "https://api.olv.nonamegiven.xyz/v1/people/login");
-        xhr.send(logUser);
-        xhr.onreadystatechange = function () {
-          if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-              wiiuDialog.hideLoading();
-              wiiuBrowser.lockUserOperation(false);
-              window.location.replace("https://portal.olv.nonamegiven.xyz/titles/show");
-            }
-            else {
-              wiiuDialog.hideLoading();
-              wiiuErrorViewer.openByCodeAndMessage(155219, 'There was an error logging in your account, please try again later.')
-              wiiuBrowser.lockUserOperation(false);
-            }
-          }
-        }
-
-      },
-      createNewAccount: function () {
-        wiiuBrowser.lockUserOperation(true);
-        var c_nnidInput = document.getElementById("c_nnid");
-        var c_passwordInput = document.getElementById("c_password");
-        var c_confirmPasswordInput = document.getElementById("c_confirmPassword");
-        var c_submitButton = document.getElementById("submit2");
-        var c_gameExperienceInput = document.querySelector('input[name="game_experience"]:checked');
-
-        if (c_passwordInput.value === c_confirmPasswordInput.value && c_passwordInput.value !== "") {
-          var newUser = new FormData();
-          newUser.append("country", wiiuSystemSetting.getCountry().code);
-          newUser.append("language", wiiuSystemSetting.getLanguage().code);
-          if (c_gameExperienceInput) {
-            newUser.append("game_experience", c_gameExperienceInput.value);
-          } else {
-            newUser.append("game_experience", 1); // 1 for intermediate
-          }
-          newUser.append("nnid", c_nnidInput.value);
-          newUser.append("password", c_passwordInput.value);
-
-          var xhr = new XMLHttpRequest();
-          xhr.open("POST", "https://api.olv.nonamegiven.xyz/v1/people");
-          xhr.send(newUser);
-          xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-              if (xhr.status === 200) {
-                aquamarine.changeSetupModal('window-setup-7', 'window-setup-8');
-                wiiuBrowser.lockUserOperation(false);
-              }
-              else {
-                wiiuErrorViewer.openByCodeAndMessage(155249, 'There was an error creating your account, please try again later.')
-                wiiuBrowser.lockUserOperation(false);
-              }
-            }
-          }
-        } else {
-          wiiuDialog.alert("The passwords do not match, or the value is empty.", "OK");
-          wiiuBrowser.lockUserOperation(false);
-        }
-
-      }
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-      aquamarine.prepareSetupPage();
-      aquamarine.initSounds();
-
-      var labels = document.querySelectorAll('#welcome-create .game_experience_form label');
-
-      for (var i = 0; i < labels.length; i++) {
-        labels[i].addEventListener('click', function () {
-          for (var j = 0; j < labels.length; j++) {
-            labels[j].classList.remove('selected');
-          }
-
-          this.classList.add('selected');
-        });
-      }
-    })
-
-  </script>
+  <script type="text/javascript" src="/js/jquery.min.js"></script>
+  <script type="text/javascript" src="/js/jquery.pjax.js"></script>
+  <script type="text/javascript" src="/js/aqua.jquery.js"></script>
 </head>
 
-<body onload="wiiuBrowser.endStartUp();">
+<body>
 
   <div class="wrapper">
 
@@ -135,9 +29,10 @@
             </div>
           </div>
           <a class="exit-setup-modal-button"
-            href="javascript:wiiuSound.playSoundByName('SE_WAVE_EXIT', 3), wiiuBrowser.closeApplication();">Close</a>
+            href="javascript:wiiuSound.playSoundByName('SE_WAVE_EXIT', 3), setTimeout(function() {wiiuBrowser.closeApplication()}, 0);">Close</a>
           <a class="next-setup-modal-button" data-sound="SE_WAVE_OK"
-            href="javascript:aquamarine.changeSetupModal('window-setup-1', 'window-setup-2');">Next</a>
+          data-toggle-hide="#window-setup-1" data-toggle-show="#window-setup-2"
+            href="javascript:void(0)">Next</a>
         </div>
       </div>
     </div>
@@ -157,9 +52,11 @@
             </div>
           </div>
           <a class="back-setup-modal-button" data-sound="SE_WAVE_CANCEL"
-            href="javascript:aquamarine.changeSetupModal('window-setup-2', 'window-setup-1');">Back</a>
+          data-toggle-hide="#window-setup-2" data-toggle-show="#window-setup-1"
+          href="javascript:void(0)">Back</a>
           <a class="next-setup-modal-button" data-sound="SE_WAVE_OK"
-            href="javascript:aquamarine.changeSetupModal('window-setup-2', 'window-setup-3');">Next</a>
+          data-toggle-hide="#window-setup-2" data-toggle-show="#window-setup-3"
+          href="javascript:void(0)">Next</a>
         </div>
       </div>
     </div>
@@ -176,11 +73,14 @@
             </div>
           </div>
           <a class="back-setup-modal-button" data-sound="SE_WAVE_CANCEL"
-            href="javascript:aquamarine.changeSetupModal('window-setup-3', 'window-setup-2');">Back</a>
+          data-toggle-hide="#window-setup-3" data-toggle-show="#window-setup-2"
+          href="javascript:void(0)">Back</a>
           <a class="create-account-setup-modal-button" data-sound="SE_WAVE_OK_SUB"
-            href="javascript:aquamarine.changeSetupModal('window-setup-3', 'window-setup-5');">Create new account</a>
+          data-toggle-hide="#window-setup-3" data-toggle-show="#window-setup-5"
+          href="javascript:void(0)">Create new account</a>
           <a class="next-setup-modal-button" data-sound="SE_WAVE_OK"
-            href="javascript:aquamarine.changeSetupModal('window-setup-3', 'window-setup-4');">Log in</a>
+          data-toggle-hide="#window-setup-3" data-toggle-show="#window-setup-4"
+          href="javascript:void(0)">Log in</a>
         </div>
       </div>
     </div>
@@ -198,12 +98,13 @@
                   autocomplete="off" placeholder="NNID..." name="nnid" keyboard="nnid" maxlength="16" minlength="6">
                 <input type="password" onchange="this.blur()" id="l_password" data-sound="" placeholder="Password..." name="password"
                   autocomplete="off">
-                <button id="submit1" data-sound="SE_WAVE_OK" onclick="aquamarine.logAccount();">Log in</button>
+                <a id="submit1" href="javascript:void(0)" data-sound="SE_WAVE_OK">Log in</button>
               </form>
             </div>
           </div>
           <a class="back-setup-modal-button" data-sound="SE_WAVE_CANCEL"
-            href="javascript:aquamarine.changeSetupModal('window-setup-4', 'window-setup-3');">Back</a>
+          data-toggle-hide="#window-setup-4" data-toggle-show="#window-setup-3"
+          href="javascript:void(0)">Back</a>
         </div>
       </div>
     </div>
@@ -257,9 +158,11 @@
           </p>
         </div>
         <a class="back-setup-modal-button guideline" data-sound="SE_WAVE_CANCEL"
-          href="javascript:aquamarine.changeSetupModal('window-setup-5', 'window-setup-3');">Back</a>
+        data-toggle-hide="#window-setup-5" data-toggle-show="#window-setup-3"
+        href="javascript:void(0)">Back</a>
         <a class="next-setup-modal-button guideline" data-sound="SE_WAVE_OK"
-          href="javascript:aquamarine.changeSetupModal('window-setup-5', 'window-setup-6');">Accept</a>
+        data-toggle-hide="#window-setup-5" data-toggle-show="#window-setup-6"
+        href="javascript:void(0)">Accept</a>
       </div>
     </div>
 
@@ -273,19 +176,24 @@
                 profile, and it will help in telling people more about you, it might also be used for recomendations in
                 the service</p>
               <form class="game_experience_form" action="javascript:void(0)">
-                <label for="ge_1" data-sound="SE_WAVE_SELECT_TAB" class="zero">Beginner</label>
-                <input type="radio" id="ge_1" name="game_experience" value="0">
-                <label for="ge_2" data-sound="SE_WAVE_SELECT_TAB" class="one">Intermediate</label>
-                <input type="radio" id="ge_2" name="game_experience" value="1">
-                <label for="ge_3" data-sound="SE_WAVE_SELECT_TAB" class="two">Expert</label>
-                <input type="radio" id="ge_3" name="game_experience" value="2">
+                <label for="ge_1" data-sound="SE_WAVE_SELECT_TAB" class="zero">
+                  <input type="radio" id="ge_1" name="game_experience" value="0">
+                  Beginner</label>
+                <label for="ge_2" data-sound="SE_WAVE_SELECT_TAB" class="one">
+                  <input type="radio" id="ge_2" name="game_experience" value="1">
+                  Intermediate</label>
+                <label for="ge_3" data-sound="SE_WAVE_SELECT_TAB" class="two">
+                  <input type="radio" id="ge_3" name="game_experience" value="2">
+                  Expert</label>
               </form>
             </div>
           </div>
           <a class="back-setup-modal-button" data-sound="SE_WAVE_CANCEL"
-            href="javascript:aquamarine.changeSetupModal('window-setup-6', 'window-setup-5');">Back</a>
+          data-toggle-hide="#window-setup-6" data-toggle-show="#window-setup-5"
+          href="javascript:void(0)">Back</a>
           <a class="next-setup-modal-button" data-sound="SE_WAVE_OK"
-            href="javascript:aquamarine.changeSetupModal('window-setup-6', 'window-setup-7');">Next</a>
+          data-toggle-hide="#window-setup-6" data-toggle-show="#window-setup-7"
+          href="javascript:void(0)">Next</a>
         </div>
       </div>
     </div>
@@ -306,13 +214,13 @@
                 <input type="password" placeholder="Confirm Password..." onchange="this.blur()" data-sound="" id="c_confirmPassword"
                   autocomplete="off">
 
-                <button id="submit2" data-sound="SE_WAVE_OK" onclick="aquamarine.createNewAccount();">Create
-                  account</button>
+                <a id="submit2" href="javascript:void(0)" data-sound="SE_WAVE_OK">Create account</a>
               </form>
             </div>
           </div>
           <a class="back-setup-modal-button" data-sound="SE_WAVE_CANCEL"
-            href="javascript:aquamarine.changeSetupModal('window-setup-7', 'window-setup-6');">Back</a>
+          data-toggle-hide="#window-setup-7" data-toggle-show="#window-setup-6"
+          href="javascript:void(0)">Back</a>
         </div>
       </div>
     </div>
@@ -331,7 +239,8 @@
             </div>
           </div>
           <a class="next-setup-modal-button" data-sound="SE_WAVE_OK"
-            href="javascript:aquamarine.changeSetupModal('window-setup-8', 'window-setup-9'); wiiuSound.playSoundByName('JGL_OLV_INIT_END', 3);">Next</a>
+          data-toggle-hide="#window-setup-8" data-toggle-show="#window-setup-9"
+          href="javascript:void(0)">Next</a>
         </div>
       </div>
     </div>
@@ -345,7 +254,7 @@
             </div>
           </div>
           <a class="next-setup-modal-button" data-sound="SE_WAVE_OK"
-            href="javascript:window.location.replace('https://portal.olv.nonamegiven.xyz/titles/show');">Start</a>
+            href="javascript:window.location.replace('https://' + window.location.hostname + '/titles/show');">Start</a>
         </div>
       </div>
     </div>

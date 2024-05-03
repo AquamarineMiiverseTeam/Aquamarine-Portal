@@ -28,6 +28,10 @@ module.exports = [
         route: require("./ui/menu/users.js")
     },
     {
+        path: "/identified_user_posts",
+        route: require("./ui/menu/identified_posts.js")
+    },
+    {
         path: "/account",
         route: require("./ui/account.js")
     }

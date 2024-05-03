@@ -32,7 +32,7 @@
 
                     <div class="post-content <% if (post.empathies.length <= 0) { %>no-empathy<% } %>">
 
-                        <a href="javascript:void(0)" class="user-icon-container <%= post.admin ? 'admin' : '' %>">
+                        <a data-pjax data-sound="SE_OLV_OK" href="/users/<%= post.nnid === account[0].nnid ? "@me" : post.nnid  %>" class="user-icon-container <%= post.admin ? 'admin' : '' %>">
                             <% switch (post.feeling_id) {
                                 case 0:%>
                                     <img class="user-icon" src="http://mii-images.account.nintendo.net/<%= post.mii_hash %>_normal_face.png" class="user-icon" onerror="this.src='../../../img/mii_null.png'">
@@ -66,7 +66,7 @@
 
                         <% if (post.yt) {%>
                                 <a href="javascript:void(0)" class="screenshot-permalink yt-video" data-sound="SE_WAVE_OK">
-                                    <img onerror="this.src='../../../img/banners-wup/placeholder-wup.jpg'" class="post-content-screenshot" src="https://i3.ytimg.com/vi/<%= post.yt %>/hqdefault.jpg">
+                                    <img onerror="this.src='../../../img/banners-wup/placeholder-wup.jpg'" class="post-content-screenshot" src="http://i.ytimg.com/vi/<%= post.yt %>/mqdefault.jpg">
                                 </a>
                         <%} %>
 
@@ -153,7 +153,7 @@
 
                     <div class="post-content-miis<% if (post.empathies.length == 0) {%> none <%} %>">
 
-                        <a href="javascript:void(0)" class="user-count">
+                        <a href="javascript:void(0)" data-sound="SE_OLV_OK_SUB" class="user-count">
 
                         <% if (post.empathies.some(empathy => empathy.account_id == account[0].id)) { %>
                          <span class="count none">

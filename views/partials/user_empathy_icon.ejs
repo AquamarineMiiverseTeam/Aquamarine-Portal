@@ -1,6 +1,6 @@
 <% let expression = Math.round((Math.random() * 5));%>
 
-<a data-pjax href="/users/<%= empathy.nnid %>" class="user-icon-container<% if (empathy.is_visitor) { %> visitor <% } %>" <% if (empathy.display == "none") { %> style="display: none;" <% } %> >
+<a data-pjax data-sound="SE_OLV_OK" href="/users/<%= empathy.nnid === account[0].nnid ? "@me" : empathy.nnid  %>" class="user-icon-container<% if (empathy.is_visitor) { %> visitor <% } %>" <% if (empathy.display == "none") { %> style="display: none;" <% } %> >
     <img class="user-icon" <% switch (expression) {
         case 1:%>
             src="http://mii-images.account.nintendo.net/<%= empathy.mii_hash %>_happy_face.png"

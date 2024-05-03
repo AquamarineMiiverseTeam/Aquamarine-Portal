@@ -1,0 +1,22 @@
+<%- include('../partials/header'), { account : account } %>
+
+<div class="wrapper">
+	<header class="header">
+		<h1 class="content-title left">Posts from Verified Users</h1>
+	</header>
+
+	<div class="identified-user-info info-content">
+		<span class="title">Posts from Verified Users</span>
+		<span class="text">Get the latest news here!</span>
+	</div>
+
+	<div class="community-post-list identified-post-list">
+		<div class="post-list">
+      <%- include("../partials/posts.ejs", {
+        posts : posts
+    }) %>
+		</div>
+	</div>
+
+	<%- include("../partials/modal/screenshot-viewer.ejs") %>
+</div>

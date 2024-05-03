@@ -15,9 +15,9 @@
                 <span class="icon-container">
                     <img src="../../../img/icons/<%= community.id %>.jpg" class="icon">
                 </span>
-                <button data-sound="SE_WAVE_OK" class="settings-button button"></button>
+                <button data-sound="SE_WAVE_OK_SUB" class="settings-button button"></button>
                 <% if (community.type=="main" ) {%>
-                <button data-sound="SE_WAVE_OK" class="app-jump-button button">
+                <button data-sound="SE_WAVE_OK_SUB" class="app-jump-button button">
                     <img src="../../../img/icons/<%= community.id %>.jpg" class="app-icon">
                 </button>
                 <%}%>
@@ -66,9 +66,7 @@
                         </div>
                     <%} %>
                 </div>
-            <% if (posts.length > 7) { %>
-              <a class="loading"></a>
-              <% } %>
+              <a class="loading <%= posts.length > 7 ? "" : "none" %>"></a>
             </div>
 
                 

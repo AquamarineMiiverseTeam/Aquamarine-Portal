@@ -160,11 +160,9 @@ route.get('/favorites', async (req, res, next) => {
             )
             .innerJoin("favorites", "favorites.community_id", "=", "communities.id")
             .where("favorites.account_id", "=", req.account[0].id)
-            .groupBy("communities.id");
-
-        for (let i = 0; i < communities.length; i++) {
-            communities[i].favorites = await db_con.env_db("favorites").where({ community_id: communities[i].id })
-        }
+            .groupBy("communities.id")
+            .offset(offset)
+            .limit(15);
 
         if (req.get("x-embedded-dom")) {
             if (communities.length == 0) { 
