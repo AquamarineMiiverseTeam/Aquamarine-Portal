@@ -9,8 +9,8 @@ route.get('/:community_id', async (req, res, next) => {
     try {
         const community_id = req.params.community_id;
         const community = (await db_con.env_db("communities")
-        .select("communities.*")
-        .select(db_con.env_db.raw(`
+            .select("communities.*")
+            .select(db_con.env_db.raw(`
             EXISTS (
                 SELECT 1
                 FROM favorites
@@ -18,8 +18,8 @@ route.get('/:community_id', async (req, res, next) => {
                 AND favorites.community_id = communities.id
             ) AS is_favorited
         `, [req.account[0].id]))
-        .select(db_con.env_db.raw("(SELECT COUNT(*) FROM favorites WHERE favorites.community_id = communities.id) as favorite_count"))
-        .where({id : community_id}))[0];
+            .select(db_con.env_db.raw("(SELECT COUNT(*) FROM favorites WHERE favorites.community_id = communities.id) as favorite_count"))
+            .where({ id: community_id }))[0];
 
         community.sub_communities = await db_con.env_db("communities").where({ parent_community_id: community.id, type: "sub" })
 
@@ -29,42 +29,39 @@ route.get('/:community_id', async (req, res, next) => {
         //Grabbing all querys for specific types of posts
         const offset = (req.query['offset']) ? req.query['offset'] : 0;
 
-        const posts_query = db_con.env_db("posts")
-            .select("posts.*",
-                "accounts.mii_hash",
-                "accounts.mii_name",
-                "accounts.admin",
-                "accounts.nnid",
-                db_con.env_db.raw("COUNT(empathies.post_id) as empathy_count"),
-                db_con.env_db.raw(`CASE WHEN empathies.account_id = ${req.account[0].id} THEN TRUE ELSE FALSE END AS empathied_by_user`))
+        const posts_query = db_con.env_db("posts").select(
+            "posts.*",
+            "accounts.mii_name",
+            "accounts.admin",
+            "accounts.nnid",
+            "accounts.mii_hash",
+            db_con.env_db.raw("COUNT(empathies.post_id) AS empathy_count"),
+            db_con.env_db.raw(`CASE WHEN empathies.account_id=${req.account[0].id} THEN TRUE ELSE FALSE END AS empathied_by_user`)
+        ).where({ community_id: community_id })
+            .groupBy("posts.id")
+            .innerJoin("account.accounts", "accounts.id", "=", "posts.account_id")
+            .leftJoin("empathies", "empathies.post_id", "=", "posts.id")
+            .offset(Number(offset))
+            .limit(8)
 
-            .where({ community_id: community_id }).whereNot({ moderated: 1 }).where(function () {
-                switch (req.query['type']) {
-                    case "played":
-                        this.where({ title_owned: 1 })
-                        break;
-                    case "ingame":
-                        this.whereNotNull("search_key")
-                        break;
-                    case "topictag":
-                        this.whereNotNull("topic_tag")
-                        break;
-                    default:
-                        break;
-                }
-            }).groupBy("posts.id")
-
-        if (req.query['type'] == "popular") {
-            posts_query.orderBy("empathy_count", "desc")
-        } else {
-            posts_query.orderBy("posts.create_time", "desc")
+        switch (req.query["type"]) {
+            case "popular":
+                posts_query.orderBy("empathy_count", "desc") // Corrected orderBy for popularity
+                break;
+            case "newest":
+                posts_query.orderBy("posts.create_time", "desc")
+                break;
+            case "played":
+                posts_query.where({ "title_owned": 1 }).orderBy("posts.create_time", "desc")
+                break;
+            case "topictag":
+                posts_query.whereNotNull("topic_tag").orderBy("posts.create_time", "desc")
+                break;
+            default:
+                posts_query.orderBy("posts.create_time", "desc")
         }
 
-        posts_query.limit(8).offset(Number(offset))
-            .innerJoin("account.accounts", "accounts.id", "=", "posts.account_id")
-            .leftJoin("empathies", "posts.id", "=", "empathies.post_id")
-
-        const posts = await posts_query;
+        const posts = await posts_query
 
         if (req.get("x-embedded-dom")) {
             if (posts.length == 0) { res.sendStatus(204); return; }
@@ -97,9 +94,9 @@ route.get("/:community_id/other", async (req, res, next) => {
         const community_id = req.params.community_id;
         const community = (await db_con.env_db("communities").where({ id: community_id }))[0]
         community.sub_communities = await db_con.env_db("communities").select("communities.*",
-        db_con.env_db.raw(`CASE WHEN favorites.account_id = ${req.account[0].id} THEN TRUE ELSE FALSE END AS is_favorited`),
-        db_con.env_db.raw("COUNT(favorites.community_id) AS favorite_count")).where({ parent_community_id: community_id })
-        .leftJoin("favorites", "favorites.community_id", "=", "communities.id")
+            db_con.env_db.raw(`CASE WHEN favorites.account_id = ${req.account[0].id} THEN TRUE ELSE FALSE END AS is_favorited`),
+            db_con.env_db.raw("COUNT(favorites.community_id) AS favorite_count")).where({ parent_community_id: community_id })
+            .leftJoin("favorites", "favorites.community_id", "=", "communities.id")
 
         community.favorites = await db_con.env_db("favorites").where({ community_id: community.id })
         for (let i = 0; i < community.sub_communities.length; i++) {
