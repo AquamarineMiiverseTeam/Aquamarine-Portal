@@ -63,6 +63,7 @@
                 "post": {
                     "post": "Envoyer",
                     "window_post": "Envoyer sur la communauté %s",
+                    "diary_post": "Publier dans votre Play Journal",
                     "cancel": "Annuler",
                     "post_body_guide": "Écrivez un message.",
                     "post_body_placeholder": "Écrivez vos pensées vers un message sur cette communauté !",
@@ -70,7 +71,8 @@
                     "has_spoilers": "Ce message contient des révélations.",
                     "see_spoiler": "Voir le message",
                     "error_no_text": "Veuillez saisir du texte dans votre message.",
-                    "post_sending_wait": "S'il vous plaît, attendez..."
+                    "post_sending_wait": "S'il vous plaît, attendez...",
+                    "no_drc_no_memo": "Utilisez le Wii U GamePad pour créer des messages manuscrits."
                 }
             },
             "miitoo": {

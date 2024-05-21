@@ -10,8 +10,16 @@ try {
     const account = (await db_con.account_db("accounts").where({nnid : req.account[0].nnid}))[0];
     if (!account) {res.render("pages/error/error_404"); return;}
 
+    const playJournalCommunity = await db_con
+    .env_db("communities")
+    .whereLike("title_ids", `%${req.param_pack.title_id}%`)
+    .where({ type: "main" })
+    .first();
+
+
         res.render("pages/activity_feed", {
             account : req.account,
+            journal_community: playJournalCommunity
         });
 
         return;

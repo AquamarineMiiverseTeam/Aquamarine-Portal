@@ -16,7 +16,7 @@
 
   <div class="wrapper">
 
-    <div id="window-setup-1">
+    <div id="window-setup-1" class="none">
       <div class="window-page" id="welcome-start">
         <div class="welcome-window window">
           <h1 class="welcome-title">Welcome to Aquamarine!</h1>
@@ -28,8 +28,8 @@
               </p>
             </div>
           </div>
-          <a class="exit-setup-modal-button"
-            href="javascript:wiiuSound.playSoundByName('SE_WAVE_EXIT', 3), setTimeout(function() {wiiuBrowser.closeApplication()}, 0);">Close</a>
+          <a class="exit-setup-modal-button" data-sound="SE_WAVE_EXIT"
+            href="javascript:void(0)">Close</a>
           <a class="next-setup-modal-button" data-sound="SE_WAVE_OK"
           data-toggle-hide="#window-setup-1" data-toggle-show="#window-setup-2"
             href="javascript:void(0)">Next</a>
@@ -70,17 +70,17 @@
             <div class="window-body-inner">
               <p>If you have already created a Aquamarine account, you can select Log in, else, select Create new
                 account.</p>
+                <a class="log-in-account-button" data-sound="SE_WAVE_OK_SUB"
+                data-toggle-hide="#window-setup-3" data-toggle-show="#window-setup-4"
+                href="javascript:void(0)">Log in</a>
             </div>
           </div>
           <a class="back-setup-modal-button" data-sound="SE_WAVE_CANCEL"
           data-toggle-hide="#window-setup-3" data-toggle-show="#window-setup-2"
           href="javascript:void(0)">Back</a>
-          <a class="create-account-setup-modal-button" data-sound="SE_WAVE_OK_SUB"
-          data-toggle-hide="#window-setup-3" data-toggle-show="#window-setup-5"
-          href="javascript:void(0)">Create new account</a>
           <a class="next-setup-modal-button" data-sound="SE_WAVE_OK"
-          data-toggle-hide="#window-setup-3" data-toggle-show="#window-setup-4"
-          href="javascript:void(0)">Log in</a>
+          data-toggle-hide="#window-setup-3" data-toggle-show="#window-setup-5"
+          href="javascript:void(0)">Create Account</a>
         </div>
       </div>
     </div>
@@ -163,6 +163,9 @@
         <a class="next-setup-modal-button guideline" data-sound="SE_WAVE_OK"
         data-toggle-hide="#window-setup-5" data-toggle-show="#window-setup-6"
         href="javascript:void(0)">Accept</a>
+        <span class="fixed-scroll-warning-setup">
+          <span>Slide the Wii U GamePad screen to scroll.</span>
+        </span>
       </div>
     </div>
 
@@ -201,7 +204,36 @@
     <div id="window-setup-7" class="none">
       <div class="window-page" id="welcome-create">
         <div class="welcome-window window">
-          <h1 class="welcome-title">Input your login details</h1>
+          <h1 class="welcome-title">Do you want to enable Notifications outside of the app?</h1>
+          <div class="window-body">
+            <div class="window-body-inner">
+              <p>This will enable retrieving notifications outside of the applet using SpotPass, when you get
+                a notification, the applet icon will start glowing to notify you.
+              </p>
+              <form class="boss_form" action="javascript:void(0)">
+                <label for="boss_on" data-sound="SE_WAVE_SELECT_TAB" class="zero">
+                  <input type="radio" id="boss_on" name="boss_optout" value="1">
+                  Enable</label>
+                <label for="boss_off" data-sound="SE_WAVE_SELECT_TAB" class="one">
+                  <input type="radio" id="boss_off" name="boss_optout" value="0">
+                  Disable</label>
+              </form>
+            </div>
+          </div>
+          <a class="back-setup-modal-button" data-sound="SE_WAVE_CANCEL"
+          data-toggle-hide="#window-setup-7" data-toggle-show="#window-setup-6"
+          href="javascript:void(0)">Back</a>
+          <a class="next-setup-modal-button" data-sound="SE_WAVE_OK"
+          data-toggle-hide="#window-setup-7" data-toggle-show="#window-setup-8"
+          href="javascript:void(0)">Next</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="window-setup-8" class="none">
+      <div class="window-page" id="welcome-create">
+        <div class="welcome-window window">
+          <h1 class="welcome-title">Input your sign-in details</h1>
           <div class="window-body">
             <div class="window-body-inner">
               <p>You will now create an Aquamarine account, you will able to log this account on Nintendo 3DS and web
@@ -219,7 +251,7 @@
             </div>
           </div>
           <a class="back-setup-modal-button" data-sound="SE_WAVE_CANCEL"
-          data-toggle-hide="#window-setup-7" data-toggle-show="#window-setup-6"
+          data-toggle-hide="#window-setup-8" data-toggle-show="#window-setup-7"
           href="javascript:void(0)">Back</a>
         </div>
       </div>
@@ -255,6 +287,24 @@
           </div>
           <a class="next-setup-modal-button" data-sound="SE_WAVE_OK"
             href="javascript:window.location.replace('https://' + window.location.hostname + '/titles/show');">Start</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="window-setup-pin-ask" class="window-page none">
+      <div class="window">
+        <h1 class="window-title">Enter your PIN to continue with setup.</h1>
+        <div class="window-body">
+          <div class="window-body-inner message">
+            <p>Parental Controls are enabled for Aquamarine in this Wii U console.<br>
+              Please enter your PIN to continue with the setup process.
+            </p>
+            <input type="password" data-sound controller="drc" minlength="4" maxlength="4" inputform="monospace" guidestring=" " class="pin_entry"  placeholder="Tap to enter the PIN." keyboard="pin">
+          </div>
+        </div>
+        <div class="window-bottom-buttons">
+          <a href="javascript:void(0)" class="button close-app-button" data-sound="SE_WAVE_EXIT"><span>Exit</span></a>
+          <a href="javascript:void(0)" data-sound="SE_WAVE_OK" class="button ok-button">OK</a>
         </div>
       </div>
     </div>

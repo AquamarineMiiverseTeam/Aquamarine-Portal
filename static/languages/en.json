@@ -63,6 +63,7 @@
                 "post": {
                     "post": "Post",
                     "window_post": "Post to %s Community",
+                    "diary_post": "Post to your Play Journal",
                     "cancel": "Cancel",
                     "post_body_guide": "Write a post.",
                     "post_body_placeholder": "Share your thoughts to this community!",
@@ -70,7 +71,8 @@
                     "has_spoilers": "This post contains spoilers.",
                     "see_spoiler": "View Post",
                     "error_no_text": "Please input text in your post.",
-                    "post_sending_wait": "Please wait a moment..."
+                    "post_sending_wait": "Please wait a moment...",
+                    "no_drc_no_memo": "Use the Wii U GamePad to make handwritten messages."
                 }
             },
             "miitoo": {

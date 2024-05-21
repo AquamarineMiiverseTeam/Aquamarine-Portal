@@ -1,5 +1,5 @@
 <% for(const post of posts) { %>
-    <div id="post-<%= post.id %>" class="post<%= (post.spoiler == 1) ? " hidden" : "" %>">
+    <div id="post-<%= post.id %>" class="post<%= (post.spoiler == 1) ? " hidden" : "" %> <%= (post.is_journal == 1) ? " journal" : "" %> <%= (post.in_game == 1) ? "in-game" : "" %> <%= !post.body && post.screenshot_cdn_url || !post.body && post.yt ? "with-memo" : "" %> <%= post.screenshot_cdn_url || post.yt ? "with-preview-screenshot" : "" %>">
         <a data-pjax=".wrapper" data-sound="SE_OLV_OK" href="/users/<%= post.nnid === account[0].nnid ? "@me" : post.nnid  %>" class="user-icon-container <%= post.admin ? 'admin' : '' %>">
             <% switch (post.feeling_id) {
                 case 0:%>
@@ -36,25 +36,25 @@
                 </header>
 
                 <span class="post-title-icon">
-                    <img src="/img/icons/<%= post.community_id %>.jpg" class="icon">
+                    <img src="<%= post.community_id ? '/img/icons/' + post.community_id + '.jpg' : '/img/app.png' %>" class="icon">
                 </span>
     
                 <div class="post-content">
-                    <% if (post.topic_tag) { %>
-                        <a data-sound="SE_WAVE_OK" href="javascript:void(0)" class="post-tag <%= !post.body ? "memo" : "" %>"><%= post.topic_tag %></a>
-                    <% } %>
-    
                     <% if (post.screenshot_cdn_url) { %>
                         <a href="javascript:void(0)" class="screenshot-permalink" data-sound="SE_WAVE_OK">
                             <img onerror="this.src='../../../img/banners-wup/placeholder-wup.jpg'" class="post-content-screenshot" src="<%= post.screenshot_cdn_url %>">
                         </a>
                     <% } %>
-
+                    
                     <% if (post.yt) {%>
-                        <a href="javascript:void(0)" class="screenshot-permalink yt-video" data-sound="SE_WAVE_OK">
+                        <a href="javascript:void(0)" data-yt-url="<%= post.yt %>" class="screenshot-permalink yt-video" data-sound="SE_WAVE_OK">
                             <img onerror="this.src='../../../img/banners-wup/placeholder-wup.jpg'" class="post-content-screenshot" src="http://i.ytimg.com/vi/<%= post.yt %>/mqdefault.jpg">
                         </a>
                     <%} %>
+
+                    <% if (post.topic_tag) { %>
+                        <a data-sound="SE_WAVE_OK" href="javascript:void(0)" class="post-tag"><%= post.topic_tag %></a>
+                    <% } %>
                     
                     <% if (post.body) { %>
                         <p class="post-content-text"><%= post.body %></p>

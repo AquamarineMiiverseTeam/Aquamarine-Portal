@@ -1,21 +1,15 @@
-<%
-    var dPost = typeof post !== 'undefined' && post !== null;
-    var pYt = dPost ? post.yt : false;
-%>
 <div class="screenshot-viewer-screenshot none">
     <div class="screenshot-img-wrapper">
         <div class="screenshot">
             <img class="img" src="data:image/gif;base64,R0lGODlhEAAQAIAAAP%2F%2F%2FwAAACH5BAEAAAAALAAAAAAQABAAAAIOhI%2Bpy%2B0Po5y02ouzPgUAOw%3D%3D">
         </div>
-        <% if (pYt) {%><div class="double-button"><%} %>
-        <a href="javascript:void(0)" class="button back-button" data-sound="SE_WAVE_CANCEL">
+        <div class=""><!--double-button-->
+        <a href="javascript:void(0)" class="button accesskey-b back-button" data-sound="SE_WAVE_CANCEL">
             <span><%= locals.language.aqua.portal.community.post.cancel %></span>
         </a>
-        <% if (pYt) {%>
-            <a href="javascript:void(0)" class="button yt-jump-button" data-sound="SE_WAVE_OK">
+            <a href="javascript:void(0)" class="button accesskey-minus yt-jump-button none" data-sound="SE_WAVE_OK">
                 <span><%= locals.language.aqua.portal.community.settings.app_jump_yt_screenshot_button %></span>
             </a>
-        <%} %>
-        <% if (pYt) {%></div><%} %>
+        </div>
     </div>
 </div>

@@ -11,26 +11,29 @@
                 <div class="post-content-viewer">
 
                     <div class="post-content-header">
-                        <a data-pjax data-sound="SE_OLV_OK_SUB" href="/communities/<%= (post.community_type == "main") ? post.community_id : post.parent_community_id %>" <% if (post.community_type == "main") { %> class="community"<% } else {%> class="program" <%} %>>
-                            <span><img class="title-icon" src="/img/icons/<%= post.community_id %>.jpg">
-                                <% if (post.community_type == "main") {%>
-                                    <%= post.community_name %>
-                                <% } %>
+
+                        <% if (post.community_type != "main" && post.parent_community_id) { %>
+                        <a data-pjax data-sound="SE_OLV_OK_SUB" href="/communities/<%= post.parent_community_id %>" class="program">
+                            <span><img class="title-icon" src="<%= post.parent_community_id ? '/img/icons/' + post.parent_community_id + '.jpg' : '/img/app.png' %>">
                             </span>
                         </a>
-                        <% if (post.community_type != "main") { %>
-                            <a data-pjax data-sound="SE_OLV_OK_SUB" href="/communities/<%= post.community_id %>" class="community">
-                                <img class="community-icon" src="/img/icons/<%= post.community_id %>.jpg">
-                                <%= post.community_name %>
-                            </a>
                         <% } %>
 
-                        <% if (post.search_key || post.topic_tag) { %>
+                        <a data-pjax data-sound="SE_OLV_OK_SUB" href="/communities/<%= post.community_id %>" class="community">
+                            <img class="community-icon" src="<%= post.community_id ? '/img/icons/' + post.community_id + '.jpg' : '/img/app.png' %>">
+                            <%= post.community_name %>
+                        </a>
+
+                        <% if (post.in_game == 1) { %>
                             <a data-sound="SE_OLV_DECIDE" href="javascript:void(0)" class="post-type in-game">In-Game</a>
+                        <% } %>
+
+                        <% if (post.is_journal) { %>
+                            <a data-sound="SE_OLV_DECIDE" href="javascript:void(0)" class="post-type journal">Play Journal Entries</a>
                         <% } %>
                     </div>
 
-                    <div class="post-content <% if (post.empathies.length <= 0) { %>no-empathy<% } %>">
+                    <div class="post-content <% if (post.in_game == 1) { %>in-game<% } %> <% if (post.is_journal) { %>journal<% } %> <% if (post.empathies.length <= 0) { %> no-empathy<% } %>">
 
                         <a data-pjax data-sound="SE_OLV_OK" href="/users/<%= post.nnid === account[0].nnid ? "@me" : post.nnid  %>" class="user-icon-container <%= post.admin ? 'admin' : '' %>">
                             <% switch (post.feeling_id) {
@@ -58,14 +61,14 @@
                             } %>
                         </a>
 
-                        <% if (post.screenshot) {%>
+                        <% if (post.screenshot && !post.is_journal) {%>
                                 <a href="javascript:void(0)" class="screenshot-permalink" data-sound="SE_WAVE_OK">
                                     <img onerror="this.src='../../../img/banners-wup/placeholder-wup.jpg'" class="post-content-screenshot" src="<%= post.screenshot_cdn_url %>">
                                 </a>
                         <%} %>
 
                         <% if (post.yt) {%>
-                                <a href="javascript:void(0)" class="screenshot-permalink yt-video" data-sound="SE_WAVE_OK">
+                                <a href="javascript:void(0)" data-yt-url="<%= post.yt %>" class="screenshot-permalink yt-video" data-sound="SE_WAVE_OK">
                                     <img onerror="this.src='../../../img/banners-wup/placeholder-wup.jpg'" class="post-content-screenshot" src="http://i.ytimg.com/vi/<%= post.yt %>/mqdefault.jpg">
                                 </a>
                         <%} %>
@@ -84,7 +87,13 @@
                         <div class="post-content-body">
 
                             <% if (post.topic_tag) {%>
-                               <a data-sound="SE_OLV_OK" href="javascript:void(0)" class="post-tag big"><%= post.topic_tag %></a>
+                               <a data-sound="SE_OLV_OK" href="javascript:void(0)" class="post-tag"><%= post.topic_tag %></a>
+                            <%} %>
+                            
+                            <% if (post.screenshot && post.is_journal) {%>
+                                <a href="javascript:void(0)" class="screenshot-permalink" data-sound="SE_WAVE_OK">
+                                    <img onerror="this.src='../../../img/banners-wup/placeholder-wup.jpg'" class="post-content-screenshot" src="<%= post.screenshot_cdn_url %>">
+                                </a>
                             <%} %>
 
                             <% if (post.body) {%>
@@ -140,12 +149,19 @@
                                 <%}%>
                             </button>
 
+                            <% if (post.is_app_jumpable == 1) {%>
+                            <button class="button post-app-jump-button" data-post-id="<%= (post.id) ? post.id : '' %>"  data-community-id="<%= (post.community_id) ? post.community_id : '' %>" data-app-data="<%= (post.app_data) ? post.app_data : '' %>">
+                                <img class="icon" src="<%= post.community_id ? '/img/icons/' + post.community_id + '.jpg' : '/img/app.png' %>">
+                                Start
+                            </button>
+                            <%}%>
+
                             <% if (post.url) {%>
                             <a href="javascript:void(0)" data-sound="SE_OLV_OK" class="button link-button"></a>
                             <%}%>
 
                             <% if (post.yt) {%>
-                            <a href="javascript:void(0)" data-sound="SE_OLV_OK" class="button yt-button"></a>
+                            <a href="javascript:void(0)" data-yt-button-url="<%= post.yt %>" data-sound="SE_OLV_OK" class="button yt-button yt-jump-button"></a>
                             <%}%>
                         </div>
 

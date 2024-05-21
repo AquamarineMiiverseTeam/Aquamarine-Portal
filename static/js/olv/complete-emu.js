@@ -139,6 +139,9 @@ if (typeof wiiuSystemSetting === 'undefined') {
         getSpotPassUploadConsoleInfoState: function () {
             return { enable: true };
         },
+        getParentalControlForMiiverse: function () {
+            return { restrictionLevel: "1" };
+        },
     };
 }
 if (typeof wiiuBOSS === 'undefined') {

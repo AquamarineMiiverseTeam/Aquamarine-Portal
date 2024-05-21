@@ -29,7 +29,13 @@
                 <%} else if (community.type=="announcement" ) {%>
                     <span class="news-community-badge"><%= locals.language.aqua.portal.community.types.announcements_community %></span>
                 <%}%>
-                    <span class="title"><%= locals.local([{str : community.name, rpl : "%s"}], locals.language.aqua.portal.community.community) %></span>
+                    <span class="title">
+                        <% if (community.user_community == 1 || community.type == "sub" || community.type=="announcement") { %>
+                        <%= community.name %>
+                        <% } else {%>
+                        <%= locals.local([{str : community.name, rpl : "%s"}], locals.language.aqua.portal.community.community) %>
+                        <% } %>
+                    </span>
                     <span class="text"><%= community.description %></span>
             </div>
 
@@ -55,7 +61,14 @@
 
             <div class="community-post-list">
 
+                <div class="community-offset none">
+                    <a href="" class="button previous-button" data-pjax></a>
+                    <a href="/communities/1?offset=10&type=popular" class="button selected" data-pjax></a>
+                    <a href="" class="next-button" data-pjax></a>
+                  </div>
+
                 <div class="post-list" id="post_list">
+
                     <%- include("../partials/posts.ejs", {
                         posts : posts
                     }) %>
@@ -71,6 +84,8 @@
 
                 
     <%- include("../partials/modal/screenshot-viewer.ejs") %>
+
+    <%- include("../partials/modal/app-jump-yt.ejs") %>
 
     <%- include("../partials/modal/create_post.ejs") %>
 

@@ -17,7 +17,11 @@
     <div class="body">
         <div class="body-content <%= community.sub_communities && community.sub_communities.length !== 0 ? 'related' : '' %>">
           <span class="community-name title">
+            <% if (community.user_community == 1 || community.type == "sub" || community.type=="announcement") { %>
+            <%= community.name %>
+            <% } else {%>
             <%= locals.local([{str : community.name, rpl : "%s"}], locals.language.aqua.portal.community.community) %>
+            <% } %>
           </span>
             <span class="community-name name">
                 <%= (community.app_name) ? community.app_name : community.name %>

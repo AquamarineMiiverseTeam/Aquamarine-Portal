@@ -30,14 +30,20 @@
         </a>
     </li>
     <li id="menu-bar-exit">
-        <a href="javascript:void(0)" onclick="setTimeout(function() {wiiuBrowser.closeApplication()}, 0);" data-sound="SE_WAVE_EXIT">
+        <a href="javascript:void(0)" data-sound="SE_WAVE_EXIT">
             <span><%= locals.language.aqua.portal.menu.close %></span>
         </a>
     </li>
     <li id="menu-bar-back" class="none">
-        <a href="javascript:void(0)" onclick="history.back()" role="button" data-sound="SE_WAVE_BACK">
+        <a href="javascript:void(0)" class="accesskey-b" role="button" data-sound="SE_WAVE_BACK">
             <span><%= locals.language.aqua.portal.menu.back %></span>
         </a>
     </li>
     
     </menu>
+
+    <a class="button-scroll-top" data-sound="SE_WAVE_OK" href="javascript:void(0)"></a>
+
+    <div class="news-balloon-popup none">
+        <p class="message">NoNameGiven has sent you a friend requrest.</p>
+    </div>

@@ -63,6 +63,7 @@
                 "post": {
                     "post": "Publicar",
                     "window_post": "Publicar en Comunidad %s",
+                    "diary_post": "Publicar en tu Diario de Juego",
                     "cancel": "Cancelar",
                     "post_body_guide": "Escribe una publicación.",
                     "post_body_placeholder": "Comparte tus pensamientos con una publicación a esta comunidad.",
@@ -70,7 +71,8 @@
                     "has_spoilers": "Esta publicación contiene revelaciones.",
                     "see_spoiler": "Ver publicación",
                     "error_no_text": "Por favor ingresa texto en tu publicación.",
-                    "post_sending_wait": "Por favor espera..."
+                    "post_sending_wait": "Por favor espera...",
+                    "no_drc_no_memo": "Usa el Wii U GamePad para hacer mensajes a mano."
                 }
             },
             "miitoo": {

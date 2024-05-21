@@ -1,7 +1,8 @@
 <%- include('../partials/header'), { account : account } %>
 
 <div class="wrapper">
-    <header class="header">
+    <header class="header with-data">
+      <a class="add-journal-button" data-sound="SE_WAVE_OK" href="javascript:void(0)">Write Play Journal Entry</a>
         <h1 class="content-title left">Activity Feed</h1>
         <div class="filter-dropdown">
             <a class="dropdown-toggle" data-toggle=".dropdown-menu" href="javascript:void(0)">All</a>
@@ -21,4 +22,10 @@
             </ul>
           </div>
     </header>
+
+    <div class="community-post-list">
+
+    </div>
+
+    <%- include("../partials/modal/journal_confirm.ejs") %>
 </div>
