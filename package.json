@@ -1,21 +1,18 @@
 {
   "name": "aquamarine-portal",
   "version": "1.0.0",
-  "description": "",
+  "description": "Aquamarine Wii U Portal",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NoNameGivenCoder/Aquamarine.git"
+    "url": "git+https://github.com/RasberryTech/Aquamarine-Portal.git"
   },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/NoNameGivenCoder/Aquamarine/issues"
-  },
-  "homepage": "https://github.com/NoNameGivenCoder/Aquamarine#readme",
   "dependencies": {
     "bmp-js": "^0.1.0",
     "colors": "^1.4.0",
